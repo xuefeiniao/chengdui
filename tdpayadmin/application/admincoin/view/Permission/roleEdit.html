@@ -1,0 +1,153 @@
+<style>
+	.form-group .form-control{
+		display: inline-block;
+	}
+    .ooe{
+
+    }
+    .oor{
+        /*width: 120px;*/
+        float: left;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+</style>
+<section class="section">
+	<div class="section-body">
+		<div class="row">			
+			<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h4>添加角色</h4>
+					</div>
+					<div class="card-body">
+						<form class="form-horizontal container" style="text-align: center;">
+							<div class="form-group row">
+								<label class="col-md-1 col-form-label">角色名</label>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="username" id="username" value="{$rinfo.role_name}">
+									<input type="hidden" class="form-control" name="role_id" id="role_id" value="{$rinfo.role_id}">
+								</div>
+							</div>		
+							<div class="form-group row">
+								<label class="col-md-1 col-form-label">角色描述</label>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="discription" id="discription" value="{$rinfo.discription}">
+								</div>
+							</div>			
+                            <div class="form-group row">
+								<label class="col-md-1 col-form-label">分配权限</label><br>
+								<div class="col-lg-9">
+									<br/>
+									{foreach $permissions as $key=>$item}
+										<dl class="permission-list" style="border-bottom: 1px solid #EAEAEA">
+											<dd style="display: block">
+												<dl class="cl permission-list2  item-list">
+													<dt style="display: block; float: left;" class="ooe">
+														<label class="label{$item.permissions_id}"><input type="checkbox" class="f-checkbox" {if in_array($item.permissions_id, $rp)} checked="checked" {/if} id="{$item.permissions_id}" value="{$item.permissions_id}"> &nbsp;{$item.display}
+                                                            </label>
+                                                            <!--<br/>({$item.name})</label>-->
+													</dt>
+													<dd style="display: block; float: left;">
+														{if array_key_exists('son',$item)}
+															{foreach $item.son as $k=> $v}
+																<label class="oor">
+																	<input type="checkbox" value="{$v.permissions_id}" name="permissions_id" {if in_array($v.permissions_id, $rp)} checked="checked" {/if} id="{$item.permissions_id}">
+																	{$v.display}</label>
+<!--                                                        {$v.display}({$v.name})</label> -->
+															{/foreach}
+														{/if}
+													</dd>
+													<div style="clear: both"></div>
+												</dl>
+											</dd>
+										</dl>
+									{/foreach}
+								</div>
+							</div>	
+							<div class="form-group row">
+								<div class="col-md-3 offset-md-5">
+									<button type="button" class="btn btn-info" id="addAdmin">确定</button>									
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+<script type="text/javascript">
+	$('#addAdmin').click(function()
+		{
+			var username 	= $('#username').val();
+			var discription	= $('#discription').val();
+			var role_id		= $('#role_id').val();
+			// 获取所有权限
+			var obj = $('.item-list input')
+			var check_val = [];
+			for(k in obj){
+				if(obj[k].checked){
+					check_val.push(obj[k].value);
+				}
+			}
+
+			if(username 	== ""){layer.msg('请输入角色名称');return}
+			if(discription 	== ""){layer.msg('请输入描述信息');return}
+			if(role_id 		== ""){layer.msg('请输入角色ID');return}
+			$.ajax({
+				type: "POST",
+				url: '/admincoin/Permission/roleEdit',
+				data:{
+		    			username:username,
+		    			discription:discription,
+		    			permissions:check_val,
+		    			role_id:role_id,
+		    		},
+				success: function(e) {
+					if (e.code == 200) {
+						layer.msg(e.msg);
+						$('.app-content').empty();
+						$.ajax({
+							type: "GET",
+							url: '/admincoin/Permission/roleList',
+							success: function(data) {
+								$('.app-content').append(data);
+							}
+						});
+						return false;	
+					}else{
+						layer.msg(e.msg)
+					}
+				}
+			});
+			return false;
+
+		});
+	
+</script>
+
+<script type="text/javascript">
+	$(function(){
+		$('.f-checkbox').on('change',function(e){
+			var check_val = [];
+			if($(this).prop('checked')){
+				//console.log('222')
+				$(this).closest('.item-list').find('input').prop('checked',true);
+			}else{
+				$(this).closest('.item-list').find('input').prop('checked',false);
+			}
+		})
+		
+		$('.item-list dd input').change(function(){
+			var sLength = $(this).parent().siblings('label').find('input:checked').length;
+			//console.log(sLength)
+			if($(this).prop('checked') || sLength >0){
+				$(this).closest('.item-list').find('.f-checkbox').prop('checked',true);
+			}else{
+				$(this).closest('.item-list').find('.f-checkbox').prop('checked',false);
+			}
+		})
+	})
+</script>

@@ -1,0 +1,258 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+     /*表格背景色*/
+    .table-striped tbody tr:nth-of-type(even){
+        background-color: #f6f6f9;
+    }
+    .table-striped tbody tr:nth-of-type(odd){
+        background-color: #fff;
+    }
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>提币订单</h4>
+				</div>
+				<div class="card-body">
+				     <!--搜索条件-->
+					<form id="formID">
+    			    	<div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                       <div class="col-sm-12 col-md-3">
+                            <label>订单号码：
+								<input type="text" class="form-control form-control-sm" name="order_number" value="{$variate.order_number}"/>
+                            </label>
+                            <label>选择币种：
+                                <select class="form-control" name="coin_name">
+									<option value="all"  {if $variate["coin_name"]=="all"}selected{/if}>ALL</option>
+									<option value="btc"  {if $variate["coin_name"]=="btc"}selected{/if}>BTC</option>
+									<option value="eth"  {if $variate["coin_name"]=="eth"}selected{/if}>ETH</option>
+									<option value="usdt" {if $variate["coin_name"]=="usdt"}selected{/if}>USDT</option>
+								</select>
+							</label>
+                       </div>
+                        
+                        <div class="col-sm-12 col-md-3">
+                           <label>流水号码：
+                               <input type="text" class="form-control form-control-sm" name="serial_number" value="{$variate.serial_number}"/>
+                           </label>
+                           <label>选择状态：
+                                <select class="form-control" name="status">
+    								<option value="all"    {if $variate["status"]=="all"}selected{/if}>全部状态</option>
+    								<option value="error"  {if $variate["status"]=="error"}selected{/if}>提现失败</option>
+    								<option value="already"{if $variate["status"]=="already"}selected{/if}>提现已处理</option>
+    								<option value="success"{if $variate["status"]=="success"}selected{/if}>提现成功</option>
+    								<option value="unusul" {if $variate["status"]=="unusul"}selected{/if}>订单异常</option>
+    								<option value="pass"   {if $variate["status"]=="pass"}selected{/if}>审核通过</option>
+    								<option value="check"  {if $variate["status"]=="check"}selected{/if}>待审核</option>
+    							</select>
+    						</label>
+                        </div>
+                        
+                       <div class="col-sm-12 col-md-3">
+                           <label>开始日期：
+                               <input type="text" class="form-control form-control-sm" id="beigin" name="beigin" value="{$variate.beigin}"/>
+                           </label>
+                           <label>结束日期：
+                               <input type="text" class="form-control form-control-sm" id="end" name="end" value="{$variate.end}"/>
+                            </label>
+                       </div>
+                        <div class="col-sm-12 col-md-3 text-right">
+                          <input type="button" class="btn btn-primary torder" value="搜索">
+                       </div>
+                    </div>
+					</form>
+					<div class="table-responsive">
+    					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+    						<thead>
+    							<tr>
+									<th class="wd-15p">ID</th>
+    								<th class="wd-15p">订单号</th>
+    								<th class="wd-15p">流水号</th>
+    								<th class="wd-10p">用户名</th>
+    								<th class="wd-25p">币种</th>
+    								<th class="wd-25p">金额</th>
+    								<th class="wd-25p">折合(USDT)</th>
+                                    <th class="wd-20p">时间</th>
+    								<th class="wd-25p">状态</th>
+    								<th class="wd-25p">操作</th>
+    							</tr>
+    						</thead>
+    						<tbody>
+                                {foreach $list as $val}
+        							<tr>
+										<td>{$val.id}</td>
+        								<td>{$val.order_number}</td>
+        								<td>{$val.serial_number}</td>
+        								<td>{$val.username}</td>
+        								<td>{$val.coin_name|strtoupper}</td>
+        								<td>{$val.coin_money}</td>
+        								<td>{$val.usdt}</td>
+                                        <td>开始时间：{$val.createtime}<br>完成时间：{$val.endtime}</td>
+                                      	<td>
+											{if $val.status=="error"}  <div class="badge badge-warning">提现失败</div>{/if}
+											{if $val.status=="already"}<div class="badge badge-info">提现已处理</div>{/if}
+											{if $val.status=="success"}<div class="badge badge-success">提现成功</div>{/if}
+											{if $val.status=="unusul"} <div class="badge badge-success">订单异常</div>{/if}
+											{if $val.status=="pass"} <div class="badge badge-success">审核通过</div>{/if}
+											{if $val.status=="check"} <div class="badge badge-success">待审核</div>{/if}
+										</td>
+        								<td>
+        								    <a class="btn btn-action btn-primary" data-toggle="modal" data-target="#detailModal" data-id="{$val.id}">详情</a>
+											{if $val.status=="check"}<a class="btn btn-action btn-info fangxing" data-id="{$val.id}">放行</a>{/if}
+        								 </td>
+        							</tr>
+                                {/foreach}
+    				        </tbody>
+    					</table>
+    				</div>
+    				<!-- 分页 -->
+                	<div class="row">
+                		<div class="col-sm-12 col-md-5">
+                			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+                		</div>
+                		<div class="col-sm-12 col-md-7">
+                			<div class="dataTables_paginate paging_simple_numbers text-right" >
+                				<ul class="pagination" style="justify-content: flex-end;">
+									{$list|raw}
+                				</ul>
+                			</div>
+                		</div>
+                	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Grid Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="example-Modal2">订单详情</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+							<span>提现币种：</span>
+							<span id="coin_name"></span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+							<span>提现数量：</span>
+							<span id="coin_money"></span>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+							<span>手续费：</span>
+							<span id="coin_fee"></span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+							<span>到账数量：</span>
+							<span id="coin_aumount"></span>
+						</p>
+					</div>
+					<div class="col-md-12">
+						<p>
+							<span>提现地址：</span>
+							<span id="address"></span>
+						</p>
+					</div>
+					<div class="col-md-12">
+						<p>
+							<span>交易哈希：</span>
+							<span id="txid"></span>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    /*分页*/
+    $('.pagination a').click(function()
+    {
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            url: href,
+            data: data,
+            success: function(data) {
+                $('.app-content').append(data);
+            }
+        });
+        return false;
+    });
+    /**
+     * 过滤数据
+     */
+    $(".torder").click(function(){
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.post("{:url('OrderManage/withdrawOrder')}",data,function(e){
+            $(".app-content").append(e);
+        });
+    });
+    /**
+	 * 提现详情内容
+     */
+    $(".btn-action").click(function(){
+        var id=$(this).attr("data-id");
+        $.post("{:url('OrderManage/torderdetail')}",{id:id}, function(data){
+            $("#coin_name").html(data.data.coin_name.toUpperCase());
+            $("#coin_money").html(data.data.coin_money);
+            $("#coin_fee").html(data.data.coin_fee);
+            $("#coin_aumount").html(data.data.coin_aumount);
+            $("#address").html(data.data.address);
+            $("#txid").html(data.data.txid);
+        });
+    });
+    /**
+	 * 放行操作
+     */
+	$(".fangxing").click(function(){
+		var id=$(this).attr("data-id");
+        $('.app-content').empty();
+        $.post("{:url('OrderManage/fangxing')}",{id:id},function(e){
+            if(e.status==1){
+                layer.msg(e.msg,{icon:1});
+            }else{
+                layer.msg(e.msg);
+            }
+            $.post("{:url('OrderManage/withdrawOrder')}",function(data){
+                $('.app-content').append(data);
+            });
+		});
+	});
+</script>

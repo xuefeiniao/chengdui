@@ -1,0 +1,103 @@
+				<!-- 右侧内容   end-->
+
+				<footer class="main-footer">
+					<div class="text-center">
+						Copyright &copy;Kharna-Admin 2018. Design By：<a href="http://www.mycodes.net/" target="_blank">B-payer Payment</a>
+					</div>
+				</footer>
+
+			</div>
+		</div>
+		<!--Jquery.min js-->
+
+		<!--popper js-->
+		<script src="/assets/js/popper.js"></script>
+
+		<!--Tooltip js-->
+		<script src="/assets/js/tooltip.js"></script>
+
+		<!--Bootstrap.min js-->
+		<script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!--Jquery.nicescroll.min js-->
+		<script src="/assets/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+
+		<!--Scroll-up-bar.min js-->
+		<script src="/assets/plugins/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+
+		<!--Sidemenu js-->
+		<script src="/assets/plugins/toggle-menu/sidemenu.js"></script>
+
+		<!--mCustomScrollbar js-->
+		<script src="/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+		<!-- ECharts -->
+		<script src="/assets/plugins/echarts/dist/echarts.js"></script>
+
+		<!--Min Calendar -->
+		<script src="/assets/plugins/fullcalendar/calendar.min.js"></script>
+		<script src="/assets/plugins/fullcalendar/custom_calendar.js"></script>
+
+		<!--Morris js-->
+		<script src="/assets/plugins/morris/morris.min.js"></script>
+		<script src="/assets/plugins/morris/raphael.min.js"></script>	
+
+		<!--Scripts js-->
+		<script src="/assets/js/scripts.js"></script>
+
+		<!--Dashboard js-->
+		<script src="/assets/js/apexcharts.js"></script>
+		<script src="/assets/layer/layer.js"></script>
+		<script src="/assets/plugins/toastr/build/toastr.min.js"></script>
+		<script src="/assets/plugins/laydate/laydate.js"></script>
+		<script type="text/javascript">
+			// 点击子菜单切换
+			var srcLi = $(".slide-menu").find('li');
+			srcLi.on('click', function(e) {
+                var href = $(this).find("a").attr('href');
+                $('.app-content').empty();
+                $.ajax({
+                    type: "GET",
+                    url: href,
+                    success: function(data) {
+                        $('.app-content').append(data);
+                    }
+                });
+
+				return false;		
+			});
+			
+			// 点击首页			
+			$(".noChild").on('click', function(e) {
+				var href = $(this).attr('href');
+				$('.app-content').empty();
+				$.ajax({
+					type: "GET",
+					url: href,
+					success: function(data) {
+						$('.app-content').append(data);
+					}
+				});
+				return false;
+					
+			});
+
+			/*分页*/
+			$('.pagination li a').click(function()
+			{
+				var href = this.href;
+				$('.app-content').empty();
+				$.ajax({
+					type: "GET",
+					url: href,
+					success: function(data) {
+						$('.app-content').append(data);
+					}
+				});
+				return false;
+			});
+
+		</script>
+		
+	</body>
+</html>

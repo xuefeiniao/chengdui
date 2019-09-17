@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>B-payer Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta content="Soole Payment Gateway" name="keywords"/>
+    <meta content="Soole Payment Gateway" name="description"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="__PAY__/bootstrap/css/bootstrap.min.css"/>
+    <style type="text/css">
+        body{background-color: #F7F7FA;
+            height: 100vh;}
+        .demo{background: #fff;}
+        .head{padding: 0 0 15px;width: 100%;background:#5458B3 ;}
+        .head_inner{width: 100%;}
+        .head .logo{ margin-left: 10%;}
+        .head_inner a ,.head_inner span{float: left;font-size: 18px;color:#EEF7FD ;}
+        .head_inner span{margin-top: 20px;}
+        .container1{ width: 80%; margin:  0 auto; margin-top: 30px; box-shadow: 0 2px 17px 2px rgb(222, 223, 241);}
+
+        .payinfo { padding: 10px 0 32px 0; text-align: center; position: relative;}
+        /*.payinfo .refresh{position: absolute;right: 11px;top: 10px;padding: 5px 23px;background:#5458B3;color: #fff;border: none;border-radius: 5px;}*/
+        .refresh{   padding: 5px 23px;
+            background: #5458B3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            margin: 20px 10px 10px 10px;
+            cursor: pointer;
+        }
+        .payinfo  .paynum{ font-size: 20px;font-weight: 600;}
+        .payinfo p{line-height: 30px;}
+        .payinfo p span{font-size: 16px;}
+        .payinfo .pay-type span{ font-size: 14px; padding: 5px 10px; background: #EEEEF7;border-radius: 5px;color: #666;}
+        .payinfo .pay_info_detail{
+            width: 55%;
+            margin: 0 auto;
+            margin-top: 40px;
+            padding: 20px 0;
+            box-shadow: 0 2px 17px 2px rgb(222, 223, 241);
+        }
+        .tishi{margin-left: 11.5%;text-align: left;margin-top: 20px;display: flex;}
+        .tishi span{ color: red;}
+        #qrcode{    width: 130px;height: 130px;margin: 30px auto;}
+        .payinfo .pay_info_detail .pay_info_left{ width: 38%; display: inline-block; text-align: right;
+            margin-right: 10px;color: #666;font-size: 14px;}
+        .payinfo .pay_info_detail .pay_info_right{font-size: 14px;}
+        i{font-style: normal;font-weight: 600;}
+        .text-left{ text-align: left;}
+        /*.payinfo .querennum{ display:inline-block; }*/
+
+        @media  screen and (max-width:900px ) {
+            .payinfo .pay_info_detail .pay_info_left{ width: 28%;}
+            .head .logo{ margin-left: 8%;}
+        }
+        @media screen and (max-width:750px) { /*一栏布局*/
+            .demo{width: 95%;}
+            .pay-style{ margin-top: 0;}
+            .head .logo{ margin-left: 2%;}
+            .payinfo .pay_info_detail{width:95%}
+            .tishi{ margin-left: 2.5%;width:95%;}
+            .payinfo .pay_info_detail .pay_info_left{ width: 20%;}
+            .pay-internal-ewm,.pay-international-ewm,.pay-paypal-ewm{ position: static;}
+            /*  .payinfo .address{ text-align:center;margin-top: 20px;}*/
+            .payinfo p span{ font-size: 14px;}
+            /*  .payinfo .address span{ display: block;width: 100%!important; text-align: center!important;}
+                 .payinfo .address span:last-child{font-size: 14px;}*/
+            .payinfo .querentime{ text-align: center;}
+            .payinfo .payid{ text-align: center;}
+            .payinfo .payid span{ text-align: center!important;}
+            .payinfo .pay_info_detail,.tishi{ margin-top: 10px;;}
+            .payinfo .pay_info_detail .pay_info_left{ font-size: 12px; /*width: 18%;*/}
+            .payinfo .pay_info_detail .pay_info_right {   font-size: 12px;	}
+
+        }
+        @media screen and (max-width: 375px){
+            /*.tishi{ margin-top: 0;}
+            .payinfo .pay_info_detail {box-shadow:none;margin-top: 0;}   */
+            .payinfo .address span:last-child{width: 100%;
+                text-align: center;
+                display: inline-block;}
+        }
+        .tiui{
+            display: block;
+            font-size: font-size: 0.8rem;
+        }
+        .return_url{
+            position:fixed;
+            right:2.5%;
+            top:2.5%;
+            background:rgb(220, 220, 222);
+            z-index: 20000;
+            padding:0.05rem 0.25rem;
+            border-radius: 3px;
+            padding:8px;
+            width: 42px;
+        }
+        .copy{
+            background: #5458B3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            margin: 0 auto;
+            font-size: 0.5rem;
+        }
+        
+        #foo{
+            color:red;
+            border:0;
+            min-width:53px;
+            width:50px;
+            outline:none;
+        }
+        
+    </style>
+</head>
+<body>
+<div class="head">
+    <div class="head_inner clearfix">
+        <a class="logo" href=""><img src="__IMG__/brand/logo-white.png" alt="SOOLE" STYLE="WIDTH:150PX;margin-top:15px" /></a>
+    </div>
+</div>
+<?php $paystatus = [0,1];?>
+<div class="container1 demo">
+    <div class="payinfo" >
+        <p>支付金额&nbsp&nbsp<span class="paynum">{$order.price|round=2}&nbsp;CNY ≈ </span><span style="font-size: 1.4rem; font-weight: 400;">{$order.num|round=2}USDT</span></p>
+        <p style=" margin-top: 11px; "><span style="color: #666; font-size: 14px;">支付倒计时</span>
+            <!--            #状态:0=待打款,1=待确认,2=已完成,3=>过期订单,4=已取消-->
+            <?php if (in_array($order['status'],$paystatus)){?>
+                <span class="pay_info_right judging_time"> <i id="day_show">0天</i> <i id="hour_show">0时</i> <i id="minute_show">0分</i> <i id="second_show">0秒</i> </span>
+            <?php }else{?>
+                <span class="pay_info_right judging_time"> <i id="">0天</i> <i id="">0时</i> <i id="">0分</i> <i id="">0秒</i> </span>
+            <?php }?>
+        </p>
+        <?php if ($yu_time_s){?>
+            收款姓名[ <span style="color: red">{$order['user_name']}</span>]
+            <br />
+        <?php }?>
+        <p><span style="color: #666; font-size: 14px;">
+                为了您的付款准确无误，不被他人利用；<br />
+                <span style="color: red;font-weight: 600">支付时请务必填写备注号，如未填写备注号 <br />
+                导致资金丢失，后果自负。 </span></p>
+        <p style="margin-top: 1rem;font-size: 1.5rem;">支付时请备注[ <input type="text" id="foo" value="<?php echo $order['liushui_no'];?>" readonly> ]&nbsp&nbsp
+            <button class="copy" id="copy" data-clipboard-action="copy" data-clipboard-target="#foo" onclick="copyNum()">复制</button>
+        </p>
+
+        <input type="hidden" value="{$Think.session.paytoken}" id="paytoken">
+        <?php
+        if ($order['status']==0){
+            echo '<button class="refresh" id="submit-dd">我已付款'.round($order['price']).'&nbsp;CNY</button><button class="refresh" id="quxc" style=" background: #999; ">取消付款</button>';
+        }elseif($order['status']==1){
+            echo '<button class="refresh" id="submit-dd" style="background: #999!important;" disabled>等待商家确认</button>';
+        }elseif($order['status']==2){
+            echo '<button class="refresh" id="submit-dd" style="background: #999!important;" disabled>已完成</button>';
+        }elseif($order['status']==4){
+            echo '<button class="refresh" id="submit-dd" style="background: #999!important;" disabled>付款已取消</button>';
+        }
+        ?>
+        <?php if ($yu_time_s){?>
+        <div>
+        <div class="pay_info_detail">
+            <?php if ($yu_time_s){?>
+                <?php if ($order['type']==1) {
+                    echo '<div style="float: left;padding: 44px 33px"><img src="__PAY__/img/bank.png"/></div>';
+                    echo '<div><p class="text-left"><span class="pay_info_left">姓名：</span><span class="pay_info_right">' . $order['user_name'] . '</span></p>';
+                    echo '<p class="text-left"><span class="pay_info_left">开户银行：</span><span class="pay_info_right">' . $order['bank_name'] . '</span></p>';
+                    echo '<p class="text-left"><span class="pay_info_left">银行卡号：</span><span class="pay_info_right">' . $order['bank_number'] . '</span></p></div>';
+                }else{
+                        echo '<img src="'.$order['qrcode'].'" alt="" style="width: 200px;margin-bottom: 20px;">';
+                    }?>
+            <?php }?>
+            <p class="pay-type">
+                <?php if (!$yu_time_s){
+                    echo "<span>付款超时</span>";
+                }else{
+                    if ($order['status']==0){
+                        echo "<span>等您付款</span>";
+                    }elseif($order['status']==1){
+                        echo "<span>待确认</span>";
+                    }elseif($order['status']==2){
+                        echo "<span>支付完成</span>";
+                    }elseif($order['status']==4){
+                        echo "<span>---</span>";
+                    }
+                }?>
+            </p>
+            <div class="tishi">
+                <div style="margin:  2px 5px 0 0 ;"><img src="__PAY__/img/tishi.png"/></div>
+                <div>
+                    <span class="tiui">1.输错金额和多次支付 自己承担损失 </span>
+                    <span class="tiui">2.输入支付金额时请务必按照该页面显示的金额输入，小数位数必须保持一致</span>
+                    <span class="tiui">3.请在订单有效期内及时支付，否则订单过期会出现金额不到账情况</span>
+                    <span class="tiui">4.支付完成后，请点击上方的"我已付款"按钮</span>
+                </div>
+
+            </div>
+    </div>
+        <?php }?>
+    </div>
+
+</div>
+
+<?php if($api_return_url!=''){?>
+    <a href="<?php echo $api_return_url?>">
+    <div class="return_url">
+        <div style="font-size:0.25rem;">
+            <span style="color: #333;font-weight: 600;">返回</span>
+        </div>
+    </div>
+    </a>
+<?php }?>
+</body>
+</html>
+<script src="__PAY__/jquery-3.3.1.min.js"></script>
+<script src="__PAY__/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PAY__/qrcode.js"></script>
+<script src="__JS__/layer.js"></script>
+<script>
+    layer.alert('支付时请务必填写备注号，如未填写备注号导致资金丢失，后果自负。', {icon: 6});
+</script>
+<script type="text/javascript">
+
+    var intDiff = parseInt("{$yu_time_s}"); //倒计时总秒数量 2小时
+
+    function timer(intDiff) {
+        window.setInterval(function() {
+            var day = 0,
+                hour = 0,
+                minute = 0,
+                second = 0; //时间默认值
+            if (intDiff > 0) {
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            $('#day_show').html(day + "天");
+            $('#hour_show').html('<s id="h"></s>' + hour + '时');
+            $('#minute_show').html('<s></s>' + minute + '分');
+            $('#second_show').html('<s></s>' + second + '秒');
+            intDiff--;
+            //console.log(intDiff);
+        }, 1000);
+    }
+
+    $(function() {
+        timer(intDiff);
+    });
+    /*$('.payinfo .refresh').on('click',function(){
+        window.location.reload();
+    })*/
+    var timer1='';
+    var kk=Number({$yu_time_s});
+    if(kk>0){
+        timer1=setInterval(function(){
+            kk--;
+            if(kk<=0){
+                clearInterval(timer1);
+                window.location.reload();
+            }
+        },1000)
+    }
+</script>
+
+<script type="text/javascript">
+
+    $('#submit-dd').on('click',function(){
+        var _paytoken=$("#paytoken").val();
+        $.ajax({
+            type:"post",
+            url:"{:url('pay/pay_dakuan')}",
+            data:{
+                order_id:{$order.id},
+                _paytoken:_paytoken,
+            },
+            success:function(data){
+                console.log(data)
+                if(data.status=='ok'){
+                    layer.msg(data.msg);
+                    window.location.reload();
+                }
+
+                if(data.status=='error'){
+                    layer.msg(data.errormsg);
+            }
+            }
+        });
+    })
+
+</script>
+<script type="text/javascript">
+
+    $('#quxc').on('click',function(){
+        var _paytoken=$("#paytoken").val();
+        $.ajax({
+                type:"post",
+                url:"{:url('pay/pay_quxc')}",
+                data:{
+                    order_id:{$order.id},
+                    _paytoken:_paytoken,
+            },
+            success:function(data){
+            console.log(data)
+            if(data.status=='ok'){
+                layer.msg(data.msg);
+                window.location.reload();
+            }
+
+            if(data.status=='error'){
+                layer.msg(data.errormsg);
+            }
+        }
+    });
+    })
+
+</script>
+<script type="text/javascript">
+    function copyNum(){
+        var NumClip=document.getElementById("foo");
+        var NValue=NumClip.value;
+        var valueLength = NValue.length;
+        selectText(NumClip, 0, valueLength);
+        if(document.execCommand('copy', false, null)){
+            document.execCommand('copy', false, null)// 执行浏览器复制命令
+            $('.copy').html('复制成功！');
+        }else{
+            console.log("不兼容");
+        }
+    }
+    function selectText(textbox, startIndex, stopIndex) {
+        if(textbox.createTextRange) {
+            //ie
+            var range = textbox.createTextRange();
+            range.collapse(true);
+            range.moveStart('character', startIndex);//起始光标
+            range.moveEnd('character', stopIndex - startIndex);//结束光标
+            range.select();//不兼容苹果
+        }else{
+            //firefox/chrome
+            textbox.setSelectionRange(startIndex, stopIndex);
+            textbox.focus();
+        }
+    }
+</script>
+
+<br /><br /><br />

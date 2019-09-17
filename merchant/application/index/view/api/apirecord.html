@@ -1,0 +1,176 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+     /*表格背景色*/
+    .table-striped tbody tr:nth-of-type(even){
+        background-color: #f6f6f9;
+    }
+    .table-striped tbody tr:nth-of-type(odd){
+        background-color: #fff;
+    }
+</style>
+<style>
+	/*分页样式*/
+	.pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+	.pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+	.pagination .active{background-color: #46A3FF;color: #fff;}
+	.pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>API记录</h4>
+				</div>
+				<div class="card-body">
+				    <!--搜索条件-->
+					<form id="formID">
+    			    <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+    			         <div class="col-sm-12 col-md-3">
+							 <label style="padding-left:13px;">接口：
+								 <input type="text" name="name" value="{$variate.name}" class="form-control form-control-sm">
+							 </label>
+							 <label>IP地址：
+								 <input type="text" name="ip" value="{$variate.ip}"  class="form-control form-control-sm">
+							 </label>
+                      	 </div>
+						<div class="col-sm-12 col-md-3">
+							<label>开始日期：
+								<input type="text" class="form-control form-control-sm" name="beigin" value="{$variate.beigin}" id="startDate"/>
+							</label>
+							<label>API 类型：
+								<select class="form-control" name="type">
+									<option value="5" {if $variate["type"]==5}selected{/if}}>全部</option>
+									<option value="1" {if $variate["type"]==1}selected{/if}>类型1</option>
+									<!--<option value="2" {if $variate["type"]==2}selected{/if}>类型2</option>-->
+									<!--<option value="3" {if $variate["type"]==3}selected{/if}>类型3</option>-->
+								</select>
+							</label>
+						</div>
+                       <div class="col-sm-12 col-md-3">
+
+                           <label>结束日期：
+                               <input type="text" class="form-control form-control-sm" name="end" value="{$variate.end}" id="endDate"/>
+                           </label>
+                       </div>
+                        
+                        <div class="col-sm-12 col-md-3 text-right">
+							<input type="button" class="btn btn-primary api" value="搜索">
+                       </div>
+                    </div>
+					</form>
+					<div class="table-responsive">
+    					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+    						<thead>
+    							<tr>
+    								<th class="wd-5p">序号</th>
+    								<th class="wd-20p">接口</th>
+    								<th class="wd-15p">访问次数</th>
+    								<th class="wd-15p">IP</th>
+    								<th class="wd-15p">API类型</th>
+									<th class="wd-10p">时间</th>
+    							</tr>
+    						</thead>
+    						<tbody>
+							{foreach $data as $key=>$vo}
+    							<tr>
+    								<td>{++$key}</td>
+    								<td>{$vo.name}</td>
+    								<td>{$vo.count}</td>
+    								<td>{$vo.ip}</td>
+    								<td>
+										{if $vo.apitype=="1"}
+											<span class="badge badge-success">类型1</span>
+										{/if}
+										<!--{if $vo.apitype=="2"}-->
+											<!--<span class="badge badge-orange">类型2</span>-->
+										<!--{/if}-->
+										<!--{if $vo.apitype=="3"}-->
+											<!--<span class="badge badge-secondary">类型3</span>-->
+										<!--{/if}-->
+										<!--{if $vo.apitype=="4"}-->
+											<!--<span class="badge badge-cyan">类型4</span>-->
+										<!--{/if}-->
+									</td>
+    								<td>{$vo.createtime|date="Y-m-d H:i"}</td>
+    							</tr>
+							{/foreach}
+    						</tbody>
+    					</table>
+				    </div>
+				    <!-- 分页 -->
+                	<div class="row">
+                		<div class="col-sm-12 col-md-5">
+                			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+                		</div>
+                		<div class="col-sm-12 col-md-7">
+                			<div class="dataTables_paginate paging_simple_numbers text-right" >
+                				<ul class="pagination" style="justify-content: flex-end;">
+									{$page|raw}
+                				</ul>
+                			</div>
+                		</div>
+                	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+    // 引用日期插件
+    laydate.render({
+      elem: '#startDate' //指定元素
+    });
+     laydate.render({
+      elem: '#endDate' //指定元素
+    });
+    /**
+     * 过滤数据
+     */
+    $(".api").click(function(){
+        var data=$("#formID").serialize()
+        $('.app-content').empty();
+        $.ajax({
+            type: "POST",
+            data:data,
+            url:"{:url('api/apirecord')}",
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+    });
+    /**
+     * 分页数据处理
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+
+</script>
+
+

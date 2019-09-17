@@ -1,0 +1,177 @@
+<style>
+	.row>div{
+		cursor: pointer;
+	}
+</style>
+<section class="section">
+	<div class="section-body">
+		<div class="row">
+			{foreach $data as $vo}
+			<div class="col-12 col-sm-12 col-lg-6 col-xl-6">
+				<div class="card" href="{:url('article/detail',['id'=>$vo['id']])}">
+					<div class="card-header">
+						<h4>{$vo.title}</h4>
+					</div>
+					<div class="card-body">
+						{$vo.content}
+					</div>
+					<div class="card-footer">
+						{$vo.createtime}
+					</div>
+				</div>
+			</div>
+			{/foreach}
+		<!--	<div class="col-12 col-sm-12 col-lg-6 col-xl-6">
+				<div class="card">
+					<div class="card-header">
+						<h4>系统公告2</h4>
+					</div>
+					<div class="card-body">
+						Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+					</div>
+					<div class="card-footer">
+						2019-03-15 17:01:10
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-sm-12 col-lg-6 col-xl-6">
+				<div class="card">
+					<div class="card-header">
+						<h4>系统公告3</h4>
+					</div>
+					<div class="card-body">
+						Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+					</div>
+					<div class="card-footer">
+						2019-03-15 14:23:12
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-sm-12 col-lg-6 col-xl-6">
+				<div class="card">
+					<div class="card-header">
+						<h4>系统公告4</h4>
+					</div>
+					<div class="card-body">
+						Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+					</div>
+					<div class="card-footer">
+						2019-03-15 14:23:12
+					</div>
+				</div>
+			</div>-->
+		</div>
+
+		<!--<div class="row">-->
+			<!--<div class="col-12 col-sm-12 col-lg-6 col-xl-6">-->
+				<!--<div class="card">-->
+					<!--<div class="card-header">-->
+						<!--<h4>系统公告5</h4>-->
+					<!--</div>-->
+					<!--<div class="card-body">-->
+						<!--Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque-->
+					<!--</div>-->
+					<!--<div class="card-footer">-->
+						<!--2019-03-15 14:23:12-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="col-12 col-sm-12 col-lg-6 col-xl-6">-->
+				<!--<div class="card">-->
+					<!--<div class="card-header">-->
+						<!--<h4>系统公告6</h4>-->
+					<!--</div>-->
+					<!--<div class="card-body">-->
+						<!--Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque-->
+					<!--</div>-->
+					<!--<div class="card-footer">-->
+						<!--2019-03-15 14:23:12-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="col-12 col-sm-12 col-lg-6 col-xl-6">-->
+				<!--<div class="card">-->
+					<!--<div class="card-header">-->
+						<!--<h4>系统公告7</h4>-->
+					<!--</div>-->
+					<!--<div class="card-body">-->
+						<!--Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque-->
+					<!--</div>-->
+					<!--<div class="card-footer">-->
+						<!--2019-03-15 14:23:12-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="col-12 col-sm-12 col-lg-6 col-xl-6">-->
+				<!--<div class="card">-->
+					<!--<div class="card-header">-->
+						<!--<h4>系统公告8</h4>-->
+					<!--</div>-->
+					<!--<div class="card-body">-->
+						<!--Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque-->
+					<!--</div>-->
+					<!--<div class="card-footer">-->
+						<!--2019-03-15 14:23:12-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		
+	</div>
+	<!-- 分页 -->
+	<div class="row">
+		<div class="col-sm-12 col-md-5">
+			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+		</div>
+		<div class="col-sm-12 col-md-7">
+			<div class="dataTables_paginate paging_simple_numbers text-right" >
+				{$page|raw}
+				<!--<ul class="pagination" style="justify-content: flex-end;">-->
+					<!--<li class="paginate_button page-item previous disabled" >-->
+						<!--<a aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">上一页</a>-->
+					<!--</li>-->
+					<!--<li class="paginate_button page-item active">-->
+						<!--<a aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a>-->
+					<!--</li>-->
+					<!--<li class="page-item ">-->
+						<!--<a  aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a>-->
+					<!--</li>-->
+					<!--<li class="paginate_button page-item ">-->
+						<!--<a aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a>-->
+					<!--</li>-->
+					<!--<li class="paginate_button page-item ">-->
+						<!--<a aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">4</a>-->
+					<!--</li>-->
+					<!--<li class="paginate_button page-item ">-->
+						<!--<a aria-controls="example" data-dt-idx="5" tabindex="0" class="page-link">5</a>-->
+					<!--</li>-->
+					<!--<li class="paginate_button page-item next" id="example_next">-->
+						<!--<a aria-controls="example" data-dt-idx="6" tabindex="0" class="page-link">下一页</a>-->
+					<!--</li>-->
+				<!--</ul>-->
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<script>
+	// 点击资讯		
+	$(".section-body .card").on('click', function(e) {
+		$('.app-content').empty();
+		var url=$(this).attr("href");
+		$.ajax({
+			type: "GET",
+			cache:false,
+			async:false,
+			url: httpHead+url,
+			success: function(data) {
+			    $('.app-content').append(data).attr("data-type","2");
+			}
+		});
+		return false;
+
+	});
+
+</script>
+				

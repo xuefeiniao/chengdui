@@ -1,0 +1,79 @@
+<style>
+	.media .media-title{
+		font-weight:600;
+		font-size:16px;	
+	}
+	.visitor .media-body{
+		margin-top:0;
+	}
+	.visitor .media .media-title{
+		margin-bottom:10px;
+	}
+	.visitor .media{
+		cursor: pointer;
+	}
+</style>
+<section class="section">
+	<div class="section-body">
+		<div class="row">
+			<div class="col-lg-12 col-xl-12  col-12">
+				<div class="card">
+					<div class="card-header">
+						<h4>商户告知书</h4>
+					</div>
+					<div class="card-body">
+						<ul class="visitor list-unstyled list-unstyled-border">
+							{foreach $data as $vo}
+								<!--<a href="{:url('article/detail',['id'=>$vo['id']])}">-->
+									<li class="media" href="{:url('article/detail',['id'=>$vo['id']])}">
+										<img class="mr-3" width="120" src="__IMG__/news/img01.jpg" alt="avatar">
+										<div class="media-body">
+											<div class="float-right"><small>{$vo.createtime}</small></div>
+											<div class="media-title">{$vo.title}</div>
+											<small>{$vo.content}</small>
+										</div>
+									</li>
+								<!--</a>-->
+							{/foreach}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!-- 分页 -->
+	<div class="row">
+		<div class="col-sm-12 col-md-5">
+			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span> 条</div>
+		</div>
+		<div class="col-sm-12 col-md-7">
+			<div class="dataTables_paginate paging_simple_numbers text-right" >
+				<ul class="pagination" style="justify-content: flex-end;">
+					{$page}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</section>
+<script>
+	// 点击公告		
+	$(".media").on('click', function(e) {
+		$('.app-content').empty();
+		var url=$(this).attr("href");
+		$.ajax({
+			type: "GET",
+			cache:false,
+			async:false,
+			url: httpHead+url,
+			success: function(data) {
+
+			    $('.app-content').append(data).attr("data-type","1");
+			}
+		});
+		return false;
+
+	});
+			
+</script>
+				

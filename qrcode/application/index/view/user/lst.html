@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+{include file="public/head" /}
+<body>
+
+	<!-- Top Panel -->
+    {include file="public/header" /}
+    {include file="public/small_menu" /}
+
+	<div class="wrapper contents_wrapper">
+
+        {include file="public/sidebar" /}
+
+		<div class="contents">
+			<div class="grid_wrapper">
+
+				<div class="g_6 contents_header">
+					<h3 class="i_16_table tab_label">用户管理</h3>
+					<div><span class="label">User</span></div>
+				</div>
+
+				<div class="g_12 separator"><span></span></div>
+
+				<!-- Simple Table -->
+                <!--<div class="g_12">
+                    <div class="widget_header">
+                        <h4 class="widget_header_title wwIcon i_16_message">Send Mail</h4>
+                    </div>
+                    <div class="widget_contents noPadding">
+                        <div class="line_grid">
+                            <div class="g_2">
+                                <span class="label">Email</span>
+                            </div>
+                            <div class="g_10">
+                                <input type="text" class="simple_field">
+                            </div>
+                        </div>
+                        <div class="line_grid">
+                            <div class="g_2">
+                                <span class="label">Title</span>
+                            </div>
+                            <div class="g_10">
+                                <input type="text" class="simple_field">
+                            </div>
+                        </div>
+
+                        <div class="line_grid">
+                            <div class="g_12">
+                                <input type="submit" value="Send" class="simple_buttons submitIt">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="g_12 separator"><span></span></div>-->
+				<div class="g_12">
+					<div class="widget_header">
+						<h4 class="widget_header_title wwIcon i_16_tables">用户列表</h4>
+					</div>
+
+					<div class="widget_contents noPadding">
+						<table class="tables">
+							<thead>
+								<tr>
+									<th>UID</th>
+									<th>用户</th>
+									<th>昵称</th>
+									<th>手机号</th>
+									<th>类型</th>
+                                    <th>支付/收款</th>
+                                    <th>时间</th>
+                                    <th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+                            {volist name="data" id="vo"}
+                                <tr>
+                                    <td>{$vo.uid}</td>
+                                    <td>{$vo.username}</td>
+                                    <td>{$vo.nickname}</td>
+                                    <td>{$vo.mobile}</td>
+                                    <td><?php $tmp = [1=>'商户',2=>'代理',3=>'承兑商']; echo $tmp[$vo['type']]?></td>
+                                    <td><?php echo $vo['type_img'];?></td>
+                                    <td>{$vo.time}</td>
+                                    <td><a href="{:url('user/edit',['uid'=>$vo['uid']])}">编辑</a></td>
+                                </tr>
+                            {/volist}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+                <div class="g_12">
+                    <div class="widget_contents" class="g_12">
+                        <div class="dtPagination pCenter">
+                            {$page}共{$count}条
+                        </div>
+                    </div>
+                </div>
+				<div class="g_12 separator"><span></span></div>
+
+			</div>		
+		</div>
+	</div>
+
+    {include file="public/footer" /}
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

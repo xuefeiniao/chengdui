@@ -1,0 +1,215 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+</style>
+<style>
+    /*分页样式*/
+    .pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+    .pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+    .pagination .active{background-color: #46A3FF;color: #fff;}
+    .pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>出售订单列表</h4>
+                </div>
+                <div class="card-body">
+                    <!--搜索条件-->
+                    <!--<form id="formID">
+                        <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                            <div class="col-sm-12 col-md-2">
+                               <label>订单状态：
+                                    <select class="form-control" name="nowstatus">
+                                        <option value="all" {if $variate["nowstatus"]=="all"}selected{/if}>全部</option>
+                                        <option value="1" {if $variate["nowstatus"]=="1"}selected{/if}>挂单中</option>
+                                        <option value="2" {if $variate["nowstatus"]=="2"}selected{/if}>完成</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col-sm-12 col-md-6 text-right">
+                                <input type="button" class="btn btn-primary otcorder" value="搜索">
+                            </div>
+                        </div>
+                    </form>-->
+                    <div class="table-responsive">
+                        <table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+                            <thead>
+                            <tr>
+                                <th class="wd-15p">ID</th>
+                                <th class="wd-25p">订单编号</th>
+                                <th class="wd-25p">交易金额</th>
+                                <th class="wd-25p">交易数量</th>
+                                <th class="wd-25p">交易价格</th>
+                                <th class="wd-25p">时间</th>
+                                <th class="wd-25p">剩余数量</th>
+                                <th class="wd-25p">价格</th>
+                                <th class="wd-25p">创建时间</th>
+                                <th class="wd-25p">状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $data as $key=>$vo}
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.num}</td>
+                                <td>{$vo.min}</td>
+                                <td>{$vo.match_num}</td>
+                                <td>{$vo.shengyu_num}</td>
+                                <td>{$vo.price_cny}</td>
+                                <td>{$vo.time}</td>
+                                <td>
+                                    {if $vo.status=="4"}<div class="badge badge-success">已完成</div>
+                                    {else /}
+
+                                    <div class="badge badge-warning">卖出</div>
+                                    {/if}
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页 -->
+                    <div class="row">
+                        <div class="col-sm-12 col-md-5">
+                            <div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                            <div class="dataTables_paginate paging_simple_numbers text-right" >
+                                <ul class="pagination" style="justify-content: flex-end;">
+                                    {$page|raw}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Grid Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="example-Modal2">订单详情</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <span>订单号：</span>
+                            <span id="order_number"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <span>分配地址：</span>
+                            <span id="address_id"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <span>充值金额：</span>
+                            <span id="coin_money"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <span>确认次数：</span>
+                            <span id="coin_affirm"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <span>来源地址：</span>
+                            <span id="coin_from"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <span>交易哈希：</span>
+                            <span id="txid"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * 引用日期插件
+     */
+    laydate.render({
+        elem: '#startDate' //指定元素
+    });
+    laydate.render({
+        elem: '#endDate' //指定元素
+    });
+    $(".btn-action").click(function(){
+        var id=$(this).attr("data-id");
+        //type=1 代表是充值订单
+        $.post("{:url('index/getcorder')}",{id:id,type:1}, function(data){
+            console.log(data);
+            $("#order_number").html(data.data.order_number);
+            $("#address_id").html(data.data.address_id);
+            $("#coin_money").html(data.data.coin_money);
+            $("#coin_from").html(data.data.coin_from);
+            $("#txid").html(data.data.txid);
+            $("#coin_affirm").html(data.data.coin_affirm);
+        });
+    });
+    /**
+     * 过滤数据
+     */
+    $(".otcorder").click(function(){
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.post("{:url('Otcmanage/otcorder')}",data,function(data){
+            $(".app-content").append(data);
+        });
+    });
+    /**
+     * 分页数据
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+</script>
+

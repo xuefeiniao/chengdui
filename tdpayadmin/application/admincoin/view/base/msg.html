@@ -1,0 +1,60 @@
+<!--<audio id="audio" controls="controls" autoplay='autoplay' hidden>
+    <source src="/assets/msg.mp3" type="audio/mpeg"/>
+</audio>-->
+<script src="/assets/plugins/toastr/build/toastr.min.js"></script>
+<script>
+    var playSound = function () {
+        var borswer = window.navigator.userAgent.toLowerCase();
+        if ( borswer.indexOf( "ie" ) >= 0 )
+        {
+            //IE内核浏览器
+            var strEmbed = '<embed name="embedPlay" src="/assets/msg.mp3" autostart="true" hidden="true" loop="false"/>';
+            if ( $( "body" ).find( "embed" ).length <= 0 ) $( "body" ).append( strEmbed );
+            var embed = document.embedPlay; //浏览器不支持 audion，则使用 embed 播放 embed.volume = 100;
+        } else {
+            //非IE内核浏览器
+            var strAudio = "<audio id='audioPlay' src='/assets/msg.mp3' hidden='true'>";
+            if($("#audioPlay").length<=0){
+                $( "body" ).append( strAudio );
+            }
+            var audio = document.getElementById( "audioPlay" );
+            //浏览器支持 audio
+            audio.play();
+        }
+    }
+</script>
+<script>
+    $(function(){
+        require();
+//        $("#audio").removeAttr("autoplay");
+    });
+
+    function require() {
+        var url = "{:url('admincoin/exshop/get_exshop_msg')}";
+        $.get(url, null, function (data) {
+            if(data.status=='ok'){
+                $(".msgnum").html(data.data);
+                if(data.data!=0){
+                    playSound();
+                    //$("#audio").attr("autoplay", 'autoplay');
+                }
+            }else{
+                //layer.msg(data.msg);
+            }
+        });
+        setTimeout('require()', 10000);
+
+    }
+    function tiaomsg()
+    {
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            url: "{:url('admincoin/exshop/msglist',['status'=>0])}",
+            success: function(data) {
+                $('.app-content').append(data);
+            }
+        });
+        return false;
+    }
+</script>

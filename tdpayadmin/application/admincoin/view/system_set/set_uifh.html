@@ -1,0 +1,94 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+</style>
+<style>
+	/*分页样式*/
+	.pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+	.pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+	.pagination .active{background-color: #46A3FF;color: #fff;}
+	.pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>T1释放</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="form">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="username" id="typeName">上次执行时间</label>
+                            <div class="col-md-9">
+                                <p class="text-muted">{$data['time']}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+                            <button type="button" class="btn btn-primary mt-1 mb-0" id="sub">执行</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    /**
+     * 分页数据处理
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+</script>
+<script>
+    //提交表单数据
+    $("#sub").click(function(){
+        var form =new FormData($( "#form")[0] );
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('admincoin/crontab/t1_to_t0')}",
+            data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                if(data.status=='ok'){
+                    $(".app-content").empty();
+                    $.get("{:url('admincoin/systemset/set_uifh')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.data);
+                }else{
+                    layer.msg(data.errormsg);
+                }
+            },
+            error:function(error){}
+        });
+    })
+</script>

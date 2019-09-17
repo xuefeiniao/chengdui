@@ -1,0 +1,259 @@
+
+<style>
+    .noEdit{
+        font-size:12px;
+        color:red;
+        margin-top:5px;
+        margin-bottom:-5px;
+    }
+</style>
+                    
+<section class="section">
+
+	<div class="row">
+		<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>API参数</h4>
+				</div>
+				<div class="card-body">
+					<form class="form-horizontal" id="formID">
+						<input type="hidden" name="user_id" value="{$user['id']}">
+                        <?php if ($user['type']=='shop'){?>
+                            <div class="form-group row configs">
+                                <label class="col-md-3 col-form-label">商户手续费</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" name="shop_fee" value="{$data.shop_fee|round=4}">
+                                    <p class="noEdit">平台收取商户手续费，如0.005代表0.5%，0.0005代表0.05%</p>
+                                </div>
+                            </div>
+                            <div class="form-group row configs">
+                                <label class="col-md-3 col-form-label">商户代理奖励</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" name="daili_reward" value="{$data.daili_reward|round=4}">
+                                    <p class="noEdit">推荐商户或者承兑商交易奖励，如0.005代表0.5%，0.0005代表0.05%</p>
+                                </div>
+                            </div>
+                            <div class="form-group row configs">
+                                <label class="col-md-3 col-form-label">中间商代理奖励</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" name="shop_reward" value="{$data.shop_reward|round=4}">
+                                    <p class="noEdit">中间商推荐商户交易奖励，如0.005代表0.5%，0.0005代表0.05%</p>
+                                </div>
+                            </div>
+                        <?php }?>
+
+                        <?php if ($user['type']=='exshop'){?>
+                            <div class="form-group row configs">
+                                <label class="col-md-3 col-form-label">承兑商奖励</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" name="exshop_reward" value="{$data.exshop_reward|round=4}">
+                                    <p class="noEdit">承兑商出售订单奖励，如0.005代表0.5%，0.0005代表0.05%</p>
+                                </div>
+                            </div>
+                            <div class="form-group row configs">
+                                <label class="col-md-3 col-form-label">承兑商代理奖</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" name="daili_reward" value="{$data.daili_reward|round=4}">
+                                    <p class="noEdit">承兑商出售订单代理奖励，如0.005代表0.5%，0.0005代表0.05%</p>
+                                </div>
+                            </div>
+                            <div class="form-group row configs">
+                                <label class="col-md-3 col-form-label">承兑商收款限额</label>
+                                <div class="col-md-9">
+                                    <input type="number" class="form-control" name="day_max_shoukuan" value="{$data.day_max_shoukuan|round=4}">
+                                    <p class="noEdit">承兑商收款限额，如1000000,USDT数量</p>
+                                </div>
+                            </div>
+                        <?php }?>
+
+                        <div class="form-group row configs">
+                            <label class="col-md-3 col-form-label">每日提现</label>
+                            <div class="col-md-9">
+                                <input type="number" class="form-control" name="day_tixm_fee" value="{$data.day_tixm_fee|round=4}">
+                                <p class="noEdit">日提现比例，如：0.7代表70%，用户余额1000，今天只能提现700</p>
+                            </div>
+                        </div>
+
+						<!--<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">USDT通道到期时间</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" id="usdttime" name="usdttime" value="{$data.usdttime|date='Y-m-d H:i:s'}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">BTC通道到期时间</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" id="btctime" name="btctime" value="{$data.btctime|date='Y-m-d H:i:s'}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">ETH通道到期时间</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" id="ethtime" name="ethtime" value="{$data.ethtime|date='Y-m-d H:i:s'}">
+							</div>
+						</div>-->
+						<!--<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">API每日USDT充值额度</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="usdtc" value="{$data.usdtc}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">API每日BTC充值额度</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="btcc" value="{$data.btcc}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">API每日ETH充值额度</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="ethc" value="{$data.ethc}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">API每日USDT提现额度</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="usdtt" value="{$data.usdtt}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">API每日BTC提现额度</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="btct" value="{$data.btct}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">API每日ETH提现额度</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="etht" value="{$data.etht}">
+							</div>
+						</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">充值限额</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="limit" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">提币手续费</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="fee" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">手续费最大值</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="maxfee" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">单次提现最小数量</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="min" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">单次提现最大数量</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="max" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">兑换最小数量</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="changmin" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">兑换最大数量</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="changemax" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">兑换手续费</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="changfee" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">兑换手续费上限</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="changfeemax" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">确认次数</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<input type="text" class="form-control" name="query" value="">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="form-group row configs">-->
+							<!--<label class="col-md-3 col-form-label">币种状态</label>-->
+							<!--<div class="col-md-9">-->
+								<!--<select class="form-control" name="status">-->
+									<!--<option value="normal">正常</option>-->
+									<!--<option value="hidden">禁用</option>-->
+								<!--</select>-->
+							<!--</div>-->
+						<!--</div>-->
+						
+						<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+						    <button type="button" class="btn btn-outline-primary  mt-1 mb-0 backBtn">返回列表</button>
+                    		<button type="button" class="btn btn-primary mt-1 mb-0 update">确定修改</button>
+                    	</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+    // 引用日期插件
+    laydate.render({
+        elem: '#usdttime' //指定元素
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#btctime'  //指定元素
+        ,type: 'datetime'
+    });
+    laydate.render({
+        elem: '#ethtime'  //指定元素
+        ,type: 'datetime'
+    });
+    /*点击返回列表*/
+    $(".backBtn").click(function(){
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            cache:false,
+            async:false,
+            url:"{:url('ShopManage/shop')}",
+            success: function(data) {
+                $('.app-content').append(data);
+            }
+        });
+    });
+    /**
+	 * 点击修改
+     */
+    $(".update").click(function(){
+        var data=$("#formID").serialize();
+        $.ajax({
+            type:"POST",
+            data:data,
+            dataType:"json",
+            url:"{:url('ShopManage/shopVariateup')}",
+            success:function(data){
+                if(data.status==1){
+                    layer.msg(data.msg);
+                }else{
+                    layer.msg(data.msg);
+                }
+                $(".app-content").append(data);
+            }
+        });
+    });
+</script>

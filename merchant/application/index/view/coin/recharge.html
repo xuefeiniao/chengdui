@@ -1,0 +1,227 @@
+<!--Toastr css-->
+<link rel="stylesheet" href="__PLU__/toastr/build/toastr.css">
+<style>
+	#toast-container>.toast:before{
+		top:15px;
+	}
+	.copy,.creatBtn{
+	    padding:5px 11px;
+	    margin-left:10px;
+	    min-width:80px;
+	    margin-top:5px;
+	}
+	.form-group .form-control{
+	    display: inline-block;
+	}
+	.more{
+	    display: inline-block;
+	    width:100%;
+	    text-align:center;
+	    margin-top:10px;
+	}
+</style>
+<section class="section">
+    
+	<div class="card">
+		<div class="card-header">
+			<h4>在线充币</h4>
+		</div>
+		<div class="card-body row">		
+				<div class="col-lg-8 col-xl-8 col-md-12 col-sm-12">	
+					<div class="form-group row mb-3 ">
+						<div class="col-md-2 col-form-label" >
+							<label>选择币种：</label>
+						</div>
+						<div class="col-md-8">
+						    <select class="form-control" style="width:64%;" id="coin">
+								{foreach $coin as $vo}
+									<option value="{$vo}" {if $vo=="usdt"}selected{/if}>{$vo|strtoupper}</option>
+								{/foreach}
+							</select>
+							<label  class="btn btn-primary text-white col-md-1 creatBtn">生成地址</label>
+						</div>
+					</div>
+					<div class="form-group row mb-3 ">
+						<div class="col-md-2 col-form-label">
+							<label>充币地址：</label>
+						</div>
+					    <div class="col-md-8">
+					        <input type="text" class="form-control" value="" readonly id="foo" style="width:64%;">
+						    <label class="btn btn-primary text-white col-md-1 copy" data-clipboard-action="copy" data-clipboard-target="#foo" onclick="copyNum()">复制地址</label>
+					    </div>
+					</div>
+				
+					<div class="form-group row mb-3">
+						<div class="col-md-12 col-form-label">
+							<label>请通过在线钱包将你需要充值的币种数目发送到该地址。发送完成后系统会自动在此完后交易</label>							
+						</div>	
+					</div>
+				</div>
+				<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12">								
+
+					<div class="form-group row mb-0">
+						<div class="col-md-12 col-form-label" style="padding-top:0;" id="code">
+							<img src="" alt="" style="width:150px;height:150px;text-align: center;">
+							<div id="codeno"></div>
+						</div>	
+					</div>
+				</div>
+				
+				
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-12">
+	
+			<div class="card">
+				<div class="card-header">
+					<h4 class="float-left">最近10条充值记录</h4>
+				</div>				
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered mb-0 text-nowrap">
+							<tr>
+								<th>序号</th>
+								<th>订单号</th>
+								<th>充值币种</th>
+								<th>充币数量</th>
+								<th>充币时间</th>
+								<th>充币地址</th>
+								<th>状态</th>
+							</tr>
+							{foreach $data as $vo}
+								<tr>
+									<td>{$vo.id}</td>
+									<td>{$vo.order_number}</td>
+									<td>{$vo.coin_name|strtoupper}</td>
+									<td>{$vo.coin_money}</td>
+									<td>{$vo.createtime}</td>
+									<td>{$vo.address}</td>
+									<td>
+										{if $vo.status=="await"}<div class="badge badge-warning">等待付款</div>{/if}
+										{if $vo.status=="success"}<div class="badge badge-success">充值成功</div>{/if}
+										{if $vo.status=="error"}<div class="badge badge-error">充值失败</div>{/if}
+										{if $vo.status=="unusul"}<div class="badge badge-info">订单异常</div>{/if}
+									</td>
+								</tr>
+							{/foreach}
+						</table>
+					</div>
+					<a class="more" href="{:url('coin/rechargedetail')}"><button class="btn btn-primary">更多记录</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--Toastr js-->
+<script src="__PLU__/toastr/build/toastr.min.js"></script>
+<script src="__JS__/jquery.qrcode.min.js"></script>
+<script>
+	// toastr.options = {
+    //     positionClass: "toast-top-center",  // 设置提示款显示的位置
+    //      timeOut: "1000"   // 显示动画的时间
+    // };
+
+	function copyNum(){
+			var NumClip=document.getElementById("foo");
+			var NValue=NumClip.value;
+			var valueLength = NValue.length;
+			selectText(NumClip, 0, valueLength);
+			if(document.execCommand('copy', false, null)){
+			    document.execCommand('copy', false, null)// 执行浏览器复制命令		   
+			    toastr.success('复制成功！')
+			}else{
+			    console.log("不兼容");
+			}
+	    }
+	  	function selectText(textbox, startIndex, stopIndex) {
+			if(textbox.createTextRange) {
+				//ie
+			    var range = textbox.createTextRange();
+			    range.collapse(true);
+			    range.moveStart('character', startIndex);//起始光标
+			    range.moveEnd('character', stopIndex - startIndex);//结束光标
+			    range.select();//不兼容苹果
+			}else{
+				//firefox/chrome
+			    textbox.setSelectionRange(startIndex, stopIndex);
+			    textbox.focus();
+			}
+	    }
+	    
+	    /*点击更多进入订单页面*/
+		$(".more").on('click', function(e) {
+			var href = $(this).attr('href');
+			$('.app-content').empty();
+			$.ajax({
+				type: "GET",
+				async : false,
+				cache : false,
+				url:httpHead+href,
+				success: function(data) {
+					$('.app-content').append(data);
+				}
+			});
+			return false;
+		});
+</script>
+<script>
+	$(document).ready(function(){
+	    /**
+         * 加载页面显示地址
+         */
+        var coinname=$("#coin").find("option:selected").html();
+        coinaddress(coinname);
+        $("#coin").change(function(){
+            var coinname=$("#coin").find("option:selected").html();
+            coinaddress(coinname);
+        });
+        /**
+         * 点击生成地址
+         */
+        $(".creatBtn").click(function(){
+            var coinname=$("#coin").find("option:selected").html();
+			$.post("{:url('coin/newaddress')}",{coinname:coinname},function(data){
+			    if(data.status==1){
+					layer.msg(data.msg);
+                    $("#foo").val(data.url);
+                    if(data.url){
+                        code(data.url)
+                    }else{
+                        $('#code img').attr('src', "");
+					}
+                }else{
+					layer.msg(data.msg);
+				}
+			});
+        });
+        function coinaddress(coiname)
+		{
+		    $.post("{:url('coin/address')}",{coinname:coiname},function(data){
+				$("#foo").val(data.url);
+				console.log(data.url)
+				if(data.url){
+                    code(data.url)
+				}else{
+                    $('#code img').attr('src', "");
+                }
+
+			});
+		}
+		
+		function code(address) {
+
+            /*生成二维码*/
+            var qrcode = $('#codeno').qrcode({
+                render: "canvas", //也可以替换为table
+                width: 150,
+                height: 150,
+                text: address
+            }).hide();
+            //将生成的二维码转换成图片格式
+            var canvas = qrcode.find('canvas').get(0);
+            $('#code img').attr('src', canvas.toDataURL('image/jpg'));
+        }
+	});
+</script>

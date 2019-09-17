@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head> 
+        <title>Soole Payment Gateway</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <meta content="Soole Payment Gateway" name="keywords"/>
+        <meta content="Soole Payment Gateway" name="description"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="/common.css" />
+    </head>
+    <body>
+        <div class="head">
+            <div class="head_inner clearfix">
+                <ul id="nav">
+                    
+                    <li><a href="javascript:none">国际支付网关</a></li>
+                </ul>
+                <a class="logo" href=""><img src="/static/soole.png" alt="SOOLE" STYLE="WIDTH:150PX;margin-top:15px" /></a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="demo" style="border:0px">
+           
+
+                <div class="content" style="border-top:0px!important">
+                    <div class="table-responsive" style="border:0px!important">
+					<br />
+					<p>
+					<form method="post" action="/Pay/getorder">
+					订单号<input type="text" name="orderid" id="orderid" style="width:200px;height:20px;border:1px solid #ccc;background:#fff" value="{$orderid}">&nbsp;
+					金额 <input type="text" name="money" id="money" style="width:100px;height:20px;border:1px solid #ccc;background:#fff" value="{$money}">
+					<input type="submit" value="提交Paypal/VISA/MASTER支付测试" style="height:30px!important">
+					</form>
+					</p>
+					<br />
+					
+					
+					<p>
+					<form method="post" action="/Alipay/dopay">
+					订单号<input type="text" name="orderid" id="orderid" style="width:200px;height:20px;border:1px solid #ccc;background:#fff" value="{$orderid}">&nbsp;
+					金额 <input type="text" name="money" id="money" style="width:100px;height:20px;border:1px solid #ccc;background:#fff" value="{$money}">
+					<input type="submit" value="提交Alipay国际版支付测试" style="height:30px!important">
+					</form>
+					</p>
+					
+					
+					<br />
+					<p>
+					<form method="post" action="/Alipaypc/dopay">
+					订单号<input type="text" name="orderid" id="orderid" style="width:200px;height:20px;border:1px solid #ccc;background:#fff" value="{$orderid}">&nbsp;
+					金额 <input type="text" name="money" id="money" style="width:100px;height:20px;border:1px solid #ccc;background:#fff" value="{$money}">
+					<input type="submit" value="提交Alipay支付测试" style="height:30px!important">
+					</form>
+					</p>
+					
+					<br />
+                        <table class="table_parameters" width="100%">
+                            <thead>
+                                <tr class="tr_head">
+                                    <th>订单号</th>
+                                    <th>交易号</th>
+                                    <th>付款金额</th>
+                                    <th>付款时间</th>
+                                    <th style="width:250px">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <foreach name="lists" item="row">
+                                    <tr>
+                                        <td align="left">{$row.order_no}</td>
+                                        <td align="center">{$row.trade_no}</td>
+                                        <td align="center">{$row.order_money} {$row.unit_name}</td>
+                                        <td align="center"><if condition="$row.update_time gt 0">{$row.update_time|date="m-d H:i",###}</if></td>
+                                        <td align="center" style="width:300px">  
+										<if condition="$row.update_time gt 0">
+										付款方式：
+										<eq name="row.pay_type" value="alipaypc">
+											<img src="/static/alipaypc.png" style="width:80px;margin-top:5px">大陆版
+										<else />
+											<eq name="row.pay_type" value="alipay">
+												<img src="/static/ali.png" style="width:80px;margin-top:5px">国际版
+											<else />
+												<img src="/static/paypal.png" style="width:80px;margin-top:5px">
+											</eq>
+										</eq>
+										
+										<!--已付款-->
+										
+										<else/> 
+										<a class="green" href="__APP__/Alipay/dopay/order_no/{$row.order_no}" target="_blank"><img src="/static/ali.png" style="width:80px;margin-top:5px"></a>
+										
+										<a class="green" href="__APP__/Paypal/get_token/order_no/{$row.order_no}" target="_blank"><img src="/static/paypal.png" style="width:80px;margin-top:5px"> &nbsp;<img src="/static/pay.png" style="height:20px"></a>
+										
+										
+										
+										</if></td>
+                                    </tr> 
+                                </foreach>
+                            </tbody>
+                        </table>
+						<br />
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </body>
+</html>
+<br /><br /><br />

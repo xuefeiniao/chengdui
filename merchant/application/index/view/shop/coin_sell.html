@@ -1,0 +1,156 @@
+
+<style>
+    .noEdit{
+        font-size: 12px;
+        color: red;
+        margin-top: 5px;
+        margin-bottom: -5px;
+    }
+</style>
+                    
+<section class="section">
+    <ol class="breadcrumb" >
+        <li class="breadcrumb-item"><a href="#"> <<返回 </a></li>
+    </ol>
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>交易信息</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="price">报价（CNY）</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" value="<?php echo !empty($buy_order['price_cny'])?$buy_order['price_cny']:'';?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="price">最小限额</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" value="<?php echo !empty($buy_order['min'])?round($buy_order['min'],6):'';?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="price">剩余数量（<?php echo !empty($buy_order['name_en'])? strtoupper($buy_order['name_en']):'';?>）</label>
+                        <div class="col-md-9">
+                            <input type="number" name="price" class="form-control" id="price" value="<?php echo !empty($buy_order['shengyu_num'])?$buy_order['shengyu_num']:'';?>" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>出售广告详情</h4>
+				</div>
+				<div class="card-body">
+					<form class="form-horizontal" id="form">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="price">出售数量（<?php echo !empty($buy_order['name_en'])? strtoupper($buy_order['name_en']):'';?>）</label>
+                            <div class="col-md-9">
+                                <input type="number" name="num" class="form-control usdtnum" id="num" value="<?php echo !empty($buy_order['min'])?round($buy_order['min'],6):'';?>">
+                                <p class="noEdit"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="price">总价（CNY）</label>
+                            <div class="col-md-9">
+                                <input type="number" class="form-control cny" value="" readonly>
+                                <p class="noEdit">注意CNY总价</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">收款方式</label>
+                            <div class="col-md-9">
+                                <?php
+                                if (empty($pay_list)){
+                                    echo '<label> <span class="noEdit">未设置收款方式</span> </label>';
+                                }else{
+                                    if ($pay_list[1]){
+                                        echo '<label> <input type="radio" name="bank_type" class="minimal" value="1"> <span>银联</span> </label>';
+                                    } if($pay_list[2]){
+                                        echo '<label> <input type="radio" name="bank_type" class="minimal" value="2"> <span>支付宝</span> </label>';
+                                    } if($pay_list[3]){
+                                        echo '<label> <input type="radio" name="bank_type" class="minimal" value="3"> <span>微信</span> </label>';
+                                    }
+                                }?>
+                            </div>
+                        </div>
+
+						<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+                    		<button type="button" class="btn btn-primary mt-1 mb-0" id="submit">确定</button>
+                    	</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+<script>
+    $(".usdtnum").blur(function(){
+        var usdtnum = $(this).val();
+        var price_cny = {$buy_order.price_cny};
+        $(".price_cny").attr('value',usdtnum*price_cny);
+        console.log(usdtnum*price_cny);
+    })
+    //提交表单数据
+	$("#submit").click(function(){
+        var bank_type =[];
+
+        $('input[type="radio"]:checked').each(function(){
+            bank_type.push($(this).val());
+        });
+        if(bank_type.length==0){
+            layer.msg('请选择支付方式');
+        }
+        var bank_type1 = bank_type.join(',');
+        var num = $("#num").val();
+
+        var sendData = {
+            num: num,
+            buy_id: {$buy_order.id},
+            bank_type: bank_type1,
+        }
+		$.ajax({
+			type:"POST",
+			dataType:"json",
+			url:"{:url('shop/coin_sell')}",
+            data:sendData,
+			success:function(data){
+				if(data.status==1){
+					layer.msg(data.msg);
+                    tiao();
+				}else{
+					layer.msg(data.msg);
+				}
+			},
+			error:function(error){}
+		});
+	});
+
+	//	跳页面
+    function tiao() {
+        var href = "{:url('shop/buy_list')}";
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            async : false,
+            cache : false,
+            url:httpHead+href,
+            success: function(data) {
+                $('.app-content').append(data);
+            }
+        });
+        return false;
+    }
+</script>
+

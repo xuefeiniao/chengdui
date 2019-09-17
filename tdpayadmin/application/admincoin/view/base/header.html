@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>B-payer Payment后台管理</title>
+
+		<!--Favicon -->
+		<link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon"/>
+
+		<!--Bootstrap.min css-->
+		<link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+
+		<!--Icons css-->
+		<link rel="stylesheet" href="/assets/css/icons.css">
+
+		<!--Style css-->
+		<link rel="stylesheet" href="/assets/css/style.css">
+
+		<!--mCustomScrollbar css-->
+		<link rel="stylesheet" href="/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css">
+
+		<!--Sidemenu css-->
+		<link rel="stylesheet" href="/assets/plugins/toggle-menu/sidemenu.css">
+
+		<!--Chartist css-->
+		<link rel="stylesheet" href="/assets/plugins/chartist/chartist.css">
+		<link rel="stylesheet" href="/assets/plugins/chartist/chartist-plugin-tooltip.css">
+
+		<!--Full calendar css-->
+		<link rel="stylesheet" href="/assets/plugins/fullcalendar/stylesheet1.css">
+		
+		<!--morris css-->
+		<link rel="stylesheet" href="/assets/plugins/morris/morris.css">
+		<link rel="stylesheet" href="/assets/plugins/toastr/build/toastr.css">
+		<style>
+            .side-menu li{
+              display:block;
+            }
+			#adminType{
+				right:30px;
+				top:10px;
+				font-size: 14px;
+			    line-height: 23px;
+			    padding: 5px 23px;
+				width:auto;
+				border-radius: 4px;
+				height: auto;
+				border:0;
+			}
+			
+			/*分页*/
+			.pagination {}
+			.pagination li {display: inline-block;margin-right: -1px;padding: 5px;border: 1px solid #e2e2e2;min-width: 2em;text-align: center;}
+			.pagination li.active {background: #009688;color: #fff;border: 1px solid #009688;}
+			.pagination li a {display: block;text-align: center;}
+		</style>
+		<style>
+            /*版本卡样式*/
+            .navbar .form-inline .btn{
+                border-radius:0.25rem;
+                padding-top:2px;
+                padding-bottom:2px;
+                color:#fff;
+                cursor: default;
+                border:0;
+                padding-left:5px;
+                padding-right:5px;
+                font-size: 12px;
+            }
+            .visitor .media-body{
+                margin-top:0;
+            }
+            .send.disabled{
+                background-color: #ddd;
+                border-color:#ddd;
+                color:#666!important;
+            }
+            .card .knob-chart{
+                padding-top:10px;
+                padding-bottom:10px;
+            }
+            section .row:first-child .knob-chart{
+                padding-top:3px;
+                padding-bottom:3px;
+            }
+         
+            .mt-4, .my-4 {
+                margin-top: 0.9em!important;
+                margin-bottom: 0.6rem!important;
+            }
+            
+              /*表格背景色*/
+            .table-striped tbody tr{
+                background-color: #fff!important;
+            }
+           table.table-bordered.dataTable th,table.table-bordered.dataTable tbody td{
+                border-right-width:0;
+                border-left-width:0;
+                padding-right:5px;
+                vertical-align: middle;
+            }
+           table.dataTable.no-footer{
+               border-right-width:0;
+               border-left-width:0;
+           }
+           #hangqing span{
+               overflow: hidden;
+               text-align: right;
+               display: block;
+               padding-right: 2px;
+           }
+            #hangqing span i{
+               font-style: normal;
+           }
+           #hangqing span img{
+               display: inline-block;
+               width:20px;
+               height:20px; 
+               margin-top:-2px;
+               margin-right:5px;
+           }
+          
+           #hangqing tr td:first-child span{
+               text-align: center;
+           }
+          
+           span.wrap b {
+                display: block;
+                font-weight: 400;
+                font-size: 14px;
+                float: none;
+            }
+            span.wrap em {
+                color: #9ca9b5;
+                font-size: 12px;
+            }
+            span .rate {
+                line-height: 1;
+                width: 90px;
+                padding: 6px 14px;
+                text-align: center;
+                border-radius: 2px;
+                font-weight: 400;
+                display: inline-block;
+                background-color: rgba(156,169,181,.1);
+            }
+            .rate.up {
+                color: #0da88b;
+                background-color: rgba(13,168,139,.1);
+            }
+            .rate.down {
+                color: #ef5656;
+                background-color: rgba(239,86,86,.1);
+            }
+            #hangqing th{
+                text-align:right;
+                padding-right:25px;
+            }
+            .table-bordered td, .table-bordered th{
+                vertical-align: middle;
+            }
+            
+          	/*去掉tye=numbe的样式*/
+            input[type=number] {
+                -moz-appearance:textfield;
+            }
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            
+        </style>
+		<script src="/assets/js/jquery.min.js"></script>
+	</head>
+
+	<body class="app ">
+
+		<div id="spinner"></div>
+
+		<div id="app">
+			<div class="main-wrapper" >
+                <nav class="navbar navbar-expand-lg main-navbar">
+                    <a class="header-brand" href="index.html">
+                        <img src="/assets/img/brand/logo.png" class="header-brand-img" alt="Kharna-Admin  logo">
+                    </a>
+                    <form class="form-inline mr-auto">
+                        <ul class="navbar-nav mr-3">
+                            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i
+                                            class="ion ion-navicon-round"></i></a></li>
+                            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-md-none navsearch"><i
+                                            class="ion ion-search"></i></a></li>
+                        </ul>
+                        <div class="search-element">
+                            <button type="submit" class="btn btn-primary mt-1 mb-0 add-btn" id="adminType">总后台v1.1
+                            </button>
+                        </div>
+                    </form>
+                    <ul class="navbar-nav navbar-right">
+                        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+                                                                     class="nav-link  nav-link-lg beep"><i
+                                        class="ion-ios-bell-outline"></i></a>
+                            <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                                <div class="dropdown-header">承兑消息提醒
+                                    <div class="float-right">
+                                        <a href="#">....</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown-list-content">
+                                    <a class="dropdown-item" onclick="tiaomsg()" style="cursor: pointer">
+                                        <i class="fa fa-comment text-primary"></i>
+                                        <div class="dropdown-item-desc">
+                                            <b>待处理</b>
+                                            <div class="float-right"><span class="badge badge-pill badge-danger badge-sm msgnum">0</span></div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <!--<li class="dropdown dropdown-list-toggle">
+                            <a href="#" class="nav-link nav-link-lg full-screen-link">
+                                <i class="ion-arrow-expand"  id="fullscreen-button"></i>
+                            </a>
+                        </li>-->
+                        <li class="dropdown"><a href="#" data-toggle="dropdown"
+                                                class="nav-link dropdown-toggle nav-link-lg">
+                                <img src="/assets/img/avatar/avatar-1.jpeg.jpg" alt="profile-user"
+                                     class="rounded-circle w-32">
+                                <div class="d-sm-none d-lg-inline-block">{$username}</div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="{:url('login/loginOut')}" class="dropdown-item has-icon">
+                                    <i class="ion-ios-redo"></i> 退出
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+{include file="base/msg" /}
+
+
+
+
+

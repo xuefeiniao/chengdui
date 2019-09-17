@@ -1,0 +1,217 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+</style>
+<style>
+	/*分页样式*/
+	.pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+	.pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+	.pagination .active{background-color: #46A3FF;color: #fff;}
+	.pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>定向承兑商配置（不设置就随机匹配，设置之后就定向匹配）</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="form">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="username" id="typeName">定向收款商户</label>
+                            <div class="col-md-9">
+                                <input type="text"  name="list" class="form-control" id="list" value="">
+                                <input type="hidden" value="{$uid}" name="uid">
+                                <p class="text-danger">商户授权承兑商手机号( 如多个承兑商用[ , ]隔开如 13100000000,13200000000 )</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+                            <button type="button" class="btn btn-outline-primary  mt-1 mb-0" id="cancelBtn">取消</button>
+                            <button type="button" class="btn btn-primary mt-1 mb-0" id="sub">确定</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class=" mb-0">
+					<div class="clearfix card-body p-3 border-bottom">
+						<div class="pull-left">
+							<h5 class="mb-0">承兑商信息列表</h5>
+						</div>
+					
+					</div>
+					<!-- end row -->
+
+					<div class="card-body pt-4">
+                        <!--搜索条件-->
+                        <form id="formID">
+                            <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                                <div class="col-sm-12 col-md-4">
+                                    <label>账号：
+                                        <input type="text" class="form-control form-control-sm" name="username" value="{$variate.nickname}" id="username"/>
+                                    </label>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <label>名称：
+                                        <input type="text" class="form-control form-control-sm" name="nickname" value="{$variate.nickname}" id="nickname"/>
+                                    </label>
+                                </div>
+                                <div class="col-sm-12 col-md-4 text-right">
+                                    <input type="hidden" value="{$uid}" name="id">
+                                    <input type="button" class="btn btn-primary bill" value="搜索">
+                                </div>
+                            </div>
+                        </form>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table border table-bordered text-nowrap">
+										<thead>
+											<tr>
+												<th class="border-0 text-uppercase  font-weight-bold">ID</th>
+												<th class="border-0 text-uppercase  font-weight-bold">账号</th>
+												<th class="border-0 text-uppercase font-weight-bold"> 名称</th>
+                                                <th class="border-0 text-uppercase  font-weight-bold">编号</th>
+                                                <th class="border-0 text-uppercase  font-weight-bold">支付/收款状态</th>
+                                                <th class="border-0 text-uppercase  font-weight-bold">是否挂单</th>
+                                                <th class="border-0 text-uppercase  font-weight-bold">注册日期</th>
+												<th class="border-0 text-uppercase  font-weight-bold">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+                                            {foreach $data as $vo}
+												<tr>
+													<td>{$vo.id}</td>
+													<td>{$vo.username}</td>
+													<td>{$vo.nickname}</td>
+													<td><span class="text-danger"> {$vo.exshop_code}</span></td>
+                                                    <td><?php echo $vo['type_en'];?></td>
+                                                    <td>{$vo.sell_status}</td>
+													<td>{$vo.updatetime|date="Y-m-d H:i"}</td>
+                                                    <td><a class="btn btn-action btn-primary" onclick="shopsys_delac({$vo.id},{$uid})"">删除</a></td>
+												</tr>
+											{/foreach}
+										</tbody>
+									</table>
+								</div>
+								<!-- 分页 -->
+                            	<div class="row">
+                            		<div class="col-sm-12 col-md-5">
+                            			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+                            		</div>
+                            		<div class="col-sm-12 col-md-7">
+                            			<div class="dataTables_paginate paging_simple_numbers text-right" >
+                            				<ul class="pagination" style="justify-content: flex-end;">
+                                                {$page|raw}
+                            				</ul>
+                            			</div>
+                            		</div>
+                            	</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+    $(".bill").click(function(){
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:"{:url('shop/shopsys')}",
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+    });
+    /**
+     * 分页数据处理
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+</script>
+<script>
+    //提交表单数据
+    $("#sub").click(function(){
+        var form =new FormData($( "#form")[0] );
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('admincoin/shop/shopsys')}",
+            data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                if(data.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('admincoin/shop/shopsys',['id'=>$uid])}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg);
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(error){}
+        });
+    })
+
+    function shopsys_delac(id,uid)
+    {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            data: { shop_uid: id, uid: uid,},
+            url:"{:url('admincoin/shop/shopsys_delac')}",
+            success: function(e) {
+                if(e.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('admincoin/shop/shopsys',['id'=>$uid])}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(e.msg);
+                    return false;
+                }else{
+                    layer.msg(e.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>

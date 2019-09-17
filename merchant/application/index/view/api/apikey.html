@@ -1,0 +1,269 @@
+<style>
+	.send{
+		color:#fff!important;
+		padding:0px 20px;
+		font-size:12px;	
+		height:38px;
+		line-height: 35px;
+		margin-left:20px;
+	}
+	.form-control-label{
+		margin-bottom:0;
+		line-height: 40px;
+		margin:0 15px 0 20px;
+	}
+   body .card .card-header .applyBtn{
+		position: absolute;
+		right:30px;
+		top:10px;
+		font-size: 14px;
+        line-height: 23px;
+        padding: 5px 15px;
+    	width:auto;
+    	border-radius: 4px;
+    	height: auto;
+    	border:0;
+	} 
+</style>
+
+<section class="section">
+	<div class="section-body">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<h4>API密钥</h4>
+						<button type="submit" class="btn btn-primary mt-1 mb-0 applyBtn" >申请商户API密钥</button>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive" style="display:none;">
+							<table class="table table-striped table-bordered mb-0 text-nowrap">
+								<tr >
+									<th>商户ID</th>
+									<td>
+									    <span class="float-left showID">**********</span>
+									    <a href="#" class="btn btn-action btn-primary float-right showBtn" >查看</a>
+									</td>
+								</tr>
+								<tr>
+									<th>API密钥</th>
+									<td>
+									    <span class="float-left showkey">**********</span>
+									    <a href="#" class="btn btn-action btn-primary float-right" data-toggle="modal" data-target="#exampleModal3" data-id="2">查看</a>
+									 </td>
+								</tr>
+									<tr>
+    									<th>API回调密码</th>
+    								    <td>
+    									    <span class="float-left showps">**********</span>
+    									    <a href="#" class="btn btn-action btn-primary float-right" data-toggle="modal" data-target="#exampleModal3" data-id="3">查看</a>
+    									 </td>
+    								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+
+
+	<!--密钥短信 Modal -->
+	<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog"  aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="example-Modal3">安全验证</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="order-number" class="form-control-label">短信验证码</label>
+						<input type="text" class="form-control" id="verify" name="verify"  style="width:50%;" placeholder="6位短信验证码">
+						<a class="btn btn-primary send">发送验证码</a>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-primary" data-dismiss="modal">取消</button>
+					<button type="button" id="button" class="btn btn-primary">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--显示密钥 Modal -->
+	<div class="modal fade" id="keyContent" tabindex="-1" role="dialog"  aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="example-Modal3">API秘钥</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<label for="key">密 钥：</label>
+						<span id="key" class="showkey"></span>
+					</div>										
+				</div>
+				<div class="modal-footer" style="border-top:0;">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>			
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!--显示回调密码 Modal -->
+	<div class="modal fade" id="backPassword" tabindex="-1" role="dialog"  aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="example-Modal3">API回调密码</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<label for="key">回调密码：</label>
+						<span id="keyps" class="showps"></span>
+					</div>										
+				</div>
+				<div class="modal-footer" style="border-top:0;">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>			
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		/**
+		 * 如果API已经申请显示对应API信息
+		 */
+		var api="{$api}";
+		if(api=="yes"){
+            $(".table-responsive").show();
+            $(".applyBtn").hide();
+		}
+		/*点击查看*/
+        $('.btn-action').on('click', function(){
+            var dataId=$(this).attr("data-id");
+            $("#button").attr("data-id",dataId);
+		})
+
+		  //获取验证码
+		$('.send').on('click', function(){
+			var usertype="{$usertype}";
+			var username="{$username}";
+			if(usertype=="email"){
+                var url="{:url('logincommon/sendemail')}";
+			}else if(usertype=="mobile"){
+                var url="{:url('logincommon/sendsms')}";
+			}
+			$.ajax({
+				url:url,
+				type:'POST',
+				dataType:"json",
+				data:{username:username},
+				success:function(data){	               
+					if(data.status==1){
+                        timeClock(".send");
+                        layer.msg(data.msg);
+					}else{
+						layer.msg(data.msg,{icon:2,shift:5});
+					}
+				},
+				error:function(data){
+					console.log(data);
+				}
+			})
+		                 	   
+		});
+		
+		//手机验证码倒计时函数
+		function timeClock(cls) {					
+			var _this = $(cls);
+			if(_this.hasClass('disabled')) {						
+				return false;
+			} else {
+				_this.addClass('disabled');
+				var i = 59;
+				var int = setInterval(clock, 1000);
+				
+				function clock() {
+					_this.text("重新发送"+"(" + i + ")");						
+					i--;
+					if(i < 0) {
+						_this.removeClass('disabled');
+						i = 59;
+						_this.text("获取验证码");
+						clearInterval(int);
+					}
+				}
+				return false;
+			}
+		}
+		
+		/*显示商户ID*/
+		$(".showBtn").click(function(){
+		    $(this).addClass("disabled");
+		  //  请求接口信息
+			show(1,1000);			//1代表请求的是商户ID
+		});
+		
+		/*点击申请按钮显示三行*/
+        $(".applyBtn").click(function(){
+            $(".table-responsive").show();
+            $(this).hide();
+        });
+
+		/*输入验证码查看KYE*/
+		  $("#button").click(function(){
+				var dataid=$(this).attr("data-id");
+				var verify=$("#verify").val();
+            	if(verify==""||verify==null){
+                  layer.msg("请输入验证码！");
+                  return false
+                }
+				show(dataid,verify);
+		  });
+		function show(type,verify){
+		    $.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"{:url('api/api11')}",
+				data:{type:type,verify:verify},
+				success:function(data){
+					if(data.status==1) {
+                        if (type == 1) {
+                            $(".showID").html(data.msg);                               
+                        } else if (type == 2) {
+                            $(".showkey").html(data.msg);
+                          	$('#keyContent').modal('show');
+                        } else if (type == 3) {
+                            $(".showps").html(data.msg);
+                          	$('#backPassword').modal('show');
+                        }
+                        $("#exampleModal3").modal('hide');
+                      	$("#verify").val("");
+                    }else{
+                       $("#verify").val("");
+                        $("#exampleModal3").modal("show");                      
+                        layer.msg(data.msg);
+                      	
+					}
+				},error:function(error){
+				    console.log(error);
+				}
+			});
+		}
+	</script>
+	
+				

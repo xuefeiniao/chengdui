@@ -1,0 +1,380 @@
+<style>
+	.form-group .form-control{
+		display: inline-block;
+	}
+	.more{
+	    display: inline-block;
+	    width:100%;
+	    text-align:center;
+	    margin-top:10px;
+	}
+	.form-group {
+        margin-bottom: 2rem;
+    }
+	
+    .warnWord{
+        margin-left: -30px;
+        color: #999;
+        font-size:12px;
+        line-height: 1.5rem;
+    }
+</style>
+<section class="section">
+	<div class="section-body">
+	    <div class="row">
+    		<div class="col-lg-7 col-xl-8 col-sm-12">
+    			<div class="card">
+    				<div class="card-header">
+    					<h4>币种兑换</h4>
+    				</div>
+    				<div class="card-body" >
+    					<div class="form-horizontal">
+				            <div class="form-group row">
+								<div class="col-md-5 col-xs-5">
+									<select class="form-control" id="selectCoin">
+										{foreach $coin as $vo}
+											<option value="{$vo}" {if $vo=="btc"}selected{/if}>{$vo|strtoupper}</option>
+										{/foreach}
+									</select>
+								</div>
+								<div class="col-md-1 col-xs-1" style="text-align: center;">
+									<i class='fa fa-long-arrow-right' style="font-size:28px;margin-top:6px;"></i>
+								</div>
+								<div class="col-md-5 col-xs-5">
+									<select class="form-control" id="tocoin">
+										{foreach $coin as $vo}
+											<option value="{$vo}" {if $vo=="usdt"}selected{/if}>{$vo|strtoupper}</option>
+										{/foreach}
+									</select>
+								</div>
+						    </div>
+							<div class="form-group row">
+								<div class="col-md-5 col-xs-5">
+									<input type="text" id="changeNum" class="form-control" placeholder="可兑换数量：{$btc}">
+								</div>
+								<div class="col-md-1 col-xs-1">
+									<i class='fa fa-long-arrow-right' style="font-size:28px;margin-top:6px;"></i>
+								</div>
+								<div class="col-md-5 col-xs-5">
+									<input type="text" class="form-control" id="endcoin" value="0" disabled>
+								</div>
+							</div>
+							<div class="form-group row" style="margin-bottom:3.4rem">
+								<div class="col-md-5">
+									<div style="text-align:left;">手续费: <span class="fee">0</span></div>
+								</div>								
+							</div>							
+							<div class="form-group row">
+								<div class="col-md-11" style="text-align:center;">
+									<button type="button" class="btn btn-info btn-query"style="width:50%">确定</button>
+								</div>
+							</div>
+							
+						</div>
+    				</div>
+    			</div>
+    		</div>
+    		<div class="col-lg-5 col-xl-4 col-sm-12">								
+    			<div class="card">
+    				<div class="card-header">
+    					<h4>货币行情</h4>
+    				</div>
+    				<div class="card-body" style="padding-top:20px;padding-bottom:20px;">
+                            <div class="table-responsive">
+								<table id="hangqing" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+									<thead>
+										<tr>
+											<th class="wd-15p text-center">交易对</th>
+											<th class="wd-15p">最新价</th>
+											<th class="wd-20p">涨幅</th>
+										</tr>
+									</thead>
+									<tbody>
+                                       <tr>
+                                         <td>
+                                           <span>
+                                             <img src="__IMG__/btcSmall.png" alt="">
+                                             <i>BTC/USDT</i>
+                                           </span>
+                                         </td>
+                                         <td>
+                                           <span class="wrap price">
+                                             <b class="close btcLast">4012.06</b>
+                                             <em class="estimated btcLastMoney">≈ ¥27282.00</em>
+                                           </span>
+                                         </td>
+                                         <td>
+                                           <span>
+                                             <b class="rate up btcRate">+0.45%</b>
+                                           </span>
+                                         </td>
+                                       </tr>
+                                      <tr>
+                                          <td>
+                                            <span>
+                                              <img src="__IMG__/ethSmall.png" alt="">
+                                              <i>ETH/USDT</i>
+                                            </span>
+                                          </td>
+                                          <td>
+                                            <span class="wrap price">
+                                              <b class="close ethLast">4012.06</b>
+                                              <em class="estimated ethLastMoney">≈ ¥27282.00</em>
+                                            </span>
+                                          </td>
+                                          <td>
+                                            <span>
+                                              <b class="rate up ethRate">+0.45%</b>
+                                            </span>
+                                          </td>
+                                        </tr>
+                                       <tr>
+                                         <td>
+                                           <span>
+                                             <img src="__IMG__/eosSmall.png" alt="">
+                                             <i>EOS/USDT</i>
+                                           </span>
+                                         </td>
+                                         <td>
+                                           <span class="wrap price">
+                                             <b class="close eosLast">4012.06</b>
+                                             <em class="estimated eosLastmoney">≈ ¥27282.00</em>
+                                           </span>
+                                         </td>
+                                         <td>
+                                           <span>
+                                             <b class="rate down eosRate">+0.45%</b>
+                                           </span>
+                                         </td>
+                                       </tr>
+                                      <tr>
+                                        <td>
+                                          <span>
+                                            <img src="__IMG__/xrpSmall.png" alt="">
+                                            <i>XRP/USDT</i>
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <span class="wrap price">
+                                            <b class="close xrpLast">4012.06</b>
+                                            <em class="estimated xrpLastMoney">≈ ¥27282.00</em>
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <span>
+                                            <b class="rate down xrpRate">+0.45%</b>
+                                          </span>
+                                        </td>
+                                      </tr>  
+										
+									</tbody>
+								</table>
+							</div>
+                        </div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+	
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="float-left">最近10条兑换记录</h4>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered mb-0 text-nowrap">
+    						<tr>
+    							<th>ID</th>
+								<th>币种</th>
+								<th>兑换币种</th>
+								<th>兑换数量</th>
+								<th>兑换比例</th>
+								<th>手续费</th>
+								<th>到账数量</th>
+								<th>兑换时间</th>
+							</tr>
+							{foreach $data as $vo}
+								<tr>
+									<td>{$vo.id}</td>
+									<td>{$vo.coin_name|strtoupper}</td>
+									<td>{$vo.to_coinname|strtoupper}</td>
+									<td>{$vo.coin_number}</td>
+									<td>{$vo.coin_ratio}</td>
+									<td>{$vo.coin_fee}</td>
+									<td>{$vo.coin_aumount}</td>
+									<td>{$vo.createtime|date="Y-m-d H:i"}</td>
+								</tr>
+							{/foreach}
+						</table>
+					</div>
+					<a class="more" href="{:url('coin/changedetail')}"><button class="btn btn-primary">更多记录</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+
+
+<script>
+     /*点击更多进入订单页面*/
+		$(".more").on('click', function() {
+			var href = $(this).attr('href');
+			$('.app-content').empty();
+			$.ajax({
+				type: "GET",
+				async : false,
+				cache : false,
+				url:httpHead+href,
+				success: function(data) {
+					$('.app-content').append(data);
+				}
+			});
+			return false;
+		});
+	    /*应用表格样式*/
+		$(function(e) {
+			$('#hangqing').DataTable({
+			    "bFilter": false,
+			    "bPaginate" : false, 
+			    "bInfo" : false,
+              	"sort" :false
+			 
+			});
+		} );
+		/*显示可用余额*/
+		$("#selectCoin").change(function(){
+		    var curent=$(this).find("option:selected").html();
+			$.post("{:url('coin/balance')}",{coinname:curent},function(data){
+			    if(data.status=="1"){
+                    $("#changeNum").attr("placeholder","可兑换数量:"+data.data);
+				}else{
+                    layer.msg(data.msg);
+				}
+			});
+		})
+     /*显示兑换余额*/
+     $("#tocoin").change(function(){
+         var coinname=$("#selectCoin").find("option:selected").html();	//要兑换的币种
+         var curent=$(this).find("option:selected").html();	//要兑换的币种
+         $.post("{:url('coin/balance')}",{coinname:coinname,tocoin:curent},function(data){
+             if(data.status=="1"){
+                 $("#changeNum").attr("placeholder",data.data);
+             }else{
+                 layer.msg(data.msg);
+             }
+         });
+     });
+     /**
+	  * 兑换数量手续费核算
+	  */
+     $('#changeNum').bind('input', function() {
+        var coinname=$("#selectCoin option:selected").html();
+        var tocoinname=$("#tocoin option:selected").html();
+        var num=$(this).val();
+        var sendData={
+            coinname:coinname,
+			tocoinname:tocoinname,
+			num:num
+        };
+         $.post("{:url('coin/checknumber')}",sendData,function(data){
+             if(data.status=="1"){
+                 $("#endcoin").val(data.data.endcoin);
+                 $(".fee").html(data.data.fee);
+             }else{
+                 layer.msg(data.msg);
+             }
+         });
+     });
+     /**
+      * 兑换数量手续费核算
+      */
+     $('#tocoin').bind('input', function() {
+         var coinname=$("#selectCoin option:selected").html();
+         var tocoinname=$("#tocoin option:selected").html();
+         var num=$("#changeNum").val();
+         var sendData={
+             coinname:coinname,
+             tocoinname:tocoinname,
+             num:num
+         };
+         $.post("{:url('coin/checknumber')}",sendData,function(data){
+             if(data.status=="1"){
+                 $("#endcoin").val(data.data.endcoin);
+                 $(".fee").html(data.data.fee);
+             }else{
+                 $("#endcoin").val(0);
+                 $(".fee").html(0);
+                 layer.msg(data.msg);
+             }
+         });
+     });
+     /**
+      * 提交兑换信息
+      */
+     $('.btn-query').click(function(){
+         var coinname=$("#selectCoin option:selected").html();
+         var tocoinname=$("#tocoin option:selected").html();
+         var num=$("#changeNum").val();
+         var sendData={
+             coinname:coinname,
+             tocoinname:tocoinname,
+             num:num
+         };
+         $.post("{:url('coin/changecoin')}",sendData,function(data){
+             if(data.status=="1"){
+                layer.msg(data.msg);
+             }else{
+                 layer.msg(data.msg);
+             }
+         });
+     });
+</script>
+
+<script>
+            $(document).ready(function(){
+                var ws=new WebSocket("wss://api.zb.cn/websocket");
+				var arrCoin=['btc','eth','eos','xrp']
+				var pushCoin=[];
+				for(var i=0;i<arrCoin.length;i++){
+					pushCoin[i]=arrCoin[i]+"usdt_ticker";
+				}
+				
+				var sendData=[];
+				for(var j=0;j<pushCoin.length;j++){
+					sendData[j]={
+					    'event':'addChannel',
+					    'channel':pushCoin[j],
+					};	
+				}
+							
+				 ws.onopen=function()
+				 {
+					for(var k=0;k<sendData.length;k++){
+						 var kdata=sendData[k]					 
+						 ws.send(JSON.stringify(kdata));	
+					}
+				 };
+				  ws.onmessage=function(evt)
+				  {	 		
+					var received_msg = JSON.parse(evt.data);
+
+					if(received_msg.channel=="btcusdt_ticker"){
+						$(".btcLast").html(received_msg.ticker.last);
+						
+					}else if(received_msg.channel=="ethusdt_ticker"){
+						$(".ethLast").html(received_msg.ticker.last);
+						
+					}else if(received_msg.channel=="eosusdt_ticker"){
+						$(".eosLast").html(received_msg.ticker.last);
+						
+					}else if(received_msg.channel=="xrpusdt_ticker"){
+						$(".xrpLast").html(received_msg.ticker.last);
+						
+					}								
+
+				  }
+            })
+		</script>

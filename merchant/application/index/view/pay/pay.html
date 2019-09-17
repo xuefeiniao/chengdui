@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+	<style type="text/css">
+		.navbar{ background: #5458B3!important;}
+		.app-content{ width: 80%;}
+		.main-navbar .header-brand{ padding-left: 15rem!important;}
+		.ddbh{ line-height: 2rem;}
+		.ddname{line-height: 2rem;}
+		.btn-info{background-color: #5458B3!important; border-color: #5458B3!important;}
+		.card-body .btncolor:hover{background-color: #5a1aff!important;}
+		.btn-info a{ color: #fff!important;text-decoration: none;}
+		.btn-info a:hover{text-decoration: none;}
+		.info{  background: #fff;
+			    padding: 24px;
+			    border-radius: 5px;
+			    display: flex;
+			    align-items: center;
+			    margin-bottom: 1rem!important;}
+	    .payinfo button{ width: 100%!important;padding: 0.7rem 0;}
+	    .payinfo .info-bottom{ margin: 1rem!important;}
+	    .payinfo button img{width: 1.5rem; margin-right: 0.3rem;}
+	    .btn-outline-primary{border-color: #d2d3da!important; }
+	    .tips{ margin: 0.5rem 0;font-size: 12px;}
+	    .btn-outline-primary:hover {
+		    background: #fff!important;
+		    border-color: solid #5d61bf 1px!important;
+		}
+		.btn:active, .btn:focus, .btn:hover {
+    		border-color: #5d61bf !important;
+    	}
+    	.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+		    color: #fff;
+		    background-color: #fff!important;
+		    border-color: #5458b3!important;
+		}
+		.tijiao {
+			color: #fff!important;
+		   background: #5458B3!important;
+		    border-color: solid #5d61bf 1px!important;
+		}
+		.tijiao:active, .tijiao:focus, .tijiao:hover {
+    		 background: #5458B3!important;
+    	}
+    	a:hover,a{ text-decoration: none!important;}
+    	.staff{ background: #E4E5F3;width: 0.3rem;height: 1.5rem;display: inline-block;margin-right: 0.5rem;} 
+	    .payinfo button{ height: 3.5rem!important;padding: 0;}
+	    .baohu{ display: flex;}
+	    .sum{	         	
+                 text-align:right;
+	         }
+	    @media only screen and (max-width:750px) {
+	    	.bohu{
+	    	  width:47px;
+	    	  height:52px;
+	    	 
+	         }
+	         .zhifu_img_box{
+	         	 margin-right:20px;
+	         	 margin-top:13px;
+	         }
+	         #zhifu_box{
+	         	padding-left:0;
+	         	padding-right:0;
+	         	display:flex;
+	         	
+	         }
+	         .sum{
+	         	 margin-top: 18px;
+                 border-top: 1px solid #dcdcdc;
+                 padding-top: 10px;
+                 text-align:left;
+	         }
+	         #jine{
+	         	display:block;
+	         	margin-top:4px;
+	         }
+	    }
+	    
+	</style>
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>B-payer Payment</title>
+
+		<!--Favicon -->
+		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+		<!--Bootstrap.min css-->
+		<link rel="stylesheet" href="/static/assets/plugins/bootstrap/css/bootstrap.min.css">
+
+		<!--Icons css-->
+		<link rel="stylesheet" href="/static/assets/css/icons.css">
+
+		<!--Style css-->
+		<link rel="stylesheet" href="/static/assets/css/style.css">
+
+		<!--mCustomScrollbar css-->
+		<link rel="stylesheet" href="/static/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css">
+
+		<!--Sidemenu css-->
+		<link rel="stylesheet" href="/static/assets/plugins/toggle-menu/sidemenu.css">
+
+		<!--Morris css-->
+		<link rel="stylesheet" href="/static/assets/plugins/morris/morris.css">
+
+	</head>
+
+	<body class="app ">
+
+		<div id="spinner"></div>
+
+		<div id="app">
+			<div class="main-wrapper" >
+				 
+				<nav class=" row navbar ">
+					<div class="col-lg-6 col-xl-6 col-md-6 col-12 offset-lg-2 offset-xl-2 offset-md-2" >
+						<a class="header-brand" href="#" style="display: flex;align-items: center;color: #fff;">
+						<img src="/static/soole1.png" class="header-brand-img" alt="logo">
+						
+					</a>
+					</div>				
+					
+				</nav>			
+
+				<div class="app-content" >
+					<div class="row info" style="box-shadow: 0 2px 17px 2px rgb(222, 223, 241);">
+						<div class="col-lg-7 col-xl-7 col-md-7 col-12 baohu" id="zhifu_box">
+							   <div class="zhifu_img_box">
+							   	   <img src="/static/img/baohu.png" class="bohu"/>
+							   </div>
+								
+								<div style="margin-top: 0.6rem;" class="row">
+									<span style="font-size: 16px; margin-left:10px ;" class="col-lg-12 col-xl-12 col-md-12 col-12 ">您的订单在中链保护中，请放心支付</span>	
+									<p style="margin: 0.6rem 0 0 1.6rem;">
+										订单号：{$info.order_no} &nbsp;&nbsp;<span id="jine">订单金额：{$info.order_money}&nbsp;CNY</span>
+										
+									</p>
+									
+								</div>
+								
+							
+						</div>
+						<div class="col-lg-5 col-xl-5 col-md-5 col-12 sum" >	
+							<span >支付金额：</span>
+							<strong style="color: red;font-size: 20px;margin: 0.3rem;" class="exchange-num">{$info.order_money}</strong><i style="color: red;font-style: normal;" class="exchange-name">CNY</i>
+						</div>
+					</div>
+					<div class="card row">
+						<!--<div>请选择以下支付方式</div>-->
+						<div class="card-header">
+							<h4 style="font-size: 1.1rem;">请选择以下支付方式</h4>
+						</div>
+						<div class="row payinfo" style="margin-top: 1rem;">						
+							<div class="col-lg-4 col-md-6 col-12 alipay">
+									<div class=" text-center info-bottom">
+										<button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#exampleModal">
+											
+											<!--<a href="__APP__/Alipaypc/dopay/orderid/{$info.order_no}/money/{$info.order_money}"><img src="/static/img/alipay.png"/>支付宝大陆版</a>-->
+											<a href="#"><img src="/static/alipaypc.png"/ style="width: 5.5rem;"></a>
+										</button>
+									</div>
+								
+							</div>
+							<div class="col-lg-4 col-md-6 col-12 alipay-international">
+								
+									
+									<div class=" text-center info-bottom">
+										<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong">
+											
+											<!--<a href="__APP__/Alipay/dopay/orderid/{$info.order_no}/money/{$info.order_money}/type/pingtai"><img src="/static/img/alipay.png"/>支付宝国际版</a>-->
+											<a href="#"><img src="/static/img/alipay.png"/>国际版</a>
+										</button>
+									</div>
+								
+							</div>
+							<div class="col-lg-4 col-md-6 col-12 paypal">
+									<div class=" text-center info-bottom">
+										<button class="btn btn-outline-primary" data-toggle="modal" data-target="#largeModal">
+											
+											<!--<a href="__APP__/Pay/getorder/orderid/{$info.order_no}/money/{$info.order_money}/type/pingtai"><img src="/static/paypal.png" style="width: 4rem;"/></a>-->
+											<a href="#"><img src="/static/paypal.png" style="width: 5.5rem;"/></a>
+										</button>
+									</div>
+								
+							</div>
+							<div class="col-lg-4 col-md-6 col-12 paybtc">							
+									
+									<div class=" text-center info-bottom">
+										<button type="button" class="btn btn-outline-primary"  data-toggle="modal" data-target="#smallModal">
+											<!--<a href="__APP__/Coinpay/addorder/orderid/{$info.order_no}/money/{$info.order_money}/pay_type/BTC/type/pingtai"><img src="/static/img/btc.png"/>
+											BTC
+											</a>-->
+											<a href="#"><img src="/static/img/btc.png"/>BTC支付
+											</a>
+										</button>
+									</div>
+								
+							</div>
+							<div class="col-lg-4 col-md-6 col-12 payeth">
+								
+									
+									<div class="text-center info-bottom ">
+										<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal2">
+											<!--<a href="__APP__/Coinpay/addorder/orderid/{$info.order_no}/money/{$info.order_money}/pay_type/ETH/type/pingtai">
+											<img src="/static/img/eth.png"/>
+											ETH</a>-->
+											<a href="#">
+											<img src="/static/img/eth.png"/>ETH支付</a>
+										</button>
+									</div>
+								
+							</div>
+							<div class="col-lg-4 col-md-6 col-12 payusdt" >
+								
+									
+									<div class=" text-center info-bottom" >
+										<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal3">
+											<!--<a href="__APP__/Coinpay/addorder/orderid/{$info.order_no}/money/{$info.order_money}/pay_type/USDT/type/pingtai">
+											<img src="/static/img/usdt.png"/>
+											USDT
+										</a>-->
+										<a href="#">
+											<img src="/static/img/usdt.png"/>USDT支付
+										</a>
+										</button>
+									</div>
+								
+	
+							</div>
+							
+					</div>
+					<div class="col-lg-12 col-md-12 col-12 tips"><img src="/static/img/tishi.png" style="width: 0.9rem; margin-top: -0.2rem;"/> 中链支付是一个独立的数字支付平台，所有信息均采用双层加密。</div>
+					<div class="col-lg-12 col-md-12 col-12 tips">
+						<div>所有汇率均采用国际权威平台实时汇率。							
+							<span class="bz-exchange"></span>
+							<span class="exchange-rate"></span>
+						</div>
+					</div>
+					<!--<div class="exchange col-lg-12 col-md-12 col-12 ">
+						<div>兑换汇率：<span class="exchange-rate">1</span></div>
+						<div>可兑换：<span class="exchange-num">{$info.order_money} CNY</span></div>
+					</div>-->
+					
+					<div class="row" style="    margin: 30px 0 100px;">
+						<div class="col-lg-4 col-md-4 col-6 offset-lg-4 offset-md-4 offset-3 ">
+							<div class=" text-center info-bottom yesstyle">
+								<button type="button" class="btn btn-outline-primary tijiao" data-toggle="modal" data-target="#exampleModalLong" style="width: 100%;">
+									
+									确认支付
+								</button>
+							</div>							
+						</div>
+						<!--<div class="col-lg-2 col-md-4 col-6 ">							
+							<div class=" text-center info-bottom">
+								<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong" style="width: 100%;">
+									
+									取消
+								</button>
+							</div>
+						</div>-->
+					</div>
+					
+					</div>
+					
+					
+				</div>
+				
+				<footer class="main-footer">
+					<div class="text-center">						
+						Copyright &copy;B-payer Payment
+					</div>
+				</footer>
+
+			</div>
+		</div>
+
+		<!--Jquery.min js-->
+		<script src="/static/assets/js/jquery.min.js"></script>
+
+		<!--popper js-->
+		<script src="/static/assets/js/popper.js"></script>
+
+		<!--Tooltip js-->
+		<script src="/static/assets/js/tooltip.js"></script>
+
+		<!--Bootstrap.min js-->
+		<script src="/static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!--Jquery.nicescroll.min js-->
+		<script src="/static/assets/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+
+		<!--Scroll-up-bar.min js-->
+		<script src="/static/assets/plugins/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+
+		<!--mCustomScrollbar js-->
+		<script src="/static/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+		<!--Sidemenu js-->
+		<script src="/static/assets/plugins/toggle-menu/sidemenu.js"></script>
+
+		<!--Scripts js-->
+		<script src="/static/assets/js/scripts.js"></script>
+		<script type="text/javascript">
+			var httpHead = 'http://soolepay.fisyst.com/index/zb';//这个是调用中币的接口
+			var httpHeadhl = 'http://soolepay.fisyst.com/index/usdcny';//汇率接口
+			var danhao='';
+			var btchl ='';//btc汇率
+			var ethhl = '';//eth汇率
+			var usdthl = '';//usdt汇率
+			var usdhl ='';//usd汇率
+			//实时获取汇率
+			function gethl(){
+				$.ajax({
+					type:"get",
+					url:"http://soolepay.fisyst.com/index/zb",
+					success:function(data){						
+						btchl =data.btc.price;
+						ethhl = data.eth.price;
+						usdhl = data.usd.price;
+						usdthl = data.usdt.price;					
+					}
+				});
+				setInterval(function(){
+					gethl();
+					},300000)
+			}
+			gethl();
+				
+			$('.payinfo>div').on('click',function(){				
+				danhao = $(this).index();
+				$('.payinfo button').removeClass('active');
+				$(this).find('button').addClass('active');				
+				if(danhao == '0'){	
+					danhao =7;
+					$('.exchange-rate').html('1')
+					var rmbnum = {$info.order_money};
+					$('.exchange-num').html(rmbnum.toFixed(2))
+					$('.exchange-name').html('CNY')
+					$('.bz-exchange').html('CNY 实时汇率:');						
+				}else if(danhao =='1' || danhao ==2){
+					if(usdhl!=''){
+						$('.bz-exchange').html('USD/CNY 实时汇率：');
+						$('.exchange-rate').html(usdhl)
+						var btcnum = {$info.order_money};
+						btcnum = (btcnum/usdhl).toFixed(2);					
+						$('.exchange-num').html(btcnum )	
+						$('.exchange-name').html('USD')
+					}
+					
+				}else if(danhao ==3){
+					/*btc*/
+					if(btchl!=''){
+						$('.bz-exchange').html('BTC/CNY 实时汇率：');
+						$('.exchange-rate').html(btchl)
+						var btcnum = {$info.order_money};
+						btcnum = (btcnum/btchl).toFixed(8);					
+						$('.exchange-num').html(btcnum )
+						$('.exchange-name').html('BTC')
+					}
+				}else if(danhao ==4){
+					/*eth*/
+					if(ethhl!=''){
+						$('.bz-exchange').html('ETH/CNY 实时汇率：');
+						$('.exchange-rate').html(ethhl)
+						var btcnum = {$info.order_money};
+						btcnum = (btcnum/ethhl).toFixed(8);					
+						$('.exchange-num').html(btcnum)
+						$('.exchange-name').html('ETH')
+					}
+					
+				}else if(danhao ==5){
+					/*usdt*/
+					if(usdthl!=''){
+						$('.bz-exchange').html('USDT/CNY 实时汇率：');
+						$('.exchange-rate').html(usdthl)
+						var btcnum = {$info.order_money};
+						btcnum = (btcnum/usdthl).toFixed(8);					
+						$('.exchange-num').html(btcnum)	
+						$('.exchange-name').html('USDT')
+					}
+				}
+				
+				
+			})
+			$('.tijiao').on('click',function(){				
+				if(danhao=='' || danhao==null){
+					alert('请选择支付方式');
+					return false;
+				}
+				if(danhao == '7'){	
+					console.log('选择了支付宝大陆版')
+					window.location.href='__APP__/Alipaypc/dopay/orderid/{$info.order_no}/money/{$info.order_money}';
+				}else if(danhao =='1'){						
+					window.location.href ="__APP__/Alipay/dopay/orderid/{$info.order_no}/money/{$info.order_money}/type/pingtai"
+				}else if(danhao ==2){
+					window.location.href ="__APP__/Pay/getorder/orderid/{$info.order_no}/money/{$info.order_money}/type/pingtai"
+				}else if(danhao ==3){
+					/*btc*/
+					window.location.href ="__APP__/Coinpay/addorder/orderid/{$info.order_no}/money/{$info.order_money}/pay_type/BTC/type/pingtai"
+				}else if(danhao ==4){
+					/*eth*/
+					window.location.href ="__APP__/Coinpay/addorder/orderid/{$info.order_no}/money/{$info.order_money}/pay_type/ETH/type/pingtai"
+				}else if(danhao ==5){
+					/*usdt*/
+					window.location.href ="__APP__/Coinpay/addorder/orderid/{$info.order_no}/money/{$info.order_money}/pay_type/USDT/type/pingtai"
+				}
+				
+			})
+				
+		</script>
+	 </body>
+</html>

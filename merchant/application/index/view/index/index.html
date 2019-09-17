@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>B-payer Payment</title>
+
+		<!--Favicon -->
+		<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+
+		<!--Bootstrap.min css-->
+		<link rel="stylesheet" href="__PLU__/bootstrap/css/bootstrap.min.css">
+
+		<!--Icons css-->
+		<link rel="stylesheet" href="__CSS__/icons.css">
+
+		<!--Style css-->
+		<link rel="stylesheet" href="__CSS__/style.css">
+
+		<!--mCustomScrollbar css-->
+		<link rel="stylesheet" href="__PLU__/scroll-bar/jquery.mCustomScrollbar.css">
+
+		<!--Sidemenu css-->
+		<link rel="stylesheet" href="__PLU__/toggle-menu/sidemenu.css">
+
+		<!--Chartist css-->
+		<!--<link rel="stylesheet" href="__PLU__/chartist/chartist.css">
+		<link rel="stylesheet" href="__PLU__/chartist/chartist-plugin-tooltip.css">-->
+
+		<!--Full calendar css-->
+		<link rel="stylesheet" href="__PLU__/fullcalendar/stylesheet1.css">
+		
+		<!--morris css-->
+		<link rel="stylesheet" href="__PLU__/morris/morris.css">
+      
+      	
+		<!--Jquery.min js-->
+		<script src="__JS__/jquery.min.js"></script>
+
+        <style>
+             /*版本卡样式*/
+            .navbar .form-inline .btn{
+                border-radius:0.25rem;
+                padding-top:2px;
+                padding-bottom:2px;
+                color:#fff;
+                cursor: default;
+                border:0;
+                padding-left:5px;
+                padding-right:5px;
+                font-size: 12px;
+            }
+            .visitor .media-body{
+                margin-top:0;
+            }
+            .send.disabled{
+                background-color: #ddd;
+                border-color:#ddd;
+                color:#666!important;
+            }
+            .card .knob-chart{
+                padding-top:10px;
+                padding-bottom:10px;
+            }
+            section .row:first-child .knob-chart{
+                padding-top:3px;
+                padding-bottom:3px;
+            }
+         
+            .mt-4, .my-4 {
+                margin-top: 0.9em!important;
+                margin-bottom: 0.6rem!important;
+            }
+            
+              /*表格背景色*/
+            .table-striped tbody tr{
+                background-color: #fff!important;
+            }
+           table.table-bordered.dataTable th,table.table-bordered.dataTable tbody td{
+                border-right:1px solid transparent;
+                border-left:1px solid transparent; 
+                /* padding-right:5px; */
+                vertical-align: middle;
+            }
+           table.dataTable.no-footer{
+              border-right:1px solid transparent;
+               border-left:1px solid transparent;
+			   margin-top:0!important;
+			   margin-bottom:1rem!important;
+           }
+           #hangqing span{
+               overflow: hidden;
+               text-align: right;
+               display: block;
+               padding-right: 2px;
+           }
+            #hangqing span i{
+               font-style: normal;
+           }
+           #hangqing span img{
+               display: inline-block;
+               width:20px;
+               height:20px; 
+               margin-top:-2px;
+               margin-right:5px;
+           }
+          
+           #hangqing tr td:first-child span{
+               text-align: center;
+           }
+          
+           span.wrap b {
+                display: block;
+                font-weight: 400;
+                font-size: 14px;
+                float: none;
+            }
+            span.wrap em {
+                color: #9ca9b5;
+                font-size: 12px;
+            }
+            span .rate {
+                line-height: 1;
+                width: 90px;
+                padding: 6px 14px;
+                text-align: center;
+                border-radius: 2px;
+                font-weight: 400;
+                display: inline-block;
+                background-color: rgba(156,169,181,.1);
+            }
+            .rate.up {
+                color: #0da88b;
+                background-color: rgba(13,168,139,.1);
+            }
+            .rate.down {
+                color: #ef5656;
+                background-color: rgba(239,86,86,.1);
+            }
+            #hangqing th{
+                text-align:right;
+                padding-right:25px;
+            }
+            .table-bordered td, .table-bordered th{
+                vertical-align: middle;
+            }
+            
+          	/*去掉tye=numbe的样式*/
+            input[type=number] {
+                -moz-appearance:textfield;
+            }
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            .hd{
+                height: 16px;
+            }
+            
+            /*协议的样式*/
+            #xieyiBody{
+                height:560px;
+                overflow: auto;
+            }
+            
+        </style>
+
+	</head>
+
+	<body class="app ">
+
+		<div id="spinner"></div>
+
+		<div id="app">
+			<div class="main-wrapper" >
+				<nav class="navbar navbar-expand-lg main-navbar">
+					<a class="header-brand" href="index.html">
+						<img src="__IMG__/brand/logo.png" class="header-brand-img" alt="Kharna-Admin  logo">
+					</a>
+					<form class="form-inline mr-auto">
+					    <ul class="navbar-nav">
+							<li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="ion ion-navicon-round"></i></a></li>
+							<li>
+							    <a class="nav-link nav-link-lg" style="padding-top: 0.7rem;padding-right:0!important;">
+							        <button class="btn btn-primary version">{$usertype}版v4.2</button>
+						        </a>
+						    </li>
+						</ul>
+						
+					</form>
+					<ul class="navbar-nav navbar-right">
+						<li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg">
+							<img src="__IMG__/avatar/avatar-1.jpeg.jpg" alt="profile-user" class="rounded-circle w-32">
+							<div class="d-sm-none d-lg-inline-block">{$nickname}</div></a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a href="{:url('index/info')}" class="dropdown-item has-icon dropClick">
+									<i class="ion ion-android-person"></i>{$usertype}
+								</a>
+								<a href="{:url('article/notice')}" class="dropdown-item has-icon dropClick">
+									<i class="ion-speakerphone"></i> 系统公告
+								</a>
+								<a href="{:url('index/quit')}" class="dropdown-item has-icon">
+									<i class=" fa fa-power-off"></i> 退出
+								</a>
+							</div>
+						</li>
+					</ul>
+				</nav>
+
+				<aside class="app-sidebar">
+					<div class="app-sidebar__user">
+					    <div class="dropdown">
+							<a class="nav-link pl-2 pr-2 leading-none d-flex" data-toggle="dropdown" href="#">
+								<img alt="image" src="__IMG__/avatar/avatar-1.jpeg.jpg" class=" avatar-md rounded-circle">
+								<span class="ml-2 d-lg-block">
+									<span class="text-white app-sidebar__user-name mt-5">{$nickname}</span><br>
+									<span class="text-muted app-sidebar__user-name text-sm">{$Think.session.username}</span>
+								</span>
+							</a>
+						</div>
+					</div>
+
+                    {if $Think.session.utype == 'exshop'}
+                    <ul class="side-menu">
+                        <li class="slide">
+                            <a class="side-menu__item noChild"  href="{:url('index/index2')}"><i class="side-menu__icon fa fa-desktop"></i><span class="side-menu__label">管理首页</span></a>
+                        </li>
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-gear"></i><span class="side-menu__label">承兑商设置</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('index/info')}" class="slide-item"> 个人设置</a></li>
+                                <li><a href="{:url('index/pay')}" class="slide-item"> 支付设置</a></li>
+                                <li><a href="{:url('index/password')}" class="slide-item"> 安全配置</a></li>
+                            </ul>
+                        </li>
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-file-text-o"></i><span class="side-menu__label">广告管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('exshop/coin_sell')}" class="slide-item">出售广告</a></li>
+<!--                                <li><a href="{:url('exshop/coin_buy')}" class="slide-item">求购广告</a></li>-->
+                                <li><a href="{:url('exshop/sell_list')}" class="slide-item">出售广告列表</a></li>
+<!--                                <li><a href="{:url('exshop/buy_list')}" class="slide-item">求购广告列表</a></li>-->
+                                <li><a href="{:url('exshop/sell_dakuanlist')}" class="slide-item">出售订单列表</a></li>
+<!--                                <li><a href="{:url('exshop/buy_list')}" class="slide-item">求购订单列表</a></li>-->
+<!--                                <li><a href="{:url('exshop/buy_dakuanlist')}" class="slide-item">购买订单列表</a></li>-->
+<!--                                <li><a href="{:url('exshop/tousu')}" class="slide-item">投诉订单</a></li>-->
+                                <!--<li><a href="{:url('Otcmanage/otcorder')}" class="slide-item">系统订单</a></li>-->
+                                <!--<li><a href="{:url('exshop/xx')}" class="slide-item"> 出售订单奖励</a></li>-->
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-credit-card"></i><span class="side-menu__label">资产管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('coin/recharge')}" class="slide-item">承兑商充值</a></li>
+                                <li><a href="{:url('coin/withdraw')}" class="slide-item">承兑商提币</a></li>
+                                <li><a href="{:url('coin/tixmcny')}" class="slide-item">承兑商提现</a></li>
+                                <li><a href="{:url('coin/change')}" class="slide-item">币种兑换</a></li>
+                            </ul>
+                        </li>
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-cny"></i><span class="side-menu__label">财务管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('coin/bill')}" class="slide-item">财务明细</a></li>
+                                <li><a href="{:url('coin/tixmcny_list')}" class="slide-item">提现记录</a></li>
+<!--                                <li><a href="{:url('coin/integral')}" class="slide-item">积分明细</a></li>-->
+                            </ul>
+                        </li>
+
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">信息管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('article/notice')}" class="slide-item">系统公告</a></li>
+                                <li><a href="{:url('article/news')}" class="slide-item">新闻资讯</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" href="{:url('index/quit')}"><i class="side-menu__icon fa fa-power-off"></i><span class="side-menu__label">退出登录</span></a>
+                        </li>
+                    </ul>
+                    {elseif $Think.session.utype == 'shop' /}
+                    <ul class="side-menu">
+                        <li class="slide">
+                            <a class="side-menu__item noChild"  href="{:url('index/index2')}"><i class="side-menu__icon fa fa-desktop"></i><span class="side-menu__label">管理首页</span></a>
+                        </li>
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-gear"></i><span class="side-menu__label">商户设置</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('index/info')}" class="slide-item"> 个人设置</a></li>
+                                <li><a href="{:url('index/pay')}" class="slide-item"> 收款设置</a></li>
+                                <!--<li><a href="/userSet/userMessage.html" class="slide-item"> 商户信息</a></li>-->
+                                <li><a href="{:url('index/password')}" class="slide-item"> 安全设置</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-file-text-o"></i><span class="side-menu__label">盘口订单</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+<!--                                <li><a href="{:url('shop/buy_list')}" class="slide-item">出售广告</a></li>-->
+                                <li><a href="{:url('shop/match_list')}" class="slide-item"> 盘口用户订单列表</a></li>
+<!--                                <li><a href="{:url('shop/match_list',['type'=>1])}" class="slide-item"> 出售订单列表</a></li>-->
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-credit-card"></i><span class="side-menu__label">资产管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('coin/recharge')}" class="slide-item">商户充值</a></li>
+                                <li><a href="{:url('coin/withdraw')}" class="slide-item">商户提币</a></li>
+                                <li><a href="{:url('coin/tixmcny')}" class="slide-item">商户提现</a></li>
+                                <li><a href="{:url('coin/change')}" class="slide-item">币种兑换</a></li>
+                            </ul>
+                        </li>
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-cny"></i><span class="side-menu__label">财务管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+
+                                <li><a href="{:url('coin/bill')}" class="slide-item">财务明细</a></li>
+                                <li><a href="{:url('coin/shop_list')}" class="slide-item">订单明细</a></li>
+                                <li><a href="{:url('coin/rechargedetail')}" class="slide-item">充值记录</a></li>
+                                <li><a href="{:url('coin/withdrawdetail')}" class="slide-item">提币记录</a></li>
+                                <li><a href="{:url('coin/tixmcny_list')}" class="slide-item">提现记录</a></li>
+<!--                                <li><a href="{:url('coin/integral')}" class="slide-item">积分明细</a></li>-->
+                            </ul>
+                        </li>
+
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">信息管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('article/notice')}" class="slide-item">系统公告</a></li>
+                                <li><a href="{:url('article/news')}" class="slide-item">新闻资讯</a></li>
+                                <li><a href="{:url('article/gkvi')}" class="slide-item">商户告知书</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-cloud"></i><span class="side-menu__label">API管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('api/apikey')}" class="slide-item">API密钥</a></li>
+                                {if $api=="yes"}
+                                <!--                                <li><a href="{:url('api/apiset')}" class="slide-item">API设置</a></li>-->
+                                <li><a href="{:url('api/apirecord')}" class="slide-item">API记录</a></li>
+<!--                                <li><a href="{:url('api/apiblack')}" class="slide-item">IP白名单</a></li>-->
+                                {/if}
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" href="{:url('index/quit')}"><i class="side-menu__icon fa fa-power-off"></i><span class="side-menu__label">退出登录</span></a>
+                        </li>
+                    </ul>
+                    {else /}
+                    <ul class="side-menu">
+                        <li class="slide">
+                            <a class="side-menu__item noChild"  href="{:url('index/index2')}"><i class="side-menu__icon fa fa-desktop"></i><span class="side-menu__label">管理首页</span></a>
+                        </li>
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-gear"></i><span class="side-menu__label">代理设置</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('index/info')}" class="slide-item"> 个人设置</a></li>
+                                <li><a href="{:url('index/pay')}" class="slide-item"> 收款设置</a></li>
+                                <li><a href="{:url('index/password')}" class="slide-item"> 安全设置</a></li>
+                            </ul>
+                        </li>
+
+                        <!--<li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-file-text-o"></i><span class="side-menu__label">广告管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('agency/buy_list')}" class="slide-item"> 出售广告列表</a></li>
+                                <li><a href="{:url('agency/match_list')}" class="slide-item"> 广告订单列表</a></li>
+                            </ul>
+                        </li>-->
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-credit-card"></i><span class="side-menu__label">资产管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('coin/recharge')}" class="slide-item">代理充值</a></li>
+                                <li><a href="{:url('coin/withdraw')}" class="slide-item">代理提币</a></li>
+                                <li><a href="{:url('coin/tixmcny')}" class="slide-item">代理提现</a></li>
+                                <li><a href="{:url('coin/change')}" class="slide-item">币种兑换</a></li>
+                            </ul>
+                        </li>
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-cny"></i><span class="side-menu__label">财务管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+
+                                <li><a href="{:url('coin/bill')}" class="slide-item">财务明细</a></li>
+                                <li><a href="{:url('coin/tixmcny_list')}" class="slide-item">提现记录</a></li>
+                                <li><a href="{:url('coin/reward_list')}" class="slide-item">奖励明细</a></li>
+<!--                                <li><a href="{:url('coin/integral')}" class="slide-item">积分明细</a></li>-->
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">推荐下级</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('agency/invitlist',['type'=>'shop'])}" class="slide-item">下级商户</a></li>
+                                <li><a href="{:url('agency/invitlist',['type'=>'exshop'])}" class="slide-item">下级承兑商</a></li>
+                                <li><a href="{:url('agency/yeji')}" class="slide-item">下级承兑商业绩</a></li>
+<!--                                <li><a href="{:url('agency/jiang')}" class="slide-item">代理奖励</a></li>-->
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">信息管理</span><i class="angle fa fa-angle-right"></i></a>
+                            <ul class="slide-menu">
+                                <li><a href="{:url('article/notice')}" class="slide-item">系统公告</a></li>
+                                <li><a href="{:url('article/news')}" class="slide-item">新闻资讯</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li class="slide">
+                            <a class="side-menu__item" href="{:url('index/quit')}"><i class="side-menu__icon fa fa-power-off"></i><span class="side-menu__label">退出登录</span></a>
+                        </li>
+                    </ul>
+                    {/if}
+
+				</aside>
+				<!-- 右侧内容 -->
+				<div class="app-content">
+					<section class="section">
+						<div class="row">
+						    <div class="col-xl-4 col-lg-6 col-sm-6 col-md-12">
+								<div class="card">
+									<div class="card-body knob-chart">
+										<div class="row mb-0">
+											<div class="col-4">
+												<div class="card-icon d-flex justify-content-center">
+													  <img src="__IMG__/total.png" alt="">
+												</div>
+											</div>
+											<div class="col-8">
+												<div class="dash3 text-center">
+													<small class="text-muted mt-0">总资产</small>
+													<h2 class="text-dark mb-0">{$total|number_format=2}</h2>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+                            <div class="col-xl-4 col-lg-6 col-sm-6 col-md-12">
+                                <div class="card">
+                                    <div class="card-body knob-chart">
+                                        <div class="row mb-0">
+                                            <div class="col-4">
+                                                <div class="card-icon d-flex justify-content-center">
+                                                    <img src="__IMG__/usdt.png" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="dash3 text-center">
+                                                    <small class="text-muted mt-0">USDT(数量)</small>
+                                                    <h2 class="text-dark mb-0">{$usdt_total|number_format=2}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-sm-6 col-md-12">
+                                <div class="card">
+                                    <div class="card-body knob-chart">
+                                        <div class="row mb-0">
+                                            <div class="col-4">
+                                                <div class="card-icon d-flex justify-content-center">
+                                                    <img src="__IMG__/total.png" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="dash3 text-center">
+                                                    <small class="text-muted mt-0">总提现</small>
+                                                    <h2 class="text-dark mb-0">￥{$tixm|round=2}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--
+							<div class="col-xl-4 col-lg-6 col-sm-6 col-md-12">
+                                <div class="card">
+                                    <div class="card-body knob-chart">
+                                        <div class="text-center">
+                                            <span class="text-muted">总提现</span>
+                                            <h4 class="mt-1">${$sumdata.sum2}</h4>
+                                            <div class="card-progressbar mb-0 mt-4">
+                                                <div class="progress h-6" style="height: 6px;">
+                                                    <div class="progress-bar bg-primary w-60" role="progressbar"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+-->
+							
+						</div>
+                      
+                      <div class="row">
+							<div class="col-lg-12 col-sm-12">
+								<div class="card">
+									<div class="card-header">
+										<h4>中币行情</h4>
+									</div>
+            						<div class="card-body" style="padding-top: 20px;">
+                                        <div class="table-responsive">
+            								<table id="hangqing" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+            									<thead>
+            										<tr>
+            											<th class="wd-15p text-center">交易对</th>
+            											<th class="wd-15p">最新价</th>
+            											<th class="wd-20p">涨幅</th>
+            											<th class="wd-15p">最高价</th>
+            											<th class="wd-10p">最低价</th>
+            											<th class="wd-25p">卖一价</th>
+            											<th class="wd-25p">24H成交量</th>
+            										</tr>
+            									</thead>
+            									<tbody>
+            										 <tr>
+            											<td>
+            											    <span>
+            											        <img src="__IMG__/btcSmall.png" alt="">
+            											        <i>BTC/USDT</i>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap price">
+            											        <b class="close btcLast">4012.06</b>
+            											        <em class="estimated btcLastMoney">≈ ¥27282.00</em>
+            											     </span>
+            											</td>
+            											<td>
+            											    <span>
+            											        <b class="rate up btcRate">+0.45%</b>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap high">
+            											        <b class="close btcHigh">4020.00</b>
+            											        <em class="estimated btcHighMoney">≈ ¥27336.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap low">
+            											        <b class="close btcLow">3980.00</b>
+																<em class="estimated btcLowMoeny">≈ ¥27064.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="amount btcSell">16,860</span>
+            											</td>
+            											<td>
+            											    <span class="vol btcVol"> 457,818,187</span>
+            											</td>
+            										</tr>
+            										<tr>
+            											<td>
+            											    <span>
+            											        <img src="__IMG__/ethSmall.png" alt="">
+            											        <i>ETH/USDT</i>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap price">
+            											        <b class="close ethLast">4012.06</b>
+            											        <em class="estimated ethLastMoney">≈ ¥27282.00</em>
+            											     </span>
+            											</td>
+            											<td>
+            											    <span>
+            											        <b class="rate up ethRate">+0.45%</b>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap high">
+            											        <b class="close ethHigh">4020.00</b>
+            											        <em class="estimated ethHighMoney">≈ ¥27336.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap low">
+            											        <b class="close ethLow">3980.00</b>
+            											        <em class="estimated ethLowMoney">≈ ¥27064.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="amount ethSell">16,860</span>
+            											</td>
+            											<td>
+            											    <span class="vol ethVol"> 457,818,187</span>
+            											</td>
+            										</tr>
+            										
+            										<tr>
+            											<td>
+            											    <span>
+            											        <img src="__IMG__/eosSmall.png" alt="">
+            											        <i>EOS/USDT</i>
+            											    </span>
+            											</td>
+            										    <td>
+            											    <span class="wrap price">
+            											        <b class="close eosLast">4012.06</b>
+            											        <em class="estimated eosLastMoney">≈ ¥27282.00</em>
+            											     </span>
+            											</td>
+            											<td>
+            											    <span>
+            											        <b class="rate down eosRate">+0.45%</b>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap high">
+            											        <b class="close eosHigh">4020.00</b>
+            											        <em class="estimated eosHighMoney">≈ ¥27336.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap low">
+            											        <b class="close eosLow">3980.00</b>
+            											        <em class="estimated eosLowMoney">≈ ¥27064.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="amount eosSell">16,860</span>
+            											</td>
+            											<td>
+            											    <span class="vol eosVol"> 457,818,187</span>
+            											</td>
+            										</tr>	
+            										<tr>
+            											<td>
+            											    <span>
+            											        <img src="__IMG__/xrpSmall.png" alt="">
+            											        <i>XRP/USDT</i>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap price">
+            											        <b class="close xrpLast">4012.06</b>
+            											        <em class="estimated xrpLastMoney">≈ ¥27282.00</em>
+            											     </span>
+            											</td>
+            											<td>
+            											    <span>
+            											        <b class="rate down xrpRate">+0.45%</b>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap high">
+            											        <b class="close xrpHigh">4020.00</b>
+            											        <em class="estimated xrpHighMoney">≈ ¥27336.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="wrap low">
+            											        <b class="close xrpLow">3980.00</b>
+            											        <em class="estimated xrpLowMoney">≈ ¥27064.00</em>
+            											    </span>
+            											</td>
+            											<td>
+            											    <span class="amount xrpSell">16,860</span>
+            											</td>
+            											<td>
+            											    <span class="vol xrpVol"> 457,818,187</span>
+            											</td>
+            										</tr> 
+            									</tbody>
+            								</table>
+            							</div>
+            						</div>
+            					</div>
+            				</div>
+                        </div>
+					
+						<div class="row">
+							<div class="col-lg-7 col-md-12 col-12 col-sm-12">
+								<div class="card">
+									<div class="card-header">
+										<h4>盘口订单统计</h4>
+									</div>
+                                    <div class="hd"></div>
+									<div class="card-body">
+										<div  id="line-chart" class="overflow-hidden"></div>
+									</div>
+                                    <div class="hd"></div>
+								</div>
+							</div>
+							<div class="col-lg-5 col-md-12 col-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>系统公告</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="visitor list-unstyled list-unstyled-border">
+                                            {foreach $notice as $vo}
+                                            <li class="media" href="{:url('article/detail',['id'=>$vo['id']])}" style="cursor:pointer">
+                                                <img class="mr-3" width="50" {if empty($vo["image"])!="true"}src="{$vo.image}"{else /}src="__IMG__/news/img01.jpg"{/if}>
+                                                <div class="media-body">
+                                                    <div class="float-right"><small>{$vo.createtime}</small></div>
+                                                    <div class="media-title">{$vo.title}</div>
+                                                    <small>{$vo.content}</small>
+                                                </div>
+                                            </li>
+                                            {/foreach}
+                                        </ul>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+					
+					</section>
+                  <!-- 图表需要引用的js文件 -->
+					<script src="__PLU__/morris/morris.min.js"></script>
+					<script src="__PLU__/morris/raphael.min.js"></script>
+					<script src="__JS__/apexcharts.js"></script>
+					<script src="__JS__/dashboard3.js"></script>
+				</div>
+				<!-- 右侧内容   end-->
+
+				<footer class="main-footer">
+					<div class="text-center">
+						Copyright &copy;2018-2020 B-payer Payment
+					</div>
+				</footer>
+				
+				<!--公告书弹框-->
+				<div class="modal show" id="xieyi" tabindex="-1" role="dialog" aria-labelledby="xieyiLongTitle" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="xieyiLongTitle">标题</h5>
+							</div>
+							<div class="modal-body" id="xieyiBody">
+								
+							</div>
+							<div class="checkbox" style="padding-left:1rem;">
+								<div class="custom-checkbox custom-control">
+									<input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1" checked>
+									<label for="checkbox-1" class="custom-control-label" style="color:#5458b3">已阅读并同意协议</label>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button id="agreeXieyi" type="button" class="btn btn-primary mt-1 mb-0">确定</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!--popper js-->
+		<script src="__JS__/popper.js"></script>
+
+		<!--Tooltip js-->
+		<script src="__JS__/tooltip.js"></script>
+
+		<!--Bootstrap.min js-->
+		<script src="__PLU__/bootstrap/js/bootstrap.min.js"></script>
+
+		<!--Jquery.nicescroll.min js-->
+		<script src="__PLU__/nicescroll/jquery.nicescroll.min.js"></script>
+
+		<!--Scroll-up-bar.min js-->
+		<script src="__PLU__/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+
+		<!--mCustomScrollbar js-->
+		<script src="__PLU__/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+		<!--Sidemenu js-->
+		<script src="__PLU__/toggle-menu/sidemenu.js"></script>
+
+		<!--Jquery.knob js-->
+		<script src="__PLU__/othercharts/jquery.knob.js"></script>
+
+		<!--Jquery.sparkline js-->
+		<script src="__PLU__/othercharts/jquery.sparkline.min.js"></script>
+		
+		<!--日期 js-->
+		<script src="__PLU__/laydate/laydate.js"></script>
+		<!--layer js-->
+		<script src="__JS__/layer.js"></script>
+		<!--Scripts js-->
+		<script src="__JS__/scripts.js"></script>
+		<script>
+            var btc="{$coin.btc}";
+            var usdt="{$coin.usdt}";
+            var eth="{$coin.eth}";
+            var kdata={$kdata|raw};
+		</script>
+        <!--表格 js-->
+        <script src="__PLU__/Datatable/js/jquery.dataTables.js"></script>
+
+		<script type="text/javascript">
+			// 定于域名
+			const httpHead='http://www.taida333.com'
+			//const httpHead='http://127.0.0.10';
+
+			// 点击子菜单切换
+			var srcLi = $(".slide-menu").find('li');
+			srcLi.on('click', function(e) {
+				var href = $(this).find("a").attr('href');
+				$('.app-content').empty();
+				$.ajax({
+					type: "GET",
+					async : false,
+					cache : false,
+					url: httpHead+href,
+					success: function(data) {
+						$('.app-content').append(data);
+					}
+				});
+				return false;
+			});
+			// 点击首页			
+			$(".noChild").on('click', function(e) {
+				var href = $(this).attr('href');
+				$('.app-content').empty();
+				$.ajax({
+					type: "GET",
+					async : false,
+					cache : false,
+					url:httpHead+href,
+					success: function(data) {
+						$('.app-content').append(data);
+					}
+				});
+				return false;
+			});
+
+			// 点击右侧用户下拉框
+			$(".dropClick").on('click', function(e) {
+				var href = $(this).attr('href');
+				$('.app-content').empty();
+				$.ajax({
+					type: "GET",
+					async : false,
+					cache : false,
+					url: httpHead+href,
+					success: function(data) {
+						$('.app-content').append(data);
+					}
+				});
+				return false;
+			});
+            // 点击公告
+            $(".media").on('click', function(e) {
+                $('.app-content').empty();
+                var url=$(this).attr("href");
+                $.ajax({
+                    type: "GET",
+                    cache:false,
+                    async:false,
+                    url: httpHead+url,
+                    success: function(data) {
+                        $('.app-content').append(data).attr("data-type","3");
+                    }
+                });
+                return false;
+            });
+           /*应用表格样式*/
+    		$(function(e) {
+    			$('#hangqing').DataTable({
+    			    "bFilter": false,
+    			    "bPaginate" : false, 
+    			    "bInfo" : false,
+                  	"sort" :false
+    			});
+    		} );
+		</script>
+		<script>
+            $(document).ready(function(){
+                var rmb="{$rmb}";
+                var qian="≈ ¥";
+                var ws=new WebSocket("wss://api.zb.cn/websocket");
+				var arrCoin=['btc','eth','eos','xrp']
+				var pushCoin=[];
+				for(var i=0;i<arrCoin.length;i++){
+					pushCoin[i]=arrCoin[i]+"usdt_ticker";
+				}
+
+				var sendData=[];
+				for(var j=0;j<pushCoin.length;j++){
+					sendData[j]={
+					    'event':'addChannel',
+					    'channel':pushCoin[j],
+					};
+				}
+
+				 ws.onopen=function()
+				 {
+					for(var k=0;k<sendData.length;k++){
+						 var kdata=sendData[k]
+						 ws.send(JSON.stringify(kdata));
+					}
+				 };
+				 ws.onmessage=function(evt)
+				  {
+					var received_msg = JSON.parse(evt.data);
+					if(received_msg.channel=="btcusdt_ticker"){
+						$(".btcLast").html(received_msg.ticker.last);
+						$(".btcLastMoney").html(qian+(received_msg.ticker.last*rmb).toFixed(2));
+						$(".btcHigh").html(received_msg.ticker.high);
+						$(".btcHighMoney").html(qian+(received_msg.ticker.high*rmb).toFixed(2));
+						$(".btcLow").html(received_msg.ticker.low);
+						$(".btcLowMoeny").html(qian+(received_msg.ticker.low*rmb).toFixed(2));
+						$(".btcSell").html("$"+received_msg.ticker.sell);
+						$(".btcVol").html(received_msg.ticker.vol);
+					}else if(received_msg.channel=="ethusdt_ticker"){
+						$(".ethLast").html(received_msg.ticker.last);
+						$(".ethLastMoney").html(qian+(received_msg.ticker.last*rmb).toFixed(2));
+						$(".ethHigh").html(received_msg.ticker.high);
+						$(".ethHighMoney").html(qian+(received_msg.ticker.high*rmb).toFixed(2));
+						$(".ethLow").html(received_msg.ticker.low);
+						$(".ethLowMoney").html(qian+(received_msg.ticker.low*rmb).toFixed(2));
+						$(".ethSell").html("$"+received_msg.ticker.sell);
+						$(".ethVol").html(received_msg.ticker.vol);
+					}else if(received_msg.channel=="eosusdt_ticker"){
+						$(".eosLast").html(received_msg.ticker.last);
+						$(".eosLastMoney").html(qian+(received_msg.ticker.last*rmb).toFixed(2));
+						$(".eosHigh").html(received_msg.ticker.high);
+						$(".eosHighMoney").html(qian+(received_msg.ticker.high*rmb).toFixed(2));
+						$(".eosLow").html(received_msg.ticker.low);
+						$(".eosLowMoney").html(qian+(received_msg.ticker.low*rmb).toFixed(2));
+						$(".eosSell").html("$"+received_msg.ticker.sell);
+						$(".eosVol").html(received_msg.ticker.vol);
+					}else if(received_msg.channel=="xrpusdt_ticker"){
+						$(".xrpLastMoney").html(qian+(received_msg.ticker.last*rmb).toFixed(2));
+						$(".xrpLast").html(received_msg.ticker.last);
+						$(".xrpHigh").html(received_msg.ticker.high);
+						$(".xrpHighMoney").html(qian+(received_msg.ticker.high*rmb).toFixed(2));
+						$(".xrpLow").html(received_msg.ticker.low);
+						$(".xrpLowMoney").html(qian+(received_msg.ticker.low*rmb).toFixed(2));
+						$(".xrpSell").html("$"+received_msg.ticker.sell);
+						$(".xrpVol").html(received_msg.ticker.vol);
+					}
+				  }
+            })
+		</script>
+		
+		<script>
+		    //协议弹窗是否显示
+		    var utype ='{$Think.session.utype}';
+            var is_gkvi ={$Think.session.is_gkvi};
+            if(utype=='exshop'||utype=='shop'){
+                if(is_gkvi==0){
+                    $("#xieyi").modal();
+                }
+            }
+            // 协议内容
+            $.ajax({
+                 url:"{:url('index/get_gkvi')}",
+                 dataType:'json',
+                 type:'get',
+                 success:function(data){
+                     //console.log(data)
+                     if(data.status=='ok'){
+                        $("#xieyiLongTitle").html(data.data.title);
+                        $("#xieyiBody").html(data.data.content);
+                     }else{
+                        console.log('接口请求失败！');
+                     }
+                 },
+                 error:function(data){
+                     console.log(data);
+                 }
+             });
+            
+            //同意协议
+            $("#agreeXieyi").click(function(){
+                 if($("#checkbox-1").prop("checked")==false){
+                    layer.msg("请勾选同意协议！");
+                    return false
+                 }else{
+                     $.ajax({
+                         url:"{:url('index/gkviac')}",
+                         dataType:'json',
+                         type:'post',
+                         data:{typeac :1},
+                         success:function(data){
+                             console.log(data)
+                             if(data.status=='ok'){
+                                $("#xieyi").modal('hide');
+                             }
+                         },
+                         error:function(data){
+                             console.log(data);
+                         }
+                    });
+                 }
+            })
+		</script>
+	</body>
+
+
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+{include file="public/head" /}
+<body>
+
+<!-- Top Panel -->
+{include file="public/header" /}
+{include file="public/small_menu" /}
+<div class="wrapper contents_wrapper">
+
+    {include file="public/sidebar" /}
+
+    <div class="contents">
+        <div class="grid_wrapper">
+
+            <div class="g_6 contents_header">
+                <h3 class="i_16_dashboard tab_label">首页</h3>
+                <div><span class="label">Home</span></div>
+            </div>
+
+            <div class="g_12 separator"><span></span></div>
+
+            <!-- Quick Statistics -->
+            <div class="g_6 quick_stats">
+                <div class="big_stats visitor_stats">
+                    {$usercount}
+                </div>
+                <h5 class="stats_info">用户数量</h5>
+            </div>
+            <div class="g_6 quick_stats">
+                <div class="big_stats tickets_stats">
+                    {$bankcount}
+                </div>
+                <h5 class="stats_info">已设置支付方式</h5>
+            </div>
+            <div class="g_12 separator under_stat"><span></span></div>
+
+        </div>
+    </div>
+
+</div>
+
+{include file="public/footer" /}
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

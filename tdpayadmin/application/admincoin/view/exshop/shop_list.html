@@ -1,0 +1,170 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+</style>
+<style>
+    /*分页样式*/
+    .pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+    .pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+    .pagination .active{background-color: #46A3FF;color: #fff;}
+    .pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class=" mb-0">
+                    <div class="clearfix card-body p-3 border-bottom">
+                        <div class="pull-left">
+                            <h5 class="mb-0">订单明细</h5>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+                    <div class="card-body pt-4">
+                        <!--搜索条件-->
+                        <form id="formID">
+                            <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                                <div class="col-sm-12 col-md-4">
+                                    <label>订单号：
+                                        <input type="text" class="form-control form-control-sm" name="order_no" value="{$variate.order_no}" id="order_no"/>
+                                    </label>
+                                    <label>选择币种：
+                                        <select class="form-control" name="coin_name">
+                                            <option value="all" {if $variate["coin_name"] == "all"}selected{/if}>ALL</option>
+                                            {foreach $coinall as $key=>$v1}
+                                            <option value="{$v1.name}" {if $v1["name"] == $variate["coin_name"]}selected{/if}>{$v1.name|strtoupper}</option>
+                                            {/foreach}
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+                                    <label>开始日期：
+                                        <input type="text" class="form-control form-control-sm" name="beigin" value="{$variate.beigin}" id="startDate"/>
+                                    </label>
+                                    <label>结束日期：
+                                        <input type="text" class="form-control form-control-sm" name="end" value="{$variate.end}" id="endDate"/>
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4 text-right">
+                                    <input type="button" class="btn btn-primary bill" value="搜索">
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table border table-bordered text-nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-0 text-uppercase  font-weight-bold">ID</th>
+                                            <th class="border-0 text-uppercase  font-weight-bold">订单号</th>
+                                            <th class="border-0 text-uppercase  font-weight-bold">商户</th>
+                                            <th class="border-0 text-uppercase  font-weight-bold">承兑商</th>
+                                            <th class="border-0 text-uppercase  font-weight-bold">币种</th>
+                                            <th class="border-0 text-uppercase font-weight-bold"> 数量</th>
+                                            <th class="border-0 text-uppercase font-weight-bold"> 金额</th>
+                                            <th class="border-0 text-uppercase font-weight-bold"> 手续费</th>
+                                            <th class="border-0 text-uppercase font-weight-bold"> 支付方式</th>
+                                            <th class="border-0 text-uppercase  font-weight-bold">日期</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $data as $vo}
+                                        <tr>
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.order_no}</td>
+                                            <td>{$vo['shop']['username']}({$vo['shop']['nickname']})</td>
+                                            <td>{$vo['exshop']['username']}({$vo['exshop']['nickname']})</td>
+                                            <td>{$vo.name_en|strtoupper}</td>
+                                            <td>{$vo.num}</td>
+                                            <td>{$vo.price}</td>
+                                            <td>{$vo.shop_fee}</td>
+                                            <td><?php $tmp = [0=>'',1=>'银联',2=>'支付宝',3=>'微信']; echo $tmp[$vo['type']];?></td>
+                                            <td>开始时间：{$vo.time}<br>完成时间：{$vo.end_time}</td>
+                                        </tr>
+                                        {/foreach}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- 分页 -->
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
+                                            共<span>{$count}</span>条 总数量 [<span class="text-danger"> {$znum} </span>] 总金额 [<span class="text-danger"> {$zprice} </span>] 总手续费 [<span class="text-danger"> {$zfee} </span>]
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers text-right" >
+                                            <ul class="pagination" style="justify-content: flex-end;">
+                                                {$page|raw}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    // 引用日期插件
+    laydate.render({
+        elem: '#startDate' //指定元素
+    });
+    laydate.render({
+        elem: '#endDate' //指定元素
+    });
+    /**
+     * 过滤数据
+     */
+    $(".bill").click(function(){
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "POST",
+            data:data,
+            url:"{:url('coin/shop_list')}",
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+    });
+    /**
+     * 分页数据处理
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+</script>
+				

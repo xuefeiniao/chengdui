@@ -1,0 +1,40 @@
+<audio id="audio" controls="controls" autoplay='autoplay' hidden>
+    <source src="/assets/msg.ogg" type="audio/ogg" />
+    <source src="/assets/msg.mp3" type="audio/mpeg"/>
+</audio>
+<script src="/assets/plugins/toastr/build/toastr.min.js"></script>
+<script>
+$(function(){
+   require();
+   $("#audio").removeAttr("autoplay");
+
+ });
+    
+function require() {
+    var url = "{:url('admincoin/exshop/get_exshop_msg')}";
+    $.get(url, null, function (data) {
+        if(data.status=='ok'){
+            $(".msgnum").html(data.data);
+            if(data.data!=0){
+                $("#audio").attr("autoplay", 'autoplay');
+            }
+        }else{
+            //layer.msg(data.msg);
+        }
+    });
+    setTimeout('require()', 5000);
+
+}
+function tiaomsg()
+{
+    $('.app-content').empty();
+    $.ajax({
+        type: "GET",
+        url: "{:url('admincoin/exshop/msglist')}",
+        success: function(data) {
+            $('.app-content').append(data);
+        }
+    });
+    return false;
+}
+</script>

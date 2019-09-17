@@ -1,0 +1,284 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+    /*表格背景色*/
+    .table-striped tbody tr:nth-of-type(even){
+        background-color: #f6f6f9;
+    }
+    .table-striped tbody tr:nth-of-type(odd){
+        background-color: #fff;
+    }
+
+    /**/
+    .form-control-label {
+	    margin-bottom: 0;
+	    line-height: 40px;
+	    margin: 0 15px 0 20px;
+	}
+
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>{$title}管理列表</h4>
+				</div>
+				<div class="card-body">
+				     <!--搜索条件-->
+					<form id="formID">
+						<div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+						   <div class="col-sm-4 col-md-4">
+								<label>账号：
+									<input type="text" class="form-control form-control-sm" id="username" name="username" value="{$variate.username}" />
+								</label>
+								<label>名称：
+									<input type="text" class="form-control form-control-sm" id="nickname" name="nickname" value="{$variate.nickname}" />
+								</label>
+                               <label>推荐人：
+                                   <input type="text" class="form-control form-control-sm" id="username" name="parentid" value="{$variate.parentid}" />
+                               </label>
+                               <label>承兑商上级：
+                                   <input type="text" class="form-control form-control-sm" id="username" name="exshop_pid" value="{$variate.exshop_pid}" />
+                               </label>
+						   </div>
+						   <div class="col-sm-4 col-md-4">
+							   <label>开始日期：
+								   <input type="text" class="form-control form-control-sm" name="beigin" id="beigin" value="{$variate.beigin}"/>
+							   </label>
+							   <label>结束日期：
+								   <input type="text" class="form-control form-control-sm" name="end" id="end" value="{$variate.end}"/>
+								</label>
+						   </div>
+							<div class="col-sm-4 col-md-4 text-right">
+							  <button class="btn btn-primary" class="search" id="search">搜索</button>
+						   </div>
+						</div>
+					</form>
+					<!--<button class="btn btn-info" id="getExcel"><a href="/admincoin/Shop_manage/shopList?result=true">导出</a></button>-->
+					<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100">
+						<thead>
+							<tr>
+								<th class="wd-15p">ID</th>
+								<th class="wd-15p">账号</th>
+								<th class="wd-15p">名称</th>
+                                <th class="wd-25p">支付/收款状态</th>
+                                <th class="wd-15p">编号</th>
+                                <th class="wd-25p">操作</th>
+                                <th class="wd-25p">创建时间</th>
+                                <th class="wd-25p">是否挂单</th>
+                                <th class="wd-15p">商户类型</th>
+								<th class="wd-20p">推荐人</th>
+                                <th class="wd-20p">上级承兑商</th>
+                                <th class="wd-25p">承兑商户</th>
+                                <th class="wd-25p">状态</th>
+							</tr>
+						</thead>
+						<tbody>
+								{foreach $data as $vo}
+									<tr>
+										<td>{$vo.id}</td>
+										<td>{$vo.username}</td>
+										<td>{$vo.nickname}</td>
+                                        <td><?php echo $vo['type_en'];?></td>
+                                        <td><span class="text-danger">{$vo.exshop_code}</span></td>
+                                        <td>
+                                            <input type="button" class="btn btn-action btn-primary detail" data-id="{:url('ShopManage/shopDetail',['id'=>$vo['id']])}" value="详情">
+                                            <?php $sign = _usersign($vo['id']); ?>
+                                            <!--                                            <a href=""><input type="button" class="btn btn-action btn-primary" onclick="userlogin({$vo['id']})" value="前台"></a>-->
+                                            <a href="http://www.taida333.com/index/login/admin_login/uid/{$vo['id']}/sign/{$sign}" target="_blank"><input type="button" class="btn btn-action btn-primary" value="前台"></a>
+                                            <input type="button" class="btn btn-action btn-primary variate" data-id="{:url('ShopManage/shopVariate',['id'=>$vo['id']])}" value="参数">
+                                            <?php if ($vo['type']=='shop'){?>
+                                                <input type="button" class="btn btn-action btn-primary variate" data-id="{:url('shop/shopsys',['id'=>$vo['id']])}" value="定向配置">
+                                            <?php }?>
+                                            <?php if ($vo['status']=='正常'){?>
+                                                <input type="button" class="btn btn-action btn-primary variate" value="冻结" onclick="dongjie({$vo.id},'hidden')">
+                                            <?php }else{?>
+                                                <input type="button" class="btn btn-action btn-primary" value="解冻" onclick="dongjie({$vo.id},'normal')">
+                                            <?php }?>
+
+                                        </td>
+                                        <td>{$vo.createtime}</td>
+                                        <td>{$vo.sell_status}</td>
+                                        <td><?php $tmp=['shop'=>'商户','agency'=>'代理','exshop'=>'承兑商'];echo $tmp[$vo['type']]?></td>
+										<td> {if $vo.parentid>0}{$vo.parent}{else /}无{/if}</td>
+                                        <td> <?php if (!empty($vo['exshop'])){
+                                            echo $vo['exshop'];
+                                            }else{
+                                            echo '无';
+                                            }
+                                            ?></td>
+                                        <td><?php if(!empty($vo['dx_shop'])){ echo $vo['dx_shop'];}else{ echo '无';}?></td>
+										<td><div class="badge {$vo.status == '正常' ? 'badge-success' : 'badge-warning';}">{$vo.status}</div></td>
+									</tr>
+								{/foreach}
+				        </tbody>
+					</table>
+				</div>
+				<!-- 分页 -->
+            <div class="row">
+            		<div class="col-sm-12 col-md-5">
+            			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+            		</div>
+            		<div class="col-sm-12 col-md-7">
+            			<div class="dataTables_paginate paging_simple_numbers text-right" >
+            				<ul class="pagination" style="justify-content: flex-end;">
+								{$page|raw}
+            				</ul>
+            			</div>
+            		</div>
+            	</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+<script>
+    // 引用日期插件
+    laydate.render({
+      elem: '#beigin' //指定元素
+    });
+     laydate.render({
+      elem: '#end' //指定元素
+    });
+	//单击详情
+    $(".detail").on('click', function(e) {
+        var url=$(this).attr("data-id");
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            cache:false,
+            async:false,
+            url: url,
+            success: function(data) {
+                $('.app-content').append(data).attr("data-type","3");
+            }
+        });
+        return false;
+    });
+	// 单击参数
+	$(".variate").on('click', function(e) {
+		var url = $(this).attr('data-id');
+        $('.app-content').empty();
+		$.ajax({
+			type: "GET",
+			async : false,
+			cache : false,
+			url: url,
+			success: function(data) {
+				$('.app-content').append(data);
+			}
+		});
+		return false;
+	});
+ 	/*分页*/
+	$('.pagination li a').click(function()
+	{
+		var href = this.href;
+		var pid 		= $('#pid').val();
+		var startTime 	= $('#startDate').val();
+		var endTime 	= $('#endDate').val();
+		$('.app-content').empty();
+		$.ajax({
+			type: "GET",
+			url: href,
+			data: {
+				pid: pid,
+				startTime: startTime,
+				endTime: endTime
+			},
+			success: function(data) {
+				$('.app-content').append(data);
+			}
+		});
+		return false;
+	});
+	// 搜索
+	$('#search').click(function()
+	{
+		var data=$("#formID").serialize();
+		$('.app-content').empty();
+		$.ajax({
+			type: "POST",
+			data: data,
+			url:'{url(admincoin/ShopManage/shop)}',
+			success: function(e) {
+				$('.app-content').append(e);
+			}
+		});
+	});
+	// // 导出
+	// $('#getExcel').click(function()
+	// {
+	// 	var pid 		= $('#pid').val();
+	// 	var startTime 	= $('#beigin').val();
+	// 	var endTime 	= $('#end').val();
+	// 	var shopName 	= $('#shopName').val();
+	// 	this.href = this.href+'pid='+pid+'&startTime='+startTime+'&endTime='+endTime+'&shopName='+shopName;
+	// });
+</script>
+
+<script>
+    function  userlogin(val) {
+        window.open("http://www.taida333.com/index/index/index.html", "_blank");
+    }
+
+    function  userlogin1(uid) {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('user/userlogin')}",
+            data:{
+                uid:uid,
+            },
+            success:function(data){
+                //return false;
+                if(data.status==1){
+                    window.open("http://www.taida333.com/index/index/index.html", "_blank");
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(error){}
+        });
+    }
+    function dongjie(id,val)
+    {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('ShopManage/dongjie')}",
+            data:{
+                id:id,
+                status:val,
+            },
+            success: function(data) {
+                if(data.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('admincoin/ShopManage/shop')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg);
+                }else{
+                    layer.msg(data.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>

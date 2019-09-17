@@ -1,0 +1,225 @@
+<?php
+
+namespace app\index\controller;
+use think\Db;
+
+require_once('../application/common.php');
+class Pay extends Paycommon
+{
+    # 买匹配
+    public function index()
+    {
+        $data=$this->request->param();
+        if($this->request->isPost()) {
+            $order_no = input('order_no');
+            $money = input('order_money');
+            $msg = input('order_msg');
+            $sign = input('sign');
+            $_sign = md5($order_no.$money.'pcdemo');
+            if ($sign!=$_sign){
+                return json(["code" => 204, "result" => "操作失败"]);
+            }
+            $match_sell = Db::name("excoin_sell")->where(['is_match'=>1])->order("price_cny")->select();
+            $sell_info = [];
+            $sell_status = false;
+            foreach ($match_sell as $v){
+                $num = number_format($money/$v['price_cny'],8,'.','');
+                if ($v['shengyu_num']>$num && $v['min']<$num){
+                    $sell_info = $v;
+                    $sell_status = true;
+                    break;
+                }
+            }
+            if (!$sell_status) return json(["code" => 204, "result" => "稍后再试"]);
+
+            $ip = $this->request->ip();
+            $liushui_no = makeCode(20);
+            # app_uid后期需要调整成对应商户的appkey 103
+            $app_uid = 103;
+            # 打款失效时间
+            $exshop_conf_arr = Db::name('exshop_config')->select();
+            $exshop_conf = array_column($exshop_conf_arr,'val','name');
+            if (empty($exshop_conf)||$exshop_conf['dakuan_time']< 0) return json(["code" => 204, "result" => "稍后再试"]);
+            $end_time_conf = $exshop_conf['dakuan_time'];
+            $time = time();
+            $end_time = $time + $end_time_conf;
+            $time_s = getTime($time);
+            $end_time_s = getTime($end_time);
+            Db::startTrans();
+
+            # 更新订单
+            $rs[] = Db::name('excoin_sell')->where("id={$sell_info['id']} and shengyu_num >= {$num}")->setDec('shengyu_num',$num);
+            $rs[] = Db::name('excoin_sell')->where("id={$sell_info['id']}")->setInc('match_num',$num);
+            $rs[] = $buy_id= Db::name('excoin_buy')->insertGetId([
+                'uid'=>$sell_info['uid'], # 商户uid
+                'name_en'=>'usdt','match_num'=>$num, 'num'=>$num,'min'=>$sell_info['min'],
+                'shengyu_num'=>0,'price_cny'=>$sell_info['price_cny'],
+                'status'=>1,
+                'ip'=>$ip,
+            ]);
+
+            # 插入匹配
+            $rs[] = Db::name('excoin_match')->insert([
+                'buy_id'=>$buy_id,
+                'sell_id'=>$sell_info['id'],'match_uid'=>$sell_info['uid'],'name_en'=>'usdt',
+                'order_no'=>$order_no,'liushui_no'=>$liushui_no,'msg'=>$msg,
+                'num'=>$num,'price'=>$money,'time'=>$time_s,'end_time'=>$end_time_s,
+                'status'=>0, 'app_uid'=>$app_uid,
+            ]);
+            # 更新订单状态
+            $sell_info_now = Db::name('excoin_sell')->where("id={$sell_info['id']}")->field('match_num,num,status')->find();
+            if($sell_info_now['match_num'] < $sell_info_now['num'])$status = 3;
+            else if($sell_info_now['match_num'] == $sell_info_now['num'])$status = 1;
+            else{
+                return json(["code" => 204, "result" => "稍后再试"]);
+            }
+            Db::name('excoin_sell')->where("id={$sell_info['id']}")->update(['status'=>$status]);
+            if (check_arr($rs)){
+                Db::commit();
+                $addr = url('pay/payint',['order_no'=>$order_no]);
+                //user_log($user_info["username"],"出售广告",$ip);
+                return json(["code" => 200, "result" => $addr]);
+            }else{
+                Db::rollback();
+                return json(["status" => 0, "msg" => "发布失败"]);
+            }
+        }
+
+        $list = Db::name("excoin_match")
+            ->order("id DESC")
+            ->paginate(10);
+        $page = $list->render();
+        $order_num = date("YmdHis").makeCode(10);
+        return view("index", ["order_num"=>$order_num,"list" => $list,'page'=>$page]);
+    }
+
+    # 选择支付页面
+    public function payint()
+    {
+        $data=$this->request->param();
+        $order = Db::name("excoin_match")->where(['order_no'=>$data['order_no']])->find();
+        if (empty($order))
+            return json(["status" => 'error', "errormsg" => '非法订单']);
+
+        if ($order['type']!=0){
+            $this->redirect(url('pay/paydetail',['order_no'=>$order['order_no']]));
+        }
+
+        $sell_info = Db::name("excoin_sell")->where(['id'=>$order['sell_id']])->field('uid,bank_type')->find();
+        if (empty($sell_info))
+            return json(["status" => 'error', "errormsg" => '非法订单sell']);
+
+        $bank_list = Db::name("user_bank")->where("uid = {$sell_info['uid']} and type in({$sell_info['bank_type']})")->select();
+        if (empty($bank_list))
+            return json(["status" => 'error', "errormsg" => '支付方式出错，请联系管理员']);
+        $bank_type = array_column($bank_list,'type','type');
+        session('paytoken',makeCode(40,true));
+
+        return view("payint", ["order"=>$order,'bank_type'=>$bank_type]);
+    }
+
+
+
+    # 支付
+    public function paydetail()
+    {
+        $data=$this->request->param();
+        $order_no = input('order_no');
+        if (empty($order_no)) return json(["status" => 'error', "errorcode" => '102',"errormsg" => '非法订单']);
+
+        $order = Db::name("excoin_match")->where(['order_no'=>$data['order_no']])->find();
+
+        if (empty($order) || $order['type'] == 0||$order['status'] == 2)
+            return json(["status" => 'error', "errorcode" => '102',"errormsg" => '非法订单']);
+
+        # 超时取消匹配
+        $end_time = $order['end_time'];
+        if (getTime($end_time,false)<time()){
+
+            Db::startTrans();
+            $rs[] = Db::name("excoin_match")->where(['order_no'=>$order['order_no']])->update(['status'=>3]);
+            $rs[] = Db::name("excoin_buy")->where(['id'=>$order['buy_id']])->update(['status'=>5]);
+
+            $sell_id = $order['sell_id'];
+            $rs[] = Db::name('excoin_sell')->where("id={$sell_id} and match_num >= {$order['num']}")->setDec('match_num',$order['num']);
+            $rs[] = Db::name('excoin_sell')->where("id={$sell_id}")->setInc('shengyu_num',$order['num']);
+            if (in_array($order['status'],[2,4])){
+                $rs[] = Db::name('excoin_sell')->where("id={$sell_id}")->update(['status'=>0]);
+            }
+            if (check_arr($rs)){
+                Db::commit();
+                return json(["status" => 'error', "errorcode" => '103',"errormsg" => '非法订单']);
+            }else{
+                Db::rollback();
+                return json(["status" => 'error', "errorcode" => '104',"errormsg" => '非法订单']);
+            }
+        }
+
+        $end_time = getTime($order['end_time'],false);
+        $yu_time_s = $end_time - time();
+        # session('paytoken',null);
+        session('paytoken',makeCode(40,true));
+        return view("paydetail", ["yu_time_s"=>$yu_time_s,'order'=>$order]);
+    }
+
+    # 选支付方式
+    public function pay_type()
+    {
+        $paytoken = session('paytoken');
+        if (!$paytoken){
+            return json(["status" => 'error', "errorcode" => '101',"errormsg" => '非法订单']);
+        }
+        $data=$this->request->param();
+        if($this->request->isGet()) {
+            $type = input("type");
+            $order_no = input("order_no");
+            $type_arr = [1,2,3];
+            if (in_array($type,$type_arr)){
+                $order = Db::name("excoin_match")->where(['order_no'=>$data['order_no']])->find();
+                if (empty($order)) return json(["status" => 'error', "errorcode" => '101',"errormsg" => '非法订单']);
+
+                $bank = Db::name("user_bank")->where("uid = {$order['match_uid']} and type = {$type}")->find();
+                if (empty($bank)) return json(["status" => 'error', "errorcode" => '101',"errormsg" => '支付方式异常，请联系管理员']);
+
+                $res = Db::name("excoin_match")->where(['order_no'=>$data['order_no']])->update(['type'=>$type,'user_name'=>$bank['user_name'],'bank_name'=>$bank['bank_name'],'bank_number'=>$bank['bank_number'],'qrcode'=>$bank['qrcode']]);
+
+                if ($res){
+                    session('paytoken',null);
+                    $this->redirect(url('pay/paydetail',['order_no'=>$order_no]));
+                }
+            }
+        }
+        return json(["status" => 'error', "errormsg" => '非法订单']);
+    }
+
+    # 确认打款
+    public function pay_dakuan()
+    {
+        if($this->request->isPost()) {
+            $order_id = input("post.order_id");
+            $_paytoken = input("post._paytoken");
+            $paytoken = session('paytoken');
+            if ($_paytoken!=$paytoken) return json(["status" => 'error', "errorcode" => 101,"errormsg" => '非法提交']);
+            session('paytoken',null);
+
+            $match_order = Db::name("excoin_match")->where(['id'=>$order_id,'status'=>0])->update(['status'=>1,'dakuan_time'=>getTime()]);
+            if ($match_order){
+                return json(["status" => 'ok', "msg" => '确认成功']);
+            }
+        }
+        return json(["status" => 'error', "errorcode" => 102,"errormsg" => '付款失败']);
+    }
+
+    public function daojitime($time)
+    {
+        $time = strtotime($time);
+        $etime = $time + 15 * 60 *100;
+
+        if ($etime<time()){
+            return false;
+        }
+
+        return $etime-$time;
+    }
+
+}

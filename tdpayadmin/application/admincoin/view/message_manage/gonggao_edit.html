@@ -1,0 +1,171 @@
+<style>
+	.breadcrumb-item {
+		list-style: none;
+	}
+	.form-group label input{
+		position: relative;
+		top:2px;
+	}
+	/*缩略图*/
+	.answerImg img{
+		width:120px;
+	}
+	#duofiles{
+		opacity: 0;
+		position: relative;
+		left: -137px;
+		width: 134px;
+		border: 1px solid red;
+		height: 35px;
+	}
+</style>
+	<section class="section">		
+		<div class="row">
+			<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="float-left">编辑公告</h4>
+						<ol class="float-right">
+							<li class="breadcrumb-item"><a href="#"> &lt;&lt;返回 </a></li>	
+						</ol>
+					</div>
+					<div class="card-body">
+						<form class="form-horizontal">
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">公告标题</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" value="平台公告">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">所属类别</label>
+								<div class="col-md-9">
+									<select class="form-control">
+										<option>公司公告</option>
+										<option>公司信息</option>
+										<option>注册协议</option>										
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">排序值</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" value="1">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">添加时间</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" value="2018-12-13 16:13:03">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">编辑时间</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" value="2018-12-13 16:13:03">
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">缩略图</label>
+								<div class="col-md-9">
+									<div class="upload_ws_img">
+										<div class="answerImg"></div>
+										<div style="position: relative;" class="inp_div_img">
+											<button class="btn btn-info uploadBtn">点击上传图片</button>
+											<input type="file" name="files[]"   multiple="multiple" class="upload-img upload-img2" id="duofiles">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">内容摘要</label>
+								<div class="col-md-9">
+									<textarea class="form-control" rows="6" placeholder="公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容"></textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">首页显示</label>
+								<div class="col-md-9">
+									<label style="margin-right:30px;">
+										<input type="radio" name="r1" class="minimal" checked="">
+										<span>显示</span>
+									</label>
+									<label>
+										<input type="radio" name="r1" class="minimal">
+										<span>不显示</span>
+									</label>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">状态</label>
+								<div class="col-md-9">
+									<label style="margin-right:30px;">
+										<input type="radio" name="r2" class="minimal1" checked="">
+										<span>可用</span>
+									</label>
+									<label>
+										<input type="radio" name="r2" class="minimal1" >
+										<span>禁用</span>
+									</label>
+								</div>
+							</div>
+						</form>
+						<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+							<button type="submit" class="btn btn-outline-primary mt-1 mb-0">取消</button>
+							<button type="submit" class="btn btn-primary mt-1 mb-0">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</section>
+	
+	<script>
+		/*返回公告管理页面*/
+		$(".breadcrumb-item").click(function(){
+			$('.app-content').empty();
+			$.ajax({
+				type: "GET",
+				cache:false,
+				async:false,
+				url: httpHead+'/message/gonggao-set.html',
+				success: function(data) {
+					$('.app-content').append(data);
+				}
+			});
+		});
+		
+		
+		//上传图片预览
+		 var inputFiles = {};
+        var amountIndexI = 0;
+        $("#duofiles").change(function () {
+        	amountIndexI++;
+           //将图片的路径动态存入数组          
+           var pic = document.getElementById("duofiles").files[0];
+           //console.log(pic);
+           var srcSrc = window.URL.createObjectURL(pic);
+           //console.log($('.answerImg img').length);          
+	            //动态创建子元素	            
+	            $('<img>',{
+					src:srcSrc
+				}).appendTo($('.answerImg'));
+            	          
+	        $(this).attr('data-type',true);
+	        var inputFileIndex = 'filename'+amountIndexI;
+	        inputFiles[inputFileIndex] = pic
+	        if($('.answerImg img').length == 1){
+           		$('.inp_div_img').hide();
+           }
+            
+        });       
+        //上传图片预览
+		
+	</script>
+		
+
+		
+
+

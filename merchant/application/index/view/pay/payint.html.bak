@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+	<style type="text/css">
+		.navbar{ background: #5458B3!important;}
+		.app-content{ width: 80%;}
+		.main-navbar .header-brand{ padding-left: 15rem!important;}
+		.ddbh{ line-height: 2rem;}
+		.ddname{line-height: 2rem;}
+		.btn-info{background-color: #5458B3!important; border-color: #5458B3!important;}
+		.card-body .btncolor:hover{background-color: #5a1aff!important;}
+		.btn-info a{ color: #fff!important;text-decoration: none;}
+		.btn-info a:hover{text-decoration: none;}
+		.info{  background: #fff;
+			    padding: 24px;
+			    border-radius: 5px;
+			    display: flex;
+			    align-items: center;
+			    margin-bottom: 1rem!important;}
+	    .payinfo button{ width: 100%!important;padding: 0.7rem 0;}
+	    .payinfo .info-bottom{ margin: 1rem!important;}
+	    .payinfo button img{ margin-right: 0.3rem;}
+	    .btn-outline-primary{border-color: #d2d3da!important; }
+	    .tips{ margin: 0.5rem 0;font-size: 12px;}
+	    .btn-outline-primary:hover {
+		    background: #fff!important;
+		    border-color: solid #5d61bf 1px!important;
+		}
+		.btn:active, .btn:focus, .btn:hover {
+    		border-color: #5d61bf !important;
+    	}
+    	.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+		    color: #fff;
+		    background-color: #fff!important;
+		    border-color: #5458b3!important;
+		}
+		.tijiao {
+			color: #fff!important;
+		   background: #5458B3!important;
+		    border-color: solid #5d61bf 1px!important;
+		}
+		.tijiao:active, .tijiao:focus, .tijiao:hover {
+    		 background: #5458B3!important;
+    	}
+    	a:hover,a{ text-decoration: none!important;}
+    	.staff{ background: #E4E5F3;width: 0.3rem;height: 1.5rem;display: inline-block;margin-right: 0.5rem;} 
+	    .payinfo button{ height: 3.5rem!important;padding: 0;}
+	    .baohu{ display: flex;}
+	    .sum{	         	
+                 text-align:right;
+	         }
+	    @media only screen and (max-width:750px) {
+	    	.bohu{
+	    	  width:47px;
+	    	  height:52px;
+	    	 
+	         }
+	         .zhifu_img_box{
+	         	 margin-right:20px;
+	         	 margin-top:13px;
+	         }
+	         #zhifu_box{
+	         	padding-left:0;
+	         	padding-right:0;
+	         	display:flex;
+	         	
+	         }
+	         .sum{
+	         	 margin-top: 18px;
+                 border-top: 1px solid #dcdcdc;
+                 padding-top: 10px;
+                 text-align:left;
+	         }
+	         #jine{
+	         	display:block;
+	         	margin-top:4px;
+	         }
+	    }
+	    
+	</style>
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>B-payer支付</title>
+
+		<!--Favicon -->
+		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+		<!--Bootstrap.min css-->
+		<link rel="stylesheet" href="__PAY__/assets/plugins/bootstrap/css/bootstrap.min.css">
+
+		<!--Icons css-->
+		<link rel="stylesheet" href="__PAY__/assets/css/icons.css">
+
+		<!--Style css-->
+		<link rel="stylesheet" href="__PAY__/assets/css/style.css">
+
+		<!--mCustomScrollbar css-->
+		<link rel="stylesheet" href="__PAY__/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css">
+
+		<!--Sidemenu css-->
+		<link rel="stylesheet" href="__PAY__/assets/plugins/toggle-menu/sidemenu.css">
+
+		<!--Morris css-->
+		<link rel="stylesheet" href="__PAY__/assets/plugins/morris/morris.css">
+
+	</head>
+
+	<body class="app ">
+
+		<div id="spinner"></div>
+
+		<div id="app">
+			<div class="main-wrapper" >
+				 
+				<nav class=" row navbar ">
+					<div class="col-lg-6 col-xl-6 col-md-6 col-12 offset-lg-2 offset-xl-2 offset-md-2" >
+						<a class="header-brand" href="#" style="display: flex;align-items: center;color: #fff;">
+                            <img src="__IMG__/brand/logo-white.png" class="header-brand-img" alt="logo">
+						
+					</a>
+					</div>				
+					
+				</nav>			
+
+				<div class="app-content" >
+					<div class="row info" style="box-shadow: 0 2px 17px 2px rgb(222, 223, 241);">
+						<div class="col-lg-7 col-xl-7 col-md-7 col-12 baohu" id="zhifu_box">
+							   <div class="zhifu_img_box">
+							   	   <img src="__PAY__/img/baohu.png" class="bohu"/>
+							   </div>
+								
+								<div style="margin-top: 0.6rem;" class="row">
+									<span style="font-size: 16px; margin-left:10px ;" class="col-lg-12 col-xl-12 col-md-12 col-12 ">您的订单在B-payer支付保护中，请放心使用</span>
+									<p style="margin: 0.6rem 0 0 1.6rem;">
+										订单号：{$order.order_no} &nbsp;&nbsp;<span id="jine">购买数量：<span style="color: red">{$order.num|round=6}</span>&nbsp;USDT</span>
+									</p>
+								</div>
+								
+							
+						</div>
+						<div class="col-lg-5 col-xl-5 col-md-5 col-12 sum" >	
+							<span >支付金额：</span>
+							<strong style="color: red;font-size: 20px;margin: 0.3rem;" class="exchange-num">{$order.price|round=2}</strong><i style="color: red;font-style: normal;" class="exchange-name">CNY</i>
+						</div>
+					</div>
+					<div class="card row">
+						<!--<div>请选择以下支付方式</div>-->
+						<div class="card-header">
+							<h4 style="font-size: 1.1rem;">请选择以下支付方式</h4>
+						</div>
+                        <?php if (!empty($bank_type[2]) && $bank_type[2]==2){?>
+						<div class="row payinfo" style="margin-top: 1rem;">						
+							<div class="col-lg-4 col-md-6 col-12">
+                                <div class=" text-center info-bottom">
+                                    <a href="{:url('pay/pay_type',['order_no'=>$order['order_no'],'type'=>2])}">
+                                    <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#exampleModal">
+                                        <img src="__PAY__/alipaypc.png"/ style="width: 5.5rem;">
+                                    </button>
+                                    </a>
+                                </div>
+							</div>
+                            <?php }?>
+
+                            <?php if (!empty($bank_type[3]) && $bank_type[3]==3){?>
+							<div class="col-lg-4 col-md-6 col-12 alipay-international">
+                                <div class=" text-center info-bottom">
+                                    <a href="{:url('pay/pay_type',['order_no'=>$order['order_no'],'type'=>3])}">
+                                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong">
+<!--											<img src="__PAY__/img/wechatpay.png"/>微信支付-->
+                                        <img src="__PAY__/img/1.png"/>
+                                    </button>
+                                    </a>
+                                </div>
+							</div>
+                            <?php }?>
+                            <?php if (!empty($bank_type[1]) && $bank_type[1]==1){?>
+							<div class="col-lg-4 col-md-6 col-12 paypal">
+                                <div class=" text-center info-bottom">
+                                    <a href="{:url('pay/pay_type',['order_no'=>$order['order_no'],'type'=>1])}">
+                                    <button class="btn btn-outline-primary" data-toggle="modal" data-target="#largeModal">
+<!--                                            <img src="__PAY__/img/bank.png"/>银联支付-->
+                                        <img src="__PAY__/img/2.png"/>
+                                    </button>
+                                    </a>
+                                </div>
+							</div>
+                            <?php }?>
+					    </div>
+					<div class="col-lg-12 col-md-12 col-12 tips"><img src="__PAY__/img/tishi.png" style="width: 0.9rem; margin-top: -0.2rem;"/> B-payer支付是一个独立的数字支付平台，所有信息均采用双层加密。</div>
+                        <!--<div class="col-lg-12 col-md-12 col-12 tips">
+                            <div>所有汇率均采用国际权威平台实时汇率。
+                                <span class="bz-exchange"></span>
+                                <span class="exchange-rate"></span>
+                            </div>
+                        </div>
+                        <div class="exchange col-lg-12 col-md-12 col-12 ">
+                            <div>兑换汇率：<span class="exchange-rate">1</span></div>
+                            <div>可兑换：<span class="exchange-num">info.order_money} CNY</span></div>
+                        </div>-->
+					
+					<div class="row" style="    margin: 30px 0 100px;">
+						<div class="col-lg-4 col-md-4 col-6 offset-lg-4 offset-md-4 offset-3 ">
+							<div class=" text-center info-bottom yesstyle">
+								<button type="button" class="btn btn-outline-primary tijiao" data-toggle="modal" data-target="#exampleModalLong" style="width: 100%;">
+									确认支付
+								</button>
+							</div>							
+						</div>
+						<!--<div class="col-lg-2 col-md-4 col-6 ">							
+							<div class=" text-center info-bottom">
+								<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong" style="width: 100%;">
+									
+									取消
+								</button>
+							</div>
+						</div>-->
+					</div>
+					
+					</div>
+					
+					
+				</div>
+				
+				<footer class="main-footer">
+					<div class="text-center">						
+						Copyright &copy;B-payer支付
+					</div>
+				</footer>
+
+			</div>
+		</div>
+
+		<!--Jquery.min js-->
+		<script src="__PAY__/assets/js/jquery.min.js"></script>
+
+		<!--popper js-->
+		<script src="__PAY__/assets/js/popper.js"></script>
+
+		<!--Tooltip js-->
+		<script src="__PAY__/assets/js/tooltip.js"></script>
+
+		<!--Bootstrap.min js-->
+		<script src="__PAY__/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!--Jquery.nicescroll.min js-->
+		<script src="__PAY__/assets/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+
+		<!--Scroll-up-bar.min js-->
+		<script src="__PAY__/assets/plugins/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+
+		<!--mCustomScrollbar js-->
+		<script src="__PAY__/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+		<!--Sidemenu js-->
+		<script src="__PAY__/assets/plugins/toggle-menu/sidemenu.js"></script>
+
+		<!--Scripts js-->
+		<script src="__PAY__/assets/js/scripts.js"></script>
+
+	 </body>
+</html>

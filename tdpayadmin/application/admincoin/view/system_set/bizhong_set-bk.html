@@ -1,0 +1,250 @@
+
+<style>
+    .noEdit{
+        font-size:12px;
+        color:red;
+        margin-top:5px;
+        margin-bottom:-5px;
+    }
+</style>
+                    
+<section class="section">
+
+	<div class="row">
+		<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>币种配置</h4>
+				</div>
+				<div class="card-body">
+					<form class="form-horizontal">
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">选择币种</label>
+							<div class="col-md-9">
+								<select class="form-control coin-name">
+                                    {foreach $name as $val}
+                                    <option value="{$val}">{$val}</option>
+                                    {/foreach}
+								</select>
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">币名</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="title" value="{$list.title}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label" for="example-email" id="typeName">图片</label>
+							<div class="col-md-9">
+								<input type="text" id="example-email" name="image" class="form-control" value="{$list.image}" readonly>
+								<!-- <p class="noEdit">手机号为登录凭证不可更改</p> -->
+							</div>
+						</div>
+						<!-- <div class="form-group row">
+							<label class="col-md-3 col-form-label">行业</label>
+							<div class="col-md-9">
+								<select class="form-control">
+									<option>IT行业</option>
+									<option>服务行业</option>
+								</select>
+							</div>
+						</div> -->
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">排序</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="weight" value="{$list.weight}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">节点ip</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="hostname" value="{$list.hostname}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">节点端口</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="port" value="{$list.port}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">节点账号</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="username" value="{$list.username}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">节点密码</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="password" value="{$list.password}">
+							</div>
+						</div>
+						<div class="form-group row configs" id="ethjd" style="display: none">
+							<label class="col-md-3 col-form-label">ETH精度</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="precision" value="{$list.precision}">
+							</div>
+						</div>
+						<div class="form-group row configs" id="ethhy" style="display: none">
+							<label class="col-md-3 col-form-label">ETH合约地址</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="hyaddress" value="{$list.hyaddress}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">提现限额</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="limit" value="{$list.limit}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">充值限额</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="limit" value="{$list.climit}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">提币手续费</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="fee" value="{$list.fee}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">手续费最大值</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="maxfee" value="{$list.maxfee}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">单次提现最小数量</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="min" value="{$list.min}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">单次提现最大数量</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="max" value="{$list.max}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">兑换最小数量</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="changmin" value="{$list.changmin}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">兑换最大数量</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="changemax" value="{$list.changemax}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">兑换手续费</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="changfee" value="{$list.changfee}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">兑换手续费上限</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="changfeemax" value="{$list.changfeemax}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">确认次数</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="query" value="{$list.query}">
+							</div>
+						</div>
+						<div class="form-group row configs">
+							<label class="col-md-3 col-form-label">币种状态</label>
+							<div class="col-md-9">
+								<select class="form-control" name="status">
+									<option value="normal" {$list.status=='正常'?'selected':'' } >正常</option>
+									<option value="hidden" {$list.status=='冻结'?'selected':'' } >禁用</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+						    <button type="button" class="btn btn-outline-primary  mt-1 mb-0">取消</button>
+                    		<button type="button" class="btn btn-primary mt-1 mb-0" id="confirm">确定</button>
+                    	</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+<script>
+
+    /* 查询具体币种 */
+    $('.coin-name').change(function()
+	{
+		var name 	= $(this).val();
+		if (name=='btc'||name=='usdt'){
+            $("$ethjd").hide();
+            $("$ethhy").hide();
+        }else{
+            $("$ethjd").show();
+            $("$ethhy").show();
+        }
+		$.ajax({
+            type: "GET",
+            url: '/admincoin/System_set/currencySet/name/'+name,
+            success: function(e) {
+                if (e.code == 200) {
+                		for (key in e.data) {
+                			$("input[name="+key+"]").val(e.data[key]);
+                		}
+                        return false;   
+                    }else{
+                        layer.msg(e.msg)
+                    }
+            }
+        });
+        return false;
+	});
+
+	// 提交
+    $('#confirm').click(function()
+	{
+		var data = {};
+		var allInputs = $('.configs input');
+		for (var i = 0; i < allInputs.length; i++) 
+		{
+			var name 	= allInputs[i].name;
+			var value 	= allInputs[i].value;
+			data[name] 	= value; 
+		}
+		data['status'] 	= $('select[name=status]').val();
+		data['coin-name'] = $('.coin-name').val();
+		$.ajax({
+			type: "POST",
+			data: data,
+			url:'/admincoin/System_set/currencySet',
+			success: function(e) {
+				if (e.code == 200) {
+					layer.msg(e.msg);
+					$('.app-content').empty();
+						$.ajax({
+							type: "GET",
+							url: '/admincoin/System_set/currencySet',
+							success: function(data) {
+								$('.app-content').append(data);
+							}
+						});
+						return false;
+				}else{
+					layer.msg(e.msg);
+				}
+			}
+		});
+	});
+</script>
+		
+		

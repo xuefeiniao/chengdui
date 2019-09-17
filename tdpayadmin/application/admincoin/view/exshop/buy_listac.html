@@ -1,0 +1,307 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+</style>
+<style>
+    /*分页样式*/
+    .pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+    .pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+    .pagination .active{background-color: #46A3FF;color: #fff;}
+    .pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>交易员求购订单列表</h4>
+                </div>
+                <div class="card-body">
+                    <!--搜索条件-->
+                    <!--<form id="formID">
+                        <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                            <div class="col-sm-12 col-md-2">
+                               <label>订单状态：
+                                    <select class="form-control" name="nowstatus">
+                                        <option value="all" {if $variate["nowstatus"]=="all"}selected{/if}>全部</option>
+                                        <option value="1" {if $variate["nowstatus"]=="1"}selected{/if}>挂单中</option>
+                                        <option value="2" {if $variate["nowstatus"]=="2"}selected{/if}>完成</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col-sm-12 col-md-6 text-right">
+                                <input type="button" class="btn btn-primary otcorder" value="搜索">
+                            </div>
+                        </div>
+                    </form>-->
+                    <div class="table-responsive">
+                        <table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+                            <thead>
+                            <tr>
+                                <th class="wd-15p">订单编号</th>
+                                <th class="wd-15p">承兑用户名</th>
+                                <th class="wd-15p">承兑昵称</th>
+                                <th class="wd-25p">交易金额</th>
+                                <th class="wd-25p">交易数量</th>
+                                <th class="wd-25p">交易价格</th>
+                                <th class="wd-25p">创建时间</th>
+                                <th class="wd-25p">交易状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $data as $key=>$vo}
+                            <tr>
+                                <td>{$vo.order_no}</td>
+                                <td>{$vo.user.username}</td>
+                                <td>{$vo.user.nickname}</td>
+                                <td>{$vo.price}</td>
+                                <td>{$vo.num}</td>
+                                <td><?php echo number_format($vo['price']/$vo['num'],2,'.','');?></td>
+                                <td>{$vo.time}</td>
+                                <td><?php $tmp=['待打款','待确认','已完成','过期订单','已取消','投诉中'];echo $tmp[$vo['status']]?></td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页 -->
+                    <div class="row">
+                        <div class="col-sm-12 col-md-5">
+                            <div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                            <div class="dataTables_paginate paging_simple_numbers text-right" >
+                                <ul class="pagination" style="justify-content: flex-end;">
+                                    {$page|raw}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Grid Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="example-Modal2">请输入申诉理由，并确认</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea class="form-control" rows="5" id="inputtousu"></textarea>
+                    </div>
+                    <div id="tusuids">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="tousu">提交</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="iakModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="example-Modal1">查看支付方式</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <!-- <label class="col-md-3 col-form-label">ID</label> -->
+                    <div class="col-md-8">
+                        <input type="hidden" class="form-control" value="001" id="id">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">支付类型</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" value="14" id="bank_type" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">姓名</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" value="" id="bank_user_name" readonly>
+                    </div>
+                </div>
+                <div class="form-group row" id="banktype1" style="display: none">
+                    <label class="col-md-3 col-form-label">银行卡号</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" value="" id="bank_type" readonly>
+                    </div>
+                </div>
+                <div class="form-group row" id="banktype2" style="display: none">
+                    <label class="col-md-3 col-form-label">支付二维码</label>
+                    <div class="col-md-8">
+                        <img src="" alt="" id="bank_qrcode" style=" width: 80%; ">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8" id="iakjid">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * 引用日期插件
+     */
+    laydate.render({
+        elem: '#startDate' //指定元素
+    });
+    laydate.render({
+        elem: '#endDate' //指定元素
+    });
+
+    /**
+     * 过滤数据
+     */
+    $(".otcorder").click(function(){
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.post("{:url('Otcmanage/otcorder')}",data,function(data){
+            $(".app-content").append(data);
+        });
+    });
+    /**
+     * 分页数据
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+</script>
+
+<script>
+    //提交表单数据
+    $("#dakuan").click(function(){
+        var id=$(this).attr("data-id");
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('exshop/buy_dakuanac')}",
+            data:{
+                match_id:id,
+            },
+            success:function(data){
+                if(data.status==1){
+                    layer.msg(data.msg);
+                    tiao();
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(error){}
+        });
+    });
+
+    //	跳页面
+    function tiao() {
+        var href = "{:url('exshop/buy_dakuanlist')}";
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            async : false,
+            cache : false,
+            url:httpHead+href,
+            success: function(data) {
+                $('.app-content').append(data);
+            }
+        });
+        return false;
+    }
+
+    //提交表单数据
+    $("#tousuinfo").click(function(){
+        var id=$(this).attr("data-id");
+        var data = '<input name="tusuid" id="tousuid" type="hidden" value="' + id +'">';
+        $('#tusuids').append(data);
+    });
+
+    $("#tousu").click(function(){
+        var id=$("#tousuid").val();
+        var inputtousu=$("#inputtousu").val();
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('exshop/tousuac')}",
+            data:{
+                match_id:id,
+                inputtousu:inputtousu,
+            },
+            success:function(data){
+                if(data.status==1){
+                    layer.msg(data.msg);
+                    tiao();
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(error){}
+        });
+    });
+
+    $("#iakjinfo").click(function(){
+        var id=$(this).attr("data-id");
+        $.post("{:url('exshop/iakjinfo')}",{sell_id:id}, function(data){
+            if(data.bank_type==1){
+                $("#banktype1").show();
+                $("#banktype2").hide();
+            }else{
+                $("#banktype1").hide();
+                $("#banktype2").show();
+            }
+            $("#bank_type").val(data.bank_type_cn);
+            $("#bank_user_name").val(data.bank_user_name);
+            $("#bank_qrcode").attr('src',data.bank_qrcode);
+        });
+
+    });
+
+</script>

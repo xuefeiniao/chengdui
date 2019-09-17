@@ -1,0 +1,156 @@
+<aside class="app-sidebar">
+    <div class="app-sidebar__user">
+        <div class="dropdown">
+            <a class="nav-link pl-2 pr-2 leading-none d-flex" data-toggle="dropdown" href="#">
+                <img alt="image" src="/assets/img/avatar/avatar-1.jpeg.jpg" class=" avatar-md rounded-circle">
+                <span class="ml-2 d-lg-block">
+                    <span class="text-white app-sidebar__user-name mt-5">{$username}</span><br>
+                    <span class="text-muted app-sidebar__user-name text-sm"> {$phone}</span>
+                </span>
+            </a>
+        </div>
+    </div>
+    <ul class="side-menu">
+        <li class="slide">
+            <a class="side-menu__item noChild" href="{:url('admincoin/Index/index1')}"><i class="side-menu__icon fa fa-desktop"></i><span class="side-menu__label">管理首页</span></a>
+        </li>
+        <!-- <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-flask"></i><span class="side-menu__label">商户设置</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="canshu.html" class="slide-item"> 参数设置</a></li>
+                <li><a href="userMessage.html" class="slide-item"> 商户信息</a></li>
+                <li><a href="changePassword.html" class="slide-item"> 修改密码</a></li>
+            </ul>
+        </li> -->
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">用户基本管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/ShopManage/shop')}" class="slide-item">用户管理</a></li>
+                <li><a href="{:url('admincoin/ShopManage/shopList')}" class="slide-item">资产变更</a></li>
+                <li><a href="{:url('admincoin/ShopManage/shopCheckRecord')}" class="slide-item">登录记录</a></li>
+            </ul>
+        </li>
+
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-flask"></i><span class="side-menu__label">商户管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/ShopManage/shop',['type'=>'shop'])}" class="slide-item">商户列表</a></li>
+                <li><a href="{:url('admincoin/Shop/coinlog')}" class="slide-item">商户收款记录</a></li>
+                <!--<li><a href="{:url('admincoin/OrderManage/rechargeOrder')}" class="slide-item"> 充值订单</a></li>
+                <li><a href="{:url('admincoin/OrderManage/withdrawOrder')}" class="slide-item"> 提现订单</a></li>-->
+                <!--<li><a href="{:url('admincoin/ShopManage/shop')}" class="slide-item">商户出售订单列表</a></li>-->
+                <!--<li><a href="{:url('admincoin/ShopManage/shopChange')}" class="slide-item">变更记录</a></li>-->
+            </ul>
+        </li>
+
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-paw"></i><span class="side-menu__label">承兑商管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/ShopManage/shop',['type'=>'exshop'])}" class="slide-item">承兑商列表</a></li>
+                <li><a href="{:url('exshop/coinlog')}" class="slide-item">承兑商奖励</a></li>
+                <li><a href="{:url('exshop/sell_list')}" class="slide-item">出售广告</a></li>
+                <li><a href="{:url('exshop/sell_listac')}" class="slide-item">订单列表</a></li>
+                <li><a href="{:url('exshop/msglist')}" class="slide-item">消息提醒</a></li>
+                <li><a href="{:url('exshop/tousu')}" class="slide-item">投诉订单</a></li>
+                <!--<li><a href="{:url('exshop/buy_list')}" class="slide-item">交易员求购广告</a></li>
+                <li><a href="{:url('exshop/buy_listac')}" class="slide-item">交易员求购订单</a></li>-->
+            </ul>
+        </li>
+
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-paw"></i><span class="side-menu__label">代理商管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/ShopManage/shop',['type'=>'agency'])}" class="slide-item">代理商列表</a></li>
+                <li><a href="{:url('admincoin/AgencyManage/index')}" class="slide-item">代理列表</a></li>
+                <li><a href="{:url('admincoin/AgencyManage/shareLog')}" class="slide-item">奖励记录</a></li>
+                <!--<li><a href="{:url('admincoin/AgencyManage/withdraw')}" class="slide-item">提币记录</a></li>-->
+            </ul>
+        </li>
+
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-tasks"></i><span class="side-menu__label">订单管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/OrderManage/rechargeOrder')}" class="slide-item"> 充值订单</a></li>
+                <li><a href="{:url('admincoin/OrderManage/withdrawOrder')}" class="slide-item"> 提币订单</a></li>
+                <li><a href="{:url('admincoin/OrderManage/tixmcny_list')}" class="slide-item"> 提现订单</a></li>
+            </ul>
+        </li>
+        <!-- <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-paw"></i><span class="side-menu__label">钱包管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="recharge.html" class="slide-item">在线充币</a></li>
+                <li><a href="withdraw.html" class="slide-item">在线提币</a></li>
+                <li><a href="change.html" class="slide-item">币种兑换</a></li>
+            </ul>
+        </li> -->
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">财务管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <!--<li><a href="{:url('admincoin/FinanceManage/onlineRecharge')}" class="slide-item">在线充值</a></li>-->
+                <!--<li><a href="{:url('admincoin/FinanceManage/fDetail')}" class="slide-item">财务明细</a></li>-->
+                <li><a href="{:url('admincoin/FinanceManage/integralDetail')}" class="slide-item">资金明细</a></li>
+                <li><a href="{:url('admincoin/exshop/shop_list')}" class="slide-item">订单明细</a></li>
+                <!--								<li><a href="{:url('FinanceManage/integral')}" class="slide-item">积分明细</a></li>-->
+                <li><a href="{:url('FinanceManage/changedetail')}" class="slide-item">兑换记录</a></li>
+                <li><a href="{:url('FinanceManage/clwulog')}" class="slide-item">财务报表</a></li>
+            </ul>
+        </li>
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">系统设置</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/ShopManage/shopCheckRecord')}" class="slide-item">登录记录</a></li>
+                <li><a href="{:url('admincoin/SystemSet/systemSet')}" class="slide-item">参数设置</a></li>
+                <li><a href="{:url('admincoin/SystemSet/currencySet')}" class="slide-item">币种配置</a></li>
+                <li><a href="{:url('admincoin/SystemSet/setexshop')}" class="slide-item">交易设置</a></li>
+                <li><a href="{:url('admincoin/SystemSet/set_uifh')}" class="slide-item">系统维护</a></li>
+            </ul>
+        </li>
+        <!--<li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">地址管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/AddressManage/index')}" class="slide-item">地址列表</a></li>
+                <li><a href="{:url('admincoin/AddressManage/set')}" class="slide-item">地址发行</a></li>
+                <li><a href="{:url('admincoin/AddressManage/record')}" class="slide-item">分配记录</a></li>
+            </ul>
+        </li>-->
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-bar-chart"></i><span class="side-menu__label">信息管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/MessageManage/information')}" class="slide-item">文章列表</a></li>
+                <li><a href="{:url('admincoin/MessageManage/class')}" class="slide-item">分类管理</a></li>
+            </ul>
+        </li>
+
+        <!--<li class="slide">
+              <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-cloud"></i><span class="side-menu__label">OTC管理</span><i class="angle fa fa-angle-right"></i></a>
+              <ul class="slide-menu">
+                  <li><a href="{:url('Otcmanage/userotcorder')}" class="slide-item">订单管理</a></li>
+                  <li><a href="{:url('Otcmanage/otcorder')}" class="slide-item">系统订单</a></li>
+                  <li><a href="{:url('Otcmanage/order')}" class="slide-item">系统挂单</a></li>
+                  <li><a href="{:url('Otcmanage/tousu')}" class="slide-item">投诉订单</a></li>
+              </ul>
+          </li>-->
+
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-pie-chart"></i><span class="side-menu__label">权限管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('admincoin/Permission/index')}" class="slide-item">管理员管理</a></li>
+                <li><a href="{:url('admincoin/Permission/roleList')}" class="slide-item">角色管理</a></li>
+                <li><a href="{:url('admincoin/Permission/ffpz')}" class="slide-item">用户管理权限分配</a></li>
+<!--                <li><a href="{:url('admincoin/Permission/permissionList')}" class="slide-item">权限管理</a></li>-->
+            </ul>
+        </li>
+
+        <!--<li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-pie-chart"></i><span class="side-menu__label">API管理</span><i class="angle fa fa-angle-right"></i></a>
+            <ul class="slide-menu">
+                <li><a href="{:url('ApiManage/apirecord')}" class="slide-item">API记录</a></li>
+                <li><a href="{:url('ApiManage/apiblack')}" class="slide-item">API白名单</a></li>
+            </ul>
+        </li>-->
+
+        <li class="slide">
+            <a class="side-menu__item" href="{:url('admincoin/Login/loginout')}"><i class="side-menu__icon icon icon-power"></i><span class="side-menu__label">退出登录</span></i></a>
+        </li>
+    </ul>
+</aside>

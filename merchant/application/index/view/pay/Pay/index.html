@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+	<style type="text/css">
+		.navbar{ background: #5458B3!important;}
+		.app-content{ width: 80%;}
+		.main-navbar .header-brand{ padding-left: 15rem!important;}
+		.ddbh{ line-height: 2rem;}
+		.ddname{line-height: 2rem;}
+		.btn-info{background-color: #5458B3!important; border-color: #5458B3!important;}
+		.card-body .btncolor:hover{background-color: #5a1aff!important;}
+		.btn-info a{ color: #fff!important;text-decoration: none;display: block;}
+		.btn-info a:hover{text-decoration: none;}
+		a,a:hover{text-decoration: none;}
+		.table td{ vertical-align: middle!important;}
+		.app-content{padding: 40px 10px 0 10px!important;}
+		.table .btn{ padding: 0;}
+		.table a{padding: 5px 23px;}
+		.table .over_time{background: #97979a!important;
+		    			border-color: #97979a!important;
+						font-size: 14px;
+					    line-height: 23px;
+					    padding: 0;
+					    letter-spacing: .4px;
+					    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+		}
+		.card-body .over_time:hover {
+		    background-color: #97979a!important;
+		}
+		.card-body .over_time:active {background-color: #97979a!important;}
+		.table .over_time:focus, .table .over_time:focus:active, .table .over_time:active, .table .over_time:hover {
+		    background-color: #97979a!important;
+		}
+
+	</style>
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>中链支付</title>
+
+		<!--Favicon -->
+		<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+		<!--Bootstrap.min css-->
+		<link rel="stylesheet" href="/public/pay/assets/plugins/bootstrap/css/bootstrap.min.css">
+
+		<!--Icons css-->
+		<link rel="stylesheet" href="/public/pay/assets/css/icons.css">
+
+		<!--Style css-->
+		<link rel="stylesheet" href="/public/pay/assets/css/style.css">
+
+		<!--mCustomScrollbar css-->
+		<link rel="stylesheet" href="/public/pay/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css">
+
+		<!--Sidemenu css-->
+		<link rel="stylesheet" href="/public/pay/assets/plugins/toggle-menu/sidemenu.css">
+
+		<!--Morris css-->
+		<link rel="stylesheet" href="/public/pay/assets/plugins/morris/morris.css">
+
+	</head>
+
+	<body class="app ">
+
+		<div id="spinner"></div>
+
+		<div id="app">
+			<div class="main-wrapper" >
+				<!--<nav class="navbar navbar-expand-lg main-navbar">
+					<div style="width: 80%;">
+						<a class="header-brand" href="#">
+						<img src="/public/pay/soole.png" class="header-brand-img" alt="logo">
+					</a>
+					</div>
+
+				</nav>-->
+				<nav class=" row navbar ">
+					<div class="col-lg-6 col-xl-6 col-md-6 col-12 offset-lg-2 offset-xl-2 offset-md-2" >
+						<a class="header-brand" href="#">
+						<img src="/public/pay/soole.png" class="header-brand-img" alt="logo">
+					</a>
+					</div>
+
+				</nav>
+				<div class="app-content">
+					<section class="section">
+
+						<div class="row">
+							<div class="col-lg-12 col-xl-6 col-md-12 col-sm-12">
+								<!---->
+								<div class="card">
+									<div class="card-header">
+										<h4>支付信息</h4>
+									</div>
+									<div class="card-body">
+										<form class="form-horizontal" >
+											<div class="form-group row">
+												<label for="inputName" class="col-md-3 col-form-label">金额(人民币)</label>
+												<div class="col-md-9">
+													<input type="text" class="form-control" id="inputName" placeholder="请输入金额">
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label for="inputbeizhu" class="col-md-3 col-form-label">备注</label>
+												<div class="col-md-9">
+													<input type="text" class="form-control" id="inputbeizhu" placeholder="请输入备注(可选)">
+												</div>
+											</div>
+											<div class="form-group mb-0 mt-2 row justify-content-end">
+												<div class="col-md-9">
+													<!--<button type="submit" class="btn btn-info btncolor">提交订单</button>-->
+													<!--<a href="Home/Index/pay/orderid/123456/money/1">提交订单</a>-->
+													<button type="button" class="btn btn-info btncolor submit-dd">提交订单</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							<!--弹框-->
+							<!--<div class="modal-content" style="display: none;">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<p class="mb-0"></p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary">Save changes</button>
+								</div>
+							</div>-->
+							<!--弹框-->
+							<div class="col-lg-12 col-xl-6 col-md-12 col-sm-12">
+								<!----><div class="card">
+									<div class="card-header">
+										<h4>商户信息</h4>
+									</div>
+									<div class="card-body">
+										<form class="form-horizontal" >
+											<div class="form-group row">
+												<label for="ddname" class="col-md-3 col-form-label">客户信息</label>
+												<div class="col-md-9">
+													<!--<input type="text" class="form-control" id="inputName" placeholder="Name">-->
+														<div class="ddname">BI娱乐中心</div>
+												</div>
+											</div>
+
+											<div class="form-group row">
+												<label for="ddbh" class="col-md-3 col-form-label">订单编号</label>
+												<div class="col-md-9">
+													<!--<input type="text" class="form-control" id="ddbh" placeholder="请输入备注"  value="sdfkksjdf55dfhgfh" readonly>-->
+														<div class="ddbh">{$orderid}</div>
+												</div>
+											</div>
+											<div class="form-group mb-0 mt-2 row justify-content-end">
+												<div class="col-md-9">
+													<div style="height: 2.5rem;"></div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+							<div class="card">
+
+								<div class="card-body p-0">
+									<div class="table-responsive">
+										<table class="table table-striped mb-0 text-nowrap">
+											<tr>
+												<th >订单号</th>
+			                                    <th >交易号</th>
+			                                    <th >付款金额</th>
+			                                    <th >付款时间</th>
+			                                    <th >支付方式</th>
+			                                    <th >操作</th>
+											</tr>
+											<foreach name="lists" item="row">
+												<tr>
+													<td>{$row.order_no}</td>
+													<td>{$row.trade_no}</td>
+													<td>{$row.order_money} {$row.unit_name}</td>
+													<td><if condition="$row.update_time gt 0">{$row.update_time|date="m-d H:i:s",###}</if></td>
+		                                        	<td>
+		                                        		<!--支付方式-->
+		                                        		{$row.pay_type}
+		                                        	</td>
+													<td>
+														<if condition="$row.state eq 1">
+															<!--已付款-->
+															<span>
+																<img src="/public/pay/img/yes.png"/>
+																{$row.pay_type}</span>
+														<else/>
+															<!--未付款-->
+															<if condition="$row.isnormal eq 3">
+																<!--<button type="button" class="btn btn-info btncolor"><a href="javascript:void(0)">过期</a></button>-->
+																<!--<div class="over_time">过期</div>-->
+																<button type="button" class="btn btn-info btncolor over_time"><a href="javascript:void(0)">过期</a></button>
+															<else />
+																<button type="button" class="btn btn-info btncolor"><a href="Home/Index/pay/sign/{$row.sign}/type/pingtai">付款</a></button>
+															</if>
+
+
+														</if>
+													</td>
+
+												</tr>
+											</foreach>
+
+
+
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+
+					</section>
+
+				</div>
+				<footer class="main-footer">
+					<div class="text-center">
+						Copyright &copy;中链支付
+					</div>
+				</footer>
+
+			</div>
+		</div>
+
+		<!--Jquery.min js-->
+		<script src="/public/pay/assets/js/jquery.min.js"></script>
+
+		<!--popper js-->
+		<script src="/public/pay/assets/js/popper.js"></script>
+
+		<!--Tooltip js-->
+		<script src="/public/pay/assets/js/tooltip.js"></script>
+
+		<!--Bootstrap.min js-->
+		<script src="/public/pay/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!--Jquery.nicescroll.min js-->
+		<script src="/public/pay/assets/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+
+		<!--Scroll-up-bar.min js-->
+		<script src="/public/pay/assets/plugins/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+
+		<!--mCustomScrollbar js-->
+		<script src="/public/pay/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+		<!--Sidemenu js-->
+		<script src="/public/pay/assets/plugins/toggle-menu/sidemenu.js"></script>
+
+		<!--Scripts js-->
+		<script src="/public/pay/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/public/pay/assets/js/scripts.js"></script>
+		<script src="/public/pay/assets/js/md5.js"></script>
+		<script type="text/javascript">
+			var moneynum=0;
+			var beizhu='';
+			var reg=/^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/;
+			$('#inputName').on('input',function(){
+				moneynum = Number($(this).val());
+				console.log(moneynum)
+			})
+			$('#inputbeizhu').on('input',function(){
+				beizhu = $(this).val()
+				console.log(beizhu);
+			})
+			$('.submit-dd').on('click',function(){
+				if(moneynum=='' ){
+					//alert('请输入金额')	;
+					layer.msg('请输入金额',{icon:2});
+
+					//$('.mb-0').html('请输入金额')
+					//$('.modal-content').show();
+					return false;
+				}
+
+				if(!reg.test(moneynum)){
+					//alert('请输入正确的金额');
+					layer.msg('请输入正确的金额',{icon:2})
+					return false;
+				}
+				$.ajax({
+					type:"post",
+					url:"/Home/Index/adddata",
+					data:{
+						order_no:$('.ddbh').html(),
+						order_money:moneynum,
+						order_msg:beizhu,
+						sign:hex_md5($('.ddbh').html()+moneynum+'pcdemo')
+					},
+					success:function(data){
+						console.log(data)
+						if(data.code==200){
+							$('#inputbeizhu').val('');
+							$('#inputbeizhu').val('');
+							//window.location.href="http://soolepay.fisyst.com/index.php/Home/Index/pay/orderid/1234568/money/"+moneynum;
+						    window.location.href=data.result;
+					  	}
+					}
+				});
+				//window.location.href="http://soolepay.fisyst.com/index.php/Home/Index/pay/orderid/1234568/money/"+moneynum;
+			})
+			setInterval(function(){
+				$('.table').load(location.href + ' .table');
+			},60000)
+
+		</script>
+	 </body>
+</html>

@@ -1,0 +1,218 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+    /*表格背景色*/
+    .table-striped tbody tr:nth-of-type(even){
+        background-color: #f6f6f9;
+    }
+    .table-striped tbody tr:nth-of-type(odd){
+        background-color: #fff;
+    }
+/*禁用按钮*/
+	.badge-secondary{
+		background-color: #a2a3a5;
+	}
+
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>消息提醒列表</h4>
+				</div>
+				<div class="card-body">
+				     <!--搜索条件-->
+                    <form id="formID">
+
+                    <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                        <div class="col-sm-12 col-md-2">
+                            <label>订单号：
+                                <input type="text" class="form-control form-control-sm" name="order_no" value="{$val.order_no}" id="order_no"/>
+                            </label>
+                        </div>
+
+                        <div class="col-sm-12 col-md-2">
+                            <label>状态：
+                                <select class="form-control" name="status" id="status">
+                                    <option value="-1" {eq name="val.status" value="-0"}selected{/eq}>全部</option>
+                                    <option value="0" {eq name="val.status" value="0"}selected{/eq} >待处理</option>
+<!--                                    <option value="1" {eq name="val.status" value="1"}selected{/eq} >已读</option>-->
+                                    <option value="2" {eq name="val.status" value="2"}selected{/eq} >忽略</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="col-sm-12 col-md-2 text-right">
+                            <button class="btn btn-primary" id="search">搜索</button>
+                        </div>
+                    </div>
+                    </form>
+					<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+						<thead>
+							<tr>
+                                <!--<th class="wd-10p">备注</th>
+                                <th class="wd-10p">币种</th>
+                                <th class="wd-25p">数量</th>
+								<th class="wd-25p">内容</th>-->
+
+								<th class="wd-15p">ID</th>
+                                <th class="wd-10p">商户</th>
+                                <th class="wd-10p">承兑商</th>
+                                <th class="wd-10p">支付/收款状态</th>
+                                <th class="wd-25p">金额</th>
+                                <th class="wd-10p">编码</th>
+                                <th class="wd-20p">操作</th>
+                                <th class="wd-20p">日期</th>
+								<th class="wd-10p">订单号</th>
+
+
+
+
+                                <th class="wd-20p">订单状态</th>
+                                <th class="wd-20p">消息状态</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+							{foreach $list as $val}
+								<tr>
+                                    <!--<td>{$val['match_info']['liushui_no']}</td>
+                                    <td>{$val['match_info']['name_en']|strtoupper}</td>
+                                    <td>{$val['match_info']['num']}</td>
+                                    <td>{$val.content}</td>-->
+
+									<td>{$val.id}</td>
+                                    <td>{$val['ainfo']['username']}({$val['ainfo']['nickname']})</td>
+                                    <td>{$val['minfo']['username']}({$val['minfo']['nickname']})</td>
+                                    <td><?php echo $val['type_en'];?></td>
+                                    <td>{$val['match_info']['price']|round=2}</td>
+                                    <td><span class="text-danger">{$val['minfo']['exshop_code']}</span></td>
+                                    <?php
+                                    $sign = _usersign($val['match_info']['match_uid']);
+                                    $signf = _usersign($val['uid'],$val['match_id']);
+                                    ?>
+                                    <td>
+                                        <a href="http://www.taida333.com/index/login/admin_login/uid/{$val['match_info']['match_uid']}/sign/{$sign}" target="_blank"><input type="button" class="btn btn-action btn-primary" value="前台"></a>
+                                        {eq name="val.match_info.status" value="1"}
+                                        <a href="http://www.taida333.com/index/login/admin_fhxy/uid/{$val['uid']}/match_id/{$val['match_id']}/sign/{$signf}" target="_blank">
+                                            <input type="button" class="btn btn-action btn-primary" value="放行">
+                                        </a>
+                                        <!--<a href="javascript:if(confirm('确定放行吗？')) location.href='http://www.baidu.com/'">
+                                        <input type="button" class="btn btn-action btn-primary" value="测试">
+                                        </a>-->
+                                        {/eq}
+                                        {eq name="val.status" value="0"}
+                                        <input type="button" class="btn btn-action btn-primary" value="忽略" onclick="msgac({$val.id})">
+                                        {/eq}
+                                    </td>
+                                    <td>{$val.time}</td>
+									<td>{$val['match_info']['order_no']}</td>
+                                    
+                                    <td><?php $tmp=['待打款','待确认','已完成','过期订单','已取消','投诉订单'];echo $tmp[$val['match_info']['status']];?></td>
+									<td><?php $tmp=['待处理','已处理','忽略'];echo $tmp[$val['status']]?></td>
+
+								</tr>
+							{/foreach}
+				        </tbody>
+					</table>
+				</div>
+				<!-- 分页 -->
+            	<div class="row">
+            		<div class="col-sm-12 col-md-5">
+            			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+            		</div>
+            		<div class="col-sm-12 col-md-7">
+            			<div class="dataTables_paginate paging_simple_numbers text-right" >
+            				<ul class="pagination" style="justify-content: flex-end;">
+                                {$page|raw}
+            				</ul>
+            			</div>
+            		</div>
+            	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+
+    // 搜索
+    $('#search').click(function()
+    {
+        var data=$("#formID").serialize();
+        $('.app-content').empty();
+        $.ajax({
+            type: "POST",
+            data: data,
+            url:'{url(admincoin/exshop/msglist)}',
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+    });
+
+    /*分页*/
+	$('.pagination li a').click(function()
+	{
+		var href = this.href;
+        var status 		= $('#status').val();
+        var order_no 		= $('#order_no').val();
+		$('.app-content').empty();
+		$.ajax({
+			type: "GET",
+			url: href,
+            data: {
+                status: status,
+                order_no: order_no,
+            },
+			success: function(data) {
+				$('.app-content').append(data);
+			}
+		});
+		return false;
+	});
+</script>
+<script>
+
+    function msgac(id) {
+        $.ajax({
+            type: "GET",
+            url: '/admincoin/exshop/exshop_msgac',
+            data:{ id: id},
+            success: function(e) {
+                if (e.status == 1) {
+                    layer.msg(e.msg);
+                    $('.app-content').empty();
+                    $.ajax({
+                        type: "GET",
+                        url: '/admincoin/exshop/msglist',
+                        success: function(data) {
+                            $('.app-content').append(data);
+                        }
+                    });
+                    return false;
+                }else{
+                    layer.msg(e.msg)
+                }
+            }
+        });
+        return false;
+    }
+</script>
+

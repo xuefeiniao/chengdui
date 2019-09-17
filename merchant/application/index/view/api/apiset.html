@@ -1,0 +1,160 @@
+
+<style>
+    .warnWord{
+        color:red;
+        font-size:12px;
+        margin-top:5px;
+        margin-bottom:-5px;
+    }
+    .custom-label {
+        line-height:27px;
+        border-top-left-radius: 0!important;
+        border-bottom-left-radius: 0!important;
+        position: absolute;
+        right: 15px;
+        top: 0;
+        box-shadow:none;
+    }
+</style>
+<section class="section">
+
+	<div class="row">
+		<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>API设置</h4>
+				</div>
+				<div class="card-body">
+					<form class="form-horizontal" id="formID">
+						<div class="form-group row" >
+							<label class="col-md-3 col-form-label">API状态</label>
+							<div class="col-md-9">
+								<div class="badge badge-primary" style="margin-top:5px;">正常</div>
+								<div class="badge badge-secondary" style="margin-top:5px;display:none">禁用</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">BTC通道到期时间</label>
+							<div class="col-md-9">
+								<input type="text" id="btctime" name="btctime" class="form-control"  value="{$api.btctime|date='Y-m-d H:i'}" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">ETH通道到期时间</label>
+							<div class="col-md-9">
+								<input type="text" id="ethtime" name="ethtime" class="form-control"  value="{$api.ethtime|date='Y-m-d H:i'}" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">USDT通道到期时间</label>
+							<div class="col-md-9">
+								<input type="text" id="usdttime" name="usdttime" class="form-control"  value="{$api.usdttime|date='Y-m-d H:i'}" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="btcc">API每日BTC充值额度</label>
+							<div class="col-md-9">
+								<input type="text" id="btcc" name="btcc" class="form-control"  value="{$api.btcc}" readonly>
+								<label class="btn custom-label">BTC</label>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="ethc">API每日ETH充值额度</label>
+							<div class="col-md-9">
+								<input type="text" id="ethc" name="ethc" class="form-control"  value="{$api.ethc}" readonly>
+								<label class="btn custom-label">ETH</label>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="usdtc">API每日USDT充值额度</label>
+							<div class="col-md-9">
+								<input type="text" id="usdtc" name="usdtc" class="form-control"  value="{$api.usdtc}" readonly>
+								<label class="btn custom-label">USDT</label>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="btct">API每日BTC提现额度</label>
+							<div class="col-md-9">
+								<input type="text" id="btct" name="btct" class="form-control"  value="{$api.btct}" readonly>
+								<label class="btn custom-label">BTC</label>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="etht">API每日ETH提现额度</label>
+							<div class="col-md-9">
+								<input type="text" id="etht" name="etht" class="form-control"  value="{$api.etht}" readonly>
+								<label class="btn custom-label">ETH</label>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="usdtt">API每日USDT提现额度</label>
+							<div class="col-md-9">
+								<input type="text" id="usdtt" name="usdtt" class="form-control"  value="{$api.usdtt}" readonly>
+								<label class="btn custom-label">USDT</label>
+							</div>
+						</div>
+						<!---->
+						<!--<div class="form-group row" >-->
+							<!--<label class="col-md-3 col-form-label" for="example-text3">API提现是否审核</label>-->
+							<!--<div class="col-md-9" style="position:relative;top:8px;">-->
+								<!--<label class="custom-switch switchShen">-->
+									<!--<input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input switchCheck" >-->
+									<!--<span class="custom-switch-indicator"></span>-->
+								<!--</label>-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="switchDiv" style="display: none;">-->
+							<!--<div class="form-group row">-->
+								<!--<label class="col-md-3 col-form-label">BTC提现审核金额</label>-->
+								<!--<div class="col-md-9">-->
+									<!--<input type="text" class="form-control"  value="20" >-->
+									<!--<label class="btn custom-label">BTC</label>-->
+									<!--<p class="warnWord">API提现BTC金额低于该值时自动放行,高于该金额时需到提现列表进行审核</p>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group row">-->
+								<!--<label class="col-md-3 col-form-label">ETH提现审核金额</label>-->
+								<!--<div class="col-md-9">-->
+									<!--<input type="text" class="form-control"  value="20">-->
+									<!--<label class="btn custom-label">ETH</label>-->
+									<!--<p class="warnWord">API提现ETH金额低于该值时自动放行,高于该金额时需到提现列表进行审核</p>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group row">-->
+								<!--<label class="col-md-3 col-form-label">USDT提现审核金额</label>-->
+								<!--<div class="col-md-9">-->
+									<!--<input type="text" class="form-control"  value="20">-->
+									<!--<label class="btn custom-label">USDT</label>-->
+									<!--<p class="warnWord">API提现USDT金额低于该值时自动放行,高于该金额时需到提现列表进行审核</p>-->
+								<!--</div>	-->
+							<!--</div>-->
+						<!--</div>-->
+					</form>
+					<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+						<button type="submit" class="btn btn-primary mt-1 mb-0 query">确定</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+</section>
+<script>
+	/*判断审核按钮是否开启*/
+	$(".switchShen").click(function(){
+		if($(".switchCheck").is(":checked")){
+			$(".switchDiv").show();
+		}else{
+			$(".switchDiv").hide();
+		}
+	})
+	$(".query").click(function(){
+		var sentData=$("#formID").serialize();
+		$.post("{:url('api/apiset')}",sentData,function(e){
+			layer.msg(e.msg);
+		});
+	});
+</script>
+		
+		

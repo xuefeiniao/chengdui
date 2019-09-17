@@ -1,0 +1,328 @@
+<style>
+    .send{
+		color:#fff!important;
+		padding:2px 5px;
+		font-size:12px;
+		line-height: 36px;
+		padding:0 10px;
+		border-top-left-radius: 0!important;
+		border-bottom-left-radius: 0!important;
+		position: absolute;
+		right:15px;
+		top:0;
+		opacity:0.8;
+	}
+	.more{
+	    display: inline-block;
+	    width:100%;
+	    text-align:center;
+	    margin-top:10px;
+	}
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-6 col-xl-4 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body knob-chart">
+                    <div class="text-center">
+                        <span class="text-muted">总资产</span>
+                        <h4 class="mt-1">
+                            <?php if (!empty($coin['usdt']['coin_balance_sum'])){
+                                echo '$'.round($coin['usdt']['coin_balance_sum'],2).'≈'.round($coin['usdt']['coin_balance_sum_cny'],2);
+                            }else{
+                                echo 0;
+                            }
+                            ?>
+                        </h4>
+                        <div class="card-progressbar mb-0 mt-4">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body knob-chart">
+                    <div class="text-center">
+                        <span class="text-muted">今日可提现</span>
+                        <h4 class="mt-1">
+                            <?php if (!empty($coin['usdt']['coin_balance'])){
+                                echo '$'.round($coin['usdt']['coin_balance'],2).'≈'.round($coin['usdt']['coin_balance_cny'],2);
+                            }else{
+                                echo 0;
+                            }
+                            ?>
+                        </h4>
+                        <div class="card-progressbar mb-0 mt-4">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body knob-chart">
+                    <div class="text-center">
+                        <span class="text-muted">明日提现</span>
+                        <h4 class="mt-1">
+                            <?php if (!empty($coin['usdt']['coin_balance_t1'])) {
+                                echo '$' . round($coin['usdt']['coin_balance_t1'], 2) . '≈' . round($coin['usdt']['coin_balance_t1_cny'],2);
+                            }else{
+                                echo 0;
+                            }
+                            ?>
+                        <div class="card-progressbar mb-0 mt-4">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div class="row">
+		<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>在线提现</h4>
+				</div>
+				<div class="card-body">
+					<form class="form-horizontal" id="formdata" >
+					    <div class="form-group row">
+							<label class="col-md-3 col-form-label">提币币种</label>
+							<div class="col-md-9">
+								<select class="form-control" name="coinname" id="coinname">
+                                    <?php if (!empty($coin['usdt']['coin_balance_t1'])){
+                                        echo '<option value="usdt">USDT ( 可提现余额：$'.round($coin['usdt']['coin_balance'],2).' 折合人民币：￥'.round($coin['usdt']['coin_balance_cny'],2).'</span> )</option>';
+                                    }else{
+                                        echo '<option></option>';
+                                    }?>
+                                </select>
+							</div>
+						</div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">收款方式</label>
+                            <div class="col-md-9">
+                                <select class="form-control" name="pay_type" id="pay_type">
+                                    {foreach $banklist as $key=>$vo}
+                                    {if $vo.type == 1}
+                                    <option value="{$vo.type}">{$vo.bank_name} ( 户名：{$vo['user_name']} 银行名称：{$vo['bank_name']}  银行账号：{$vo['bank_number']} )</option>
+                                    {else /}
+                                    <option value="{$vo.type}">{$vo.bank_name}</option>
+                                    {/if}
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+							<label class="col-md-3 col-form-label" for="number">提现金额</label>
+							<div class="col-md-9">
+								<input class="form-control" type="number" name="number" id="txmoney" placeholder="请输入提现金额">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="number">提现数量</label>
+							<div class="col-md-9">
+								<input class="form-control" type="number" id="number" value="0" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label" for="number">支付密码</label>
+							<div class="col-md-9">
+								<input class="form-control" type="password" name="paypassword" id="paypassword" placeholder="请输入支付密码">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">验证码</label>
+							<div class="col-md-9 ">
+								<input type="number" class="form-control" name="verify" id="verify" placeholder="请输入6位验证码">
+								<a class="btn btn-primary send" >发送验证码</a>
+							</div>
+							
+						</div>
+						<!--<div class="form-group row">
+							<label class="col-md-3 col-form-label">备注</label>
+							<div class="col-md-9">
+							    <input type="text" class="form-control" id="desc" name="desc"  placeholder="请输入备注">
+							</div>
+						</div>-->
+					
+						<div class="form-group row mb-0" style="margin-top:20px;">
+						    <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+    						     <button type="button" class="btn btn-outline-primary  mt-1 mb-0 cancelBtn">取消</button>
+                                <?php if (!empty($banklist)){
+                                    echo '<button type="button" class="btn btn-primary mt-1 mb-0 btn-query">确定</button>';
+                                }else{
+                                    echo '<button type="button" class="btn btn-primary mt-1 mb-0 btn-query" disabled>请设置支付方式</button>';
+                                }?>
+
+                        	</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="float-left">最近10条提现记录</h4>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered mb-0 text-nowrap">
+                            <tr>
+                                <th>序号</th>
+                                <th>订单号</th>
+                                <th>提现币种</th>
+                                <th>币种数量</th>
+                                <th>提现手续费</th>
+                                <th>到账金额</th>
+                                <th>收款方式</th>
+                                <th>提现时间</th>
+                                <th>状态</th>
+                            </tr>
+							{foreach $data as $vo}
+							<tr>
+								<td>{$vo.id}</td>
+								<td>{$vo.order_no}</td>
+								<td>{$vo.coin_en|strtoupper}</td>
+								<td>{$vo.num}</td>
+								<td>{$vo.fee}</td>
+								<td>{$vo.num_cny}</td>
+                                <td><?php $tmp =[1=>'银联',2=>'支付宝',3=>'微信']; echo $tmp[$vo['pay_type']]; ?></td>
+								<td>{$vo.time}</td>
+								<td>
+                                    {if $vo.status==0} <div class="badge badge-success">待审核</div>{/if}
+                                    {if $vo.status==1}<div class="badge badge-success">提现成功</div>{/if}
+								</td>
+							</tr>
+							{/foreach}
+						</table>
+					</div>
+					<a class="more" href="{:url('coin/tixmcny_list')}"><button class="btn btn-primary">更多记录</button> </a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	  //获取验证码
+	$('.send').on('click', function(){
+        var usertype="{$usertype}";
+        var username="{$username}";
+        if(usertype=="email"){
+            var url="{:url('logincommon/sendemail')}";
+        }else if(usertype=="mobile"){
+            var url="{:url('logincommon/sendsms')}";
+        }
+        $.ajax({
+            url:url,
+            type:'POST',
+            dataType:"json",
+            data:{username:username},
+            success:function(data){
+                if(data.status==1){
+                    timeClock(".send");
+                    layer.msg(data.msg);
+                }else{
+                    layer.msg(data.msg,{icon:2,shift:5});
+                }
+            },
+            error:function(data){
+                console.log(data);
+            }
+        })
+	});
+	
+	//手机验证码倒计时函数
+	function timeClock(cls) {					
+		var _this = $(cls);
+		if(_this.hasClass('disabled')) {						
+			return false;
+		} else {
+			_this.addClass('disabled');
+			var i = 59;
+			var int = setInterval(clock, 1000);
+
+			function clock() {
+				_this.text("重新发送"+"(" + i + ")");						
+				i--;
+				if(i < 0) {
+					_this.removeClass('disabled');
+					i = 59;
+					_this.text("获取验证码");
+					clearInterval(int);
+				}
+			}
+			return false;
+		}
+	}
+	
+	    /*点击更多进入订单页面*/
+		$(".more").on('click', function(e) {
+			var href = $(this).attr('href');
+			$('.app-content').empty();
+			$.ajax({
+				type: "GET",
+				async : false,
+				cache : false,
+				url:httpHead+href,
+				success: function(data) {
+					$('.app-content').append(data);
+				}
+			});
+			return false;
+				
+		});
+		
+	/*取消按钮效果*/
+	$(".cancelBtn").click(function(){
+	    $(".form-group").find("input").val("");
+	    $(".form-group").find("textarea").val("");
+	})
+    	
+	/*获取行情价格*/
+    var sendData1={ coin_en:'usdt'}
+    var price=0;
+    $.post("{:url('coin/get_hangqing')}",sendData1,function(data){
+        console.log(data)
+		if(data.status=="1"){
+            price=data.data;
+		}else{
+			price=0;
+		}
+	});
+			
+	/*输入提现金额换算数量*/
+	$("#txmoney").keyup(function() {
+	    var txnumber=(Number($(this).val())/Number(price)).toFixed(4);
+	    $("#number").val(txnumber);
+	})
+	
+</script>
+<script>
+	$(document).ready(function(){
+		$(".btn-query").click(function(){
+            var sendData=$("#formdata").serialize();
+          	$.post("{:url('coin/tixmcnyac')}",sendData,function(data){
+                if(data.status==1){
+                    $(":input").val("");
+                    $(".app-content").empty();
+                    $.get("{:url('coin/tixmcny')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg);
+                }else{
+                    layer.msg(data.msg);
+                }
+			});
+		});
+	});
+	
+</script>

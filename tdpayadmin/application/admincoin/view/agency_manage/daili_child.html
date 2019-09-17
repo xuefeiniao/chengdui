@@ -1,0 +1,263 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+    /*表格背景色*/
+    .table-striped tbody tr:nth-of-type(even){
+        background-color: #f6f6f9;
+    }
+    .table-striped tbody tr:nth-of-type(odd){
+        background-color: #fff;
+    }
+	/*禁用按钮*/
+	.badge-secondary{
+		background-color: #a2a3a5;
+	}
+	/* 返回按钮 */
+	.breadcrumb-item{
+        list-style: none;
+    }
+
+
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="float-left">子代理列表</h4>
+					<ol class="float-right">
+                    	<li class="breadcrumb-item"><a href="#"> &lt;&lt;返回 </a></li>	
+                    </ol>
+				</div>
+				<div class="card-body">
+				     <!--搜索条件-->
+    			    <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                       <div class="col-sm-12 col-md-3">
+                            <label>代&nbsp;理 &nbsp;ID：
+                                <input type="text" class="form-control form-control-sm"/>
+                            </label>
+                            <label>代理状态：
+                                <select class="form-control">
+									<option>启用</option>
+									<option>禁用</option>									
+								</select>
+							</label>
+                       </div>
+                        
+                        <div class="col-sm-12 col-md-3">
+                           <label>代理姓名：
+                               <input type="text" class="form-control form-control-sm"/>
+                           </label>
+                           <label>代理电话：
+                                <input type="text" class="form-control form-control-sm"/>
+    						</label>
+                        </div>
+                        
+                       <div class="col-sm-12 col-md-3">
+                           <label>开始日期：
+                               <input type="text" class="form-control form-control-sm" id="startDate"/>
+                           </label>
+                           <label>结束日期：
+                               <input type="text" class="form-control form-control-sm" id="endDate"/>
+                            </label>
+                       </div>
+                        <div class="col-sm-12 col-md-3 text-right">
+                          <button class="btn btn-primary">搜索</button>                   
+                       </div>
+                    </div>
+                     
+					<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+						<thead>
+							<tr>
+								<th class="wd-15p">代理ID</th>
+								<th class="wd-15p">代理姓名</th>
+								<th class="wd-15p">手机号/邮箱</th>							
+								<th class="wd-20p">代理状态</th>
+								<th class="wd-15p">加入时间</th>
+								<th class="wd-10p">操作</th>								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>123456</td>
+								<td>张明</td>
+								<td>15838242472</td>								
+								<td><div class="badge badge-danger">开启</div></td>
+								<td>2018-11-21 11:34:11</td>																
+								<td>									
+									<a class="btn btn-action btn-primary" data-toggle="modal" data-target="#detailModal" data-id="1">信息详情</a>
+								</td>
+							</tr>
+							<tr>
+								<td>123456</td>
+								<td>张明</td>
+								<td>15838242472</td>
+								<td><div class="badge badge-secondary">禁用</div></td>
+								<td>2018-11-21 11:34:11</td>																
+								<td>									
+									<a class="btn btn-action btn-primary" data-toggle="modal" data-target="#detailModal" data-id="1">信息详情</a>
+								</td>
+							</tr>
+							<tr>
+								<td>123456</td>
+								<td>张明</td>
+								<td>15838242472</td>
+								<td><div class="badge badge-danger">开启</div></td>
+								<td>2018-11-21 11:34:11</td>																
+								<td>
+									<a class="btn btn-action btn-primary" data-toggle="modal" data-target="#detailModal" data-id="1">信息详情</a>
+								</td>
+							</tr>
+				        </tbody>
+					</table>
+				</div>
+				<!-- 分页 -->
+            	<div class="row">
+            		<div class="col-sm-12 col-md-5">
+            			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>100</span>条</div>
+            		</div>
+            		<div class="col-sm-12 col-md-7">
+            			<div class="dataTables_paginate paging_simple_numbers text-right" >
+            				<ul class="pagination" style="justify-content: flex-end;">
+            					<li class="paginate_button page-item previous disabled" >
+            						<a aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">上一页</a>
+            					</li>
+            					<li class="paginate_button page-item active">
+            						<a aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+            					</li>
+            					<li class="page-item ">
+            						<a  aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+            					</li>
+            					<li class="paginate_button page-item ">
+            						<a aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+            					</li>
+            					<li class="paginate_button page-item ">
+            						<a aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+            					</li>
+            					<li class="paginate_button page-item ">
+            						<a aria-controls="example" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+            					</li>
+            					<li class="paginate_button page-item next" id="example_next">
+            						<a aria-controls="example" data-dt-idx="6" tabindex="0" class="page-link">下一页</a>
+            					</li>
+            				</ul>
+            			</div>
+            		</div>
+            	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- 详情弹框 -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="example-Modal2">订单详情</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="input1">代理姓名</label>
+							<input type="email" class="form-control" id="input1" value="张小明">
+						</div>
+					</div>	
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="input2">联系电话</label>
+							<input type="email" class="form-control" id="input2" value="15838242472">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="input3">所属省份</label>
+							<input type="email" class="form-control" id="input3" value="河南省">
+						</div>
+					</div>	
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="input4">所属城市</label>
+							<input type="email" class="form-control" id="input4" value="郑州市">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="input5">所属县级</label>
+							<input type="email" class="form-control" id="input5" value="金水区">
+						</div>
+					</div>	
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="input6">详情地址</label>
+							<input type="email" class="form-control" id="input6" value="金成时代ufo">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="input5">代理状态</label>
+							<select class="form-control">
+								<option>开启</option>
+								<option>禁用</option>								
+							</select>
+						</div>
+					</div>						
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--city js-->
+
+<script>
+    // 引用日期插件
+    laydate.render({
+      elem: '#startDate' //指定元素
+    });
+     laydate.render({
+      elem: '#endDate' //指定元素
+    });
+	
+	/*返回代理列表页面*/
+	$(".breadcrumb-item").click(function(){
+		$('.app-content').empty();
+		$.ajax({
+			type: "GET",
+			cache:false,
+			async:false,
+			url: httpHead+'/agency/daili-list.html',
+			success: function(data) {
+				$('.app-content').append(data);
+			}
+		});
+	});
+ 
+</script>
+

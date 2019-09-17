@@ -1,0 +1,122 @@
+
+<style>
+    .noEdit{
+        font-size:12px;
+        color:red;
+        margin-top:5px;
+        margin-bottom:-5px;
+    }
+</style>
+                    
+<section class="section">
+
+	<div class="row">
+		<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>参数设置</h4>
+				</div>
+				<div class="card-body">
+					<form class="form-horizontal">
+						{foreach $list as $val}
+							<div class="form-group row configs">
+								<label class="col-md-3 col-form-label">{$val.title}</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="{$val.name}" value="{$val.value}">
+								</div>
+							</div>
+						{/foreach}
+						<!-- <div class="form-group row">
+							<label class="col-md-3 col-form-label" for="example-email" id="typeName">手机号</label>
+							<div class="col-md-9">
+								<input type="text" id="example-email" name="example-email" class="form-control" value="15838242472" readonly>
+								<p class="noEdit">手机号为登录凭证不可更改</p>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">行业</label>
+							<div class="col-md-9">
+								<select class="form-control">
+									<option>IT行业</option>
+									<option>服务行业</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">项目名称</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" value="测试项目">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">微信</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" value="15838242222">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">QQ</label>
+							<div class="col-md-9">
+								<input type="number" class="form-control" value="1762841111">
+							</div>
+						</div> -->
+						
+						<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+						    <button type="button" class="btn btn-outline-primary  mt-1 mb-0">取消</button>
+                    		<button type="button" class="btn btn-primary mt-1 mb-0" id="confirm" >确定</button>
+                    	</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+<script>
+    /*判断当前登录方式*/
+    /*var type=$("#example-email").val();
+    if(type.indexOf("@")>0){
+        $("#typeName").html("邮箱");
+        $(".noEdit").html("邮箱为登录凭证不可更改");
+    }else{
+         $("#typeName").html("手机号");
+         $(".noEdit").html("手机号为登录凭证不可更改");
+    }*/
+
+    // 提交
+    $('#confirm').click(function()
+	{
+		var data = {};
+		var allInputs = $('.configs input');
+		for (var i = 0; i < allInputs.length; i++) 
+		{
+			var name = allInputs[i].name;
+			var value = allInputs[i].value;
+			data[name] = value; 
+		}
+		$.ajax({
+			type: "POST",
+			data: data,
+			url:'/admincoin/System_set/systemEdit',
+			success: function(e) {
+				if (e.code == 200) {
+					layer.msg(e.msg);
+					$('.app-content').empty();
+						$.ajax({
+							type: "GET",
+							url: '/admincoin/System_set/systemSet',
+							success: function(data) {
+								$('.app-content').append(data);
+							}
+						});
+						return false;
+				}else{
+					layer.msg(e.msg);
+				}
+			}
+		});
+	});
+</script>
+		
+		

@@ -1,0 +1,250 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+    .btnt{
+        cursor: pointer;
+    }
+</style>
+<style>
+	/*分页样式*/
+	.pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+	.pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+	.pagination .active{background-color: #46A3FF;color: #fff;}
+	.pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>投诉订单</h4>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+						<thead>
+							<tr>
+								<th class="wd-25p">订单号</th>
+								<th class="wd-25p">用户昵称</th>
+								<th class="wd-25p">数量</th>
+								<th class="wd-25p">价格</th>
+								<th class="wd-25p">总额</th>
+								<th class="wd-25p">匹配时间</th>
+								<th class="wd-25p">打款时间</th>
+								<th class="wd-25p">确认时间</th>
+								<th class="wd-25p">支付方式</th>
+								<th class="wd-25p">订单状态</th>
+								<th class="wd-25p">投诉内容</th>
+								<th class="wd-25p">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+                        {foreach $data as $key=>$vo}
+                        <tr>
+                            <td>{$vo.matchinfo.order_no}</td>
+                            <td>{$vo.user.username}（{$vo.user.nickname}）</td>
+                            <td>{$vo.matchinfo.num}</td>
+                            <td>{$vo.pprice}</td>
+                            <td>{$vo.matchinfo.price}</td>
+                            <td>{$vo.matchinfo.time}</td>
+                            <td>{$vo.matchinfo.dakuan_time}</td>
+                            <td>{$vo.matchinfo.queren_time}</td>
+                            <td><?php $tmp = [0=>'','1'=>'银联',2=>'支付宝',3=>'微信']; echo $tmp[$vo['matchinfo']['type']]?></td>
+                            <td><?php $tmp=['待打款','待确认','已完成','过期订单','已取消','投诉订单']; echo $tmp[$vo['matchinfo']['status']]?></td>
+                            <td>{$vo.content}</td>
+
+                            <td>
+                                <?php if ($vo['matchinfo']['status'] == 5 && $vo['status'] == 0) { ?>
+                                <a class="btn btn-action btn-primary btnt" data-id="{$vo.id}" id="reset">取消订单</a>
+                                <a class="btn btn-action btn-primary btnt" data-id="{$vo.id}" id="down">确认收款</a>
+                                <?php }else{?>
+                                    处理完成
+                                <?php }?>
+                            </td>
+                        </tr>
+                        {/foreach}
+				        </tbody>
+					</table>
+				</div>
+				<!-- 分页 -->
+            	<div class="row">
+            		<div class="col-sm-12 col-md-5">
+            			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>0</span>条</div>
+            		</div>
+            		<div class="col-sm-12 col-md-7">
+            			<div class="dataTables_paginate paging_simple_numbers text-right" >
+            				<ul class="pagination" style="justify-content: flex-end;">
+                                {$page|raw}
+            				</ul>
+            			</div>
+            		</div>
+            	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Grid Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="example-Modal2">订单详情</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+						    <span>订单号：</span>
+						    <span id="order_number"></span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>分配地址：</span>
+						    <span id="address_id"></span>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+							<span>充值金额：</span>
+							<span id="coin_money"></span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+							<span>确认次数：</span>
+							<span id="coin_affirm"></span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>来源地址：</span>
+						    <span id="coin_from"></span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>交易哈希：</span>
+						    <span id="txid"></span>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    /**
+     * 过滤数据
+     */
+    $(".tousu").click(function(){
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.post("{:url('Otcmanage/tousu')}",data,function(data){
+            $(".app-content").append(data);
+        });
+    });
+    /**
+     * 分页数据
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+</script>
+
+<script>
+    //提交表单数据
+    $("#reset").click(function(){
+        var id=$(this).attr("data-id");
+        layer.confirm('确定要取消订单吗？', {
+            btn: ['确定','关闭'],
+            title:"提示",
+            btnAlign: 'c'
+        }, function(){
+            $.post("{:url('exshop/reset')}",{id:id},function(data){
+                if(data.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('exshop/tousu')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg, {icon: 1});
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        }, function(){
+            layer.closeAll('iframe');
+        });
+    });
+    //	跳页面
+    function tiao() {
+        var href = "{:url('exshop/tousu')}";
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            async : false,
+            cache : false,
+            url:httpHead+href,
+            success: function(data) {
+                $('.app-content').append(data);
+            }
+        });
+        return false;
+    }
+
+    $("#down").click(function(){
+        var id=$(this).attr("data-id");
+        layer.confirm('确定要完成订单吗？', {
+            btn: ['确定','关闭'],
+            title:"提示",
+            btnAlign: 'c'
+        }, function(){
+            $.post("{:url('exshop/down')}",{id:id},function(data){
+                if(data.status==1){
+                    $(".app-content").empty();
+                    $.post("{:url('exshop/tousu')}",data,function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg, {icon: 1});
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        }, function(){
+            layer.closeAll('iframe');
+        });
+    });
+</script>

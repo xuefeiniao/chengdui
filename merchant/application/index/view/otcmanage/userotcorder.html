@@ -1,0 +1,372 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+	.selectType{
+		display: inline-block;
+		width:60%;
+		padding:0px 10px;
+		height:40px;
+		line-height:40px;
+	}
+</style>
+<style>
+	/*分页样式*/
+	.pagination{text-align:center;margin-top:20px;margin-bottom: 20px;}
+	.pagination li{margin:0px 10px; border:1px solid #e6e6e6;padding: 3px 8px;display: inline-block;}
+	.pagination .active{background-color: #46A3FF;color: #fff;}
+	.pagination .disabled{color:#aaa;}
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>订单管理</h4>
+				</div>
+				<div class="card-body">
+				     <!--搜索条件-->
+					<form id="formID">
+						<div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+						   <div class="col-sm-12 col-md-2">
+							   <label>用户名：
+								   <input type="text" name="username" value="{$variate.username}" class="form-control form-control-sm"/>
+							   </label>
+						   </div>
+							<div class="col-sm-12 col-md-2">
+							   <label>订单号：
+								   <input type="text" name="otc_number" value="{$variate.otc_number}" class="form-control form-control-sm"/>
+							   </label>
+						   </div>
+							<div class="col-sm-12 col-md-2">
+								<label>交易类型：
+									<select class="form-control" name="type">
+										<option value="all" {if $variate["type"]=="all"}selected{/if}>全部</option>
+										<option value="1" {if $variate["type"]=="1"}selected{/if}>买入</option>
+										<option value="2" {if $variate["type"]=="2"}selected{/if}>卖出</option>
+									</select>
+								</label>
+							</div>
+							<div class="col-sm-12 col-md-2">
+								<label>订单状态：
+									<select class="form-control" name="nowstatus">
+										<option value="all" {if $variate["nowstatus"]=="all"}selected{/if}>全部</option>
+										<option value="1" {if $variate["nowstatus"]=="1"}selected{/if}>待支付</option>
+										<option value="2" {if $variate["nowstatus"]=="2"}selected{/if}>已打款</option>
+										<option value="3" {if $variate["nowstatus"]=="3"}selected{/if}>已完成</option>
+										<option value="4" {if $variate["nowstatus"]=="4"}selected{/if}>已取消</option>
+									</select>
+								</label>
+							</div>
+							<div class="col-sm-12 col-md-2 text-right">
+								<input type="button" class="btn btn-primary userorder" value="搜索">
+							</div>
+							<div class="col-sm-12 col-md-2 text-right">
+								<input type="button" class="btn btn-primary refresh" value="刷新">
+							</div>
+						</div>
+					</form>
+					<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+						<thead>
+							<tr>
+								<th class="wd-15p">ID</th>
+								<th class="wd-25p">用户</th>
+								<th class="wd-25p">订单号</th>
+								<!--<th class="wd-25p">匹配订单</th>-->
+								<th class="wd-25p">交易类型</th>
+								<th class="wd-25p">订单数量</th>
+								<th class="wd-25p">交易价格</th>
+								<th class="wd-25p">支付金额</th>
+								<th class="wd-25p">订单时间</th>
+								<th class="wd-25p">打款时间</th>
+								<th class="wd-25p">完成时间(取消)</th>
+								<th class="wd-25p">订单计时</th>
+								<th class="wd-25p">支付方式</th>
+								<th class="wd-25p">订单状态</th>
+								<th class="wd-25p">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						{foreach $data as $key=>$vo}
+							<tr>
+								<td>{$vo.id}</td>
+								<td>{$vo.username}</td>
+								<td>{$vo.otc_number}</td>
+								<!--<td>{$vo.otc_id}</td>-->
+								<td>
+									{if $vo["type"]==1}买入{/if}
+									{if $vo["type"]==2}卖出{/if}
+								</td>
+								<td>{$vo.number}</td>
+								<td>{$vo.price}</td>
+								<td>{$vo["price"]*$vo["number"]|round=2} CNY</td>
+								<td>{$vo.createtime}</td>
+								<td>{$vo.paytime}</td>
+								<td>{$vo.downtime}</td>
+								<td>
+									{if $vo["nowstatus"]==1}
+										{$vo.outtime}
+									{else /}
+										 0
+									{/if}
+								</td>
+								<td>
+									{if $vo.paytype=="1"}<div class="badge badge-warning">支付宝</div>{/if}
+									{if $vo.paytype=="2"}<div class="badge badge-success">微信</div>{/if}
+									{if $vo.paytype=="3"}<div class="badge badge-success">银行卡</div>{/if}
+									{if $vo.paytype=="0"}<div class="badge badge-success">未支付</div>{/if}
+								</td>
+								<td>
+									{if $vo.nowstatus=="1"}<div class="badge badge-warning">已匹配</div>{/if}
+									{if $vo.nowstatus=="2"}<div class="badge badge-success">已打款</div>{/if}
+									{if $vo.nowstatus=="3"}<div class="badge badge-success">已完成</div>{/if}
+									{if $vo.nowstatus=="4"}<div class="badge badge-success">已取消</div>{/if}
+								</td>
+								<td>
+									{if $vo["type"]==1}
+										{if $vo.nowstatus=="1"}<a  data-id="{$vo.id}">等待用户打款</a>{/if}
+										{if $vo.nowstatus=="2"}<a class="btn btn-action btn-primary" onclick="query({$vo.id});">确认收款</a>{/if}
+									{/if}
+									{if $vo["type"]==2}
+										{if $vo.nowstatus=="1"}<a class="btn btn-action btn-primary payUser"  data-id="{$vo.id}">打款给用户</a>{/if}
+										{if $vo.nowstatus=="2"}<a data-id="{$vo.id}">等待用户收款</a>{/if}
+									{/if}
+									{if $vo.nowstatus=="3"}<a data-id="{$vo.id}">订单完成</a>{/if}
+									{if $vo.nowstatus=="4"}<a data-id="{$vo.id}">订单取消</a>{/if}
+								</td>
+							</tr>
+						{/foreach}
+				        </tbody>
+					</table>
+				</div>
+				<!-- 分页 -->
+            	<div class="row">
+            		<div class="col-sm-12 col-md-5">
+            			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>{$count}</span>条</div>
+            		</div>
+            		<div class="col-sm-12 col-md-7">
+            			<div class="dataTables_paginate paging_simple_numbers text-right" >
+            				<ul class="pagination" style="justify-content: flex-end;">
+								{$page|raw}
+            				</ul>
+            			</div>
+            		</div>
+            	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Grid Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="example-Modal2">打款方式</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row" style="margin-bottom:10px;">
+					<div class="col-md-12">
+						<label style="width:100%;">支付方式：
+							<select class="form-control selectType" data-id="">
+								<option value="0" selected>选择打款方式</option>
+								<option value="1">支付宝</option>
+								<option value="2">微信</option>
+								<option value="3">银行卡</option>
+							</select>
+						</label>
+					</div>
+				</div>
+				<!-- 支付方式 -->
+				<div class="cardDiv">
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								<span>姓名：</span>
+								<span id="name">选择打款方式</span>
+							</p>
+						</div>
+						<div class="col-md-6">
+							<p>
+								<span>账号：</span>
+								<span id="zhanghao">选择打款方式</span>
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								<span>二维码：</span>
+								<span id="imagetext"></span>
+							</p>
+						</div>
+						<div class="col-md-6">
+							<p>
+								<span>其他：</span>
+								<span id="other">无</span>
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<img id="image" src="" alt="" style="width:60%;height:auto;">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-primary" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary submit">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    /**
+	 * 引用日期插件
+     */
+    laydate.render({
+      elem: '#startDate' //指定元素
+    });
+     laydate.render({
+      elem: '#endDate' //指定元素
+    });
+     /*点击打款给用户按钮*/
+	$(".payUser").click(function () {
+		$("#detailModal").modal("show");
+		var curentId=$(this).attr("data-id");
+		$(".selectType").attr("data-id",curentId);
+    });
+    /*选择获取支付信息*/
+    $(".selectType").change(function(){
+		var val=$('.selectType option:selected').val();
+		var id=$(this).attr("data-id");
+        $.post("{:url('Otcmanage/selectalipay')}",{type:val,id:id},function(e){
+			if(val==1){
+			    if(e.status==1){
+                    if(e.data.alipayimage==""){
+                        $("#imagetext").text("未设置");
+                    }else{
+                        $("#image").attr("src",a.data.alipayimage);
+                    }
+					$("#name").text(e.data.alipayname);
+					$("#zhanghao").text(e.data.alipay);
+					$("#other").text();
+			    }else{
+			        layer.msg(e.msg);
+                    $(".selectType").val(0);
+				}
+			}else if(val==2){
+                if(e.status==1){
+                    if(e.data.wechatimage==""){
+                        $("#imagetext").text("未设置");
+                    }else{
+                        $("#image").attr("src",a.data.wechatimage);
+                    }
+                    $("#name").text(e.data.wechatname);
+                    $("#zhanghao").text(e.data.wechat);
+                    $("#other").text();
+                }else{
+                    layer.msg(e.msg);
+                    $(".selectType").val(0);
+				}
+			}else if(val==3){
+                if(e.status==1){
+                }else{
+                    layer.msg(e.msg);
+                    $(".selectType").val(0);
+                    $("#image").attr("src","");
+                }
+			}
+		});
+    });
+    /**
+	 * 提交支付方式
+	 */
+    $(".submit").click(function(){
+		var val=$(".selectType option:selected").val();
+		var id=$(".selectType").attr("data-id");
+        $.post("{:url('Otcmanage/alipaytype')}",{type:val,id:id},function(e){
+			if(e.status==1){
+                $("#detailModal").modal("hide");
+                $(".app-content").empty();
+                $.post("{:url('Otcmanage/userotcorder')}",function(data){
+                    $(".app-content").append(data);
+                });
+                $(".modal-backdrop").remove()
+                layer.msg(e.msg, {icon: 1});
+			}else{
+                layer.msg(e.msg, {icon: 2});
+			}
+		});
+	});
+    /**
+	 * 卖家确认信息
+	 */
+     function query(id){
+         $.post("{:url('Otcmanage/sellconfirm')}",{id:id},function(data){
+             if(data.status==1){
+                 $(".app-content").empty();
+                 $.post("{:url('Otcmanage/userotcorder')}",data,function(data){
+                     $(".app-content").append(data);
+                 });
+                 layer.msg(data.msg, {icon: 1});
+             }else{
+                 layer.msg(data.msg, {icon: 2});
+             }
+         });
+	 }
+	 /**
+	  * 刷新页面
+	  */
+	$(".refresh").click(function(){
+        $(".app-content").empty();
+        $.post("{:url('Otcmanage/userotcorder')}",function(data){
+            $(".app-content").append(data);
+        });
+	});
+    /**
+     * 过滤数据
+     */
+    $(".userorder").click(function(){
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.post("{:url('Otcmanage/userotcorder')}",data,function(data){
+            $(".app-content").append(data);
+        });
+    });
+    /**
+     * 分页数据
+     */
+    $(".pagination a").click(function(){
+        var href=this.href;
+        var data=$("#formID").serialize();
+        $(".app-content").empty();
+        $.ajax({
+            type: "GET",
+            data:data,
+            url:href,
+            success: function(e) {
+                $('.app-content').append(e);
+            }
+        });
+        return false;
+    });
+</script>
+

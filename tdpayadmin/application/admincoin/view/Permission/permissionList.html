@@ -1,0 +1,166 @@
+
+<style>
+	body .card .card-header .add-btn{
+		position: absolute;
+		right:30px;
+		top:10px;
+		font-size: 14px;
+    line-height: 23px;
+    padding: 5px 23px;
+	width:auto;
+	border-radius: 4px;
+	height: auto;
+	border:0;
+	}
+	.alert-warning{
+	    font-weight: 600;
+        color: #8a6d3b;
+	    
+	    border-color: #faebcc;
+	}
+	#bgcolor{
+		background-color: #fcf8e3;
+	}
+	.fa{
+		    display: inline-block;
+		    font: normal normal normal 14px/1 FontAwesome;
+		    font-size: inherit;
+		    text-rendering: auto;
+		    -webkit-font-smoothing: antialiased;
+		    -moz-osx-font-smoothing: grayscale;
+		    transform: translate(0, 0);
+	}
+	
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>权限管理</h4>
+					<button type="submit" class="btn btn-primary mt-1 mb-0 add-btn" id="add">添加权限</button>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+					<p class="font-bold  alert alert-warning m-b-sm" id="bgcolor"><i class="fa fa-lightbulb-o"></i> 非专业人士请忽操作</p>
+					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+						<thead>
+							<tr>
+								<th class="wd-15p">ID</th>
+								<th class="wd-10p">权限节点</th>
+								<th class="wd-25p">名称</th>
+								<th class="wd-25p">介绍</th>
+								<th class="wd-25p">添加时间</th>
+								<th class="wd-25p">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{if count($list) != 0}
+				                {foreach name="list" item="vo"}
+					                <tr>
+										<td>{$vo.permissions_id}</td>
+										<td>{$vo.name}</td>
+										<td>{$vo.display}</td>
+										<td>{$vo.discription}</td>
+										<td>{$vo.created_time}</td>
+										<td><a class="btn btn-action btn-primary"  onclick="(editPermission({$vo.permissions_id}))">编辑</a> <a class="btn btn-action btn-primary" onclick="(delPermission({$vo.permissions_id}))">删除</a></td>
+									</tr>
+				                {/foreach}
+				            {else/}
+				            	<tr>
+				            		<td style="text-align: center;" colspan="6">没有数据</td>
+				            	</tr>
+			                {/if}
+						</tbody>
+					</table>
+					{$list|raw}
+				</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	// 添加权限
+	$('#add').click(function()
+		{
+			$('.app-content').empty();
+			$.ajax({
+				type: "GET",
+				url: '/admincoin/Permission/permissionAdd',
+				success: function(data) {
+					$('.app-content').append(data);
+				}
+			});
+			return false;
+		});
+
+	// 编辑权限
+    function editPermission(id)
+    {
+        $('.app-content').empty();
+		$.ajax({
+			type: "GET",
+			url: '/admincoin/Permission/permissionEdit/id/'+id,
+			success: function(data) {
+				$('.app-content').append(data);
+			}
+		});
+		return false;
+    }
+
+    // 删除权限
+    function delPermission(id)
+    {
+        $('.app-content').empty();
+		$.ajax({
+			type: "GET",
+			url: '/admincoin/Permission/permissionDel/id/'+id,
+			success: function(e) {
+				if (e.code == 200) {
+						layer.msg(e.msg);
+						$('.app-content').empty();
+						$.ajax({
+							type: "GET",
+							url: '/admincoin/Permission/permissionList',
+							success: function(data) {
+								$('.app-content').append(data);
+							}
+						});
+						return false;	
+					}else{
+						layer.msg(e.msg);
+						$('.app-content').empty();
+						$.ajax({
+							type: "GET",
+							url: '/admincoin/Permission/permissionList',
+							success: function(data) {
+								$('.app-content').append(data);
+							}
+						});
+						return false;
+					} 
+			}
+		});
+		return false;
+    }
+    /*分页*/
+	$('.pagination li a').click(function()
+	{
+		var href = this.href;
+		$('.app-content').empty();
+		$.ajax({
+			type: "GET",
+			url: href,
+			success: function(data) {
+				$('.app-content').append(data);
+			}
+		});
+		return false;
+	});
+</script>
+		
+
+		
+

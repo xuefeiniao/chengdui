@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+{include file="public/head" /}
+<body>
+<style>
+    .btn{
+        float: right;
+    }
+    .payimg{
+        margin-top: 2%; width: 30px; height: 30px;
+    }
+</style>
+	<!-- Top Panel -->
+    {include file="public/header" /}
+    {include file="public/small_menu" /}
+	<div class="wrapper contents_wrapper">
+
+        {include file="public/sidebar" /}
+
+        <div class="contents">
+            <div class="grid_wrapper">
+
+                <div class="g_12" id="table_wTabs">
+                    <div class="widget_header wwOptions">
+                        <h4 class="widget_header_title wwIcon i_16_tabs">用户信息</h4>
+                        <ul class="w_Tabs">
+                            <li><a href="#table_wTabs-1" title="Tab 1">微信</a></li>
+                            <li><a href="#table_wTabs-2" title="Tab 2">支付宝</a></li>
+                            <li><a href="#table_wTabs-3" title="Tab 3">银联</a></li>
+                        </ul>
+                    </div>
+                    <div class="widget_contents noPadding">
+                        <div class="line_grid">
+                            <div class="g_3"><span class="label">UID：<span class="must">{$user.uid}</span></span></div>
+                            <div class="g_3"><span class="label">用户名：<span class="must">{$user.username}</span></span></div>
+                            <div class="g_3"><span class="label">昵称：<span class="must">{$user.nickname}</span></span></div>
+                            <div class="g_3"><span class="label">手机号：<span class="must">{$user.mobile}</span></span></div>
+
+                        </div>
+                        <div class="g_12" id="table_wTabs-1">
+                            <div class="widget_header">
+                                <h4 class="widget_header_title wwIcon i_16_forms">微信支付设置</h4>
+                            </div>
+
+                            <div class="widget_contents noPadding">
+                                <form id="wepayform">
+                                    <div class="line_grid">
+                                        <div class="g_3"><span class="label">收款姓名</span></div>
+                                        <div class="g_9">
+                                            <input class="simple_field" type="text" name="user_name" value="<?php if (!empty($bank[3]['user_name'])) echo $bank[3]['user_name'];?>" />
+                                        </div>
+                                    </div>
+                                    <div class="line_grid">
+                                        <div class="g_3"><span class="label">微信二维码</span>
+                                        </div>
+                                        <div class="g_9">
+                                            <input type="file" class="simple_form" name="qrcode"/>
+                                            <?php if (!empty($bank[3]["qrcode"])){?>
+                                                <img class="payimg" src='<?php echo $bank[3]["qrcode"];?>'/>
+                                                <a href='<?php echo $bank[3]["qrcode"];?>' target="_blank"><span class="label"> 查看 </span></a>
+                                                <span class="label" onclick="del(<?php echo $bank[3]['id'];?>)">  删除</span>
+                                            <?php }?>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="bank_name" value="微信">
+                                    <input type="hidden" name="type" value="3">
+                                    <div class="line_grid">
+                                        <div class="g_12">
+                                            <div class="simple_buttons btn" onclick="wepay()">
+                                                <div>确认</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="g_12" id="table_wTabs-2">
+                            <div class="widget_header">
+                                <h4 class="widget_header_title wwIcon i_16_forms">支付宝支付设置</h4>
+                            </div>
+                            <div class="widget_contents noPadding">
+                                <form id="alipayform">
+                                    <div class="line_grid">
+                                        <div class="g_3"><span class="label">收款姓名</span></div>
+                                        <div class="g_9">
+                                            <input class="simple_field" type="text" name="user_name" value="<?php if (!empty($bank[2]['user_name'])) echo $bank[2]['user_name'];?>" />
+                                        </div>
+                                    </div>
+                                    <div class="line_grid">
+                                        <div class="g_3"><span class="label">支付宝二维码</span>
+                                        </div>
+                                        <div class="g_9">
+                                            <input type="file" class="simple_form" name="qrcode"/>
+                                            <?php if (!empty($bank[2]["qrcode"])){?>
+                                                <img class="payimg" src='<?php echo $bank[2]["qrcode"];?>'/>
+                                                <a href='<?php echo $bank[2]["qrcode"];?>' target="_blank"><span class="label"> 查看 </span></a>
+                                                <span class="label" onclick="del(<?php echo $bank[2]['id'];?>)">  删除</span>
+                                            <?php }?>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="bank_name" value="支付宝">
+                                    <input type="hidden" name="type" value="2">
+                                    <div class="line_grid">
+                                        <div class="g_12">
+                                            <div class="simple_buttons btn" onclick="alipay()">
+                                                <div>确认</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="g_12" id="table_wTabs-3">
+                            <div class="widget_header">
+                                <h4 class="widget_header_title wwIcon i_16_forms">银联支付设置</h4>
+                            </div>
+                            <div class="widget_contents noPadding">
+                                <form id="payform">
+                                    <div class="line_grid">
+                                        <div class="g_3"><span class="label">开户姓名</span></div>
+                                        <div class="g_9">
+                                            <input class="simple_field" type="text" name="user_name" value="<?php if (!empty($bank[1]['user_name'])) echo $bank[1]['user_name'];?>" />
+                                        </div>
+                                    </div>
+                                    <div class="line_grid">
+                                        <div class="g_3"><span class="label">银行账号</span></div>
+                                        <div class="g_9">
+                                            <input class="simple_field" type="text" name="bank_number" value="<?php if (!empty($bank[1]['user_name'])) echo $bank[1]['bank_number'];?>" />
+                                        </div>
+                                    </div>
+                                    <div class="line_grid">
+                                        <div class="g_3"><span class="label">开户银行</span></div>
+                                        <div class="g_9">
+                                            <input class="simple_field" type="text" name="bank_name" value="<?php if (!empty($bank[1]['user_name'])) echo $bank[1]['bank_name'];?>"/>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="type" value="1">
+                                    <div class="line_grid">
+                                        <div class="g_12">
+                                            <?php if (!empty($bank[1]["bank_number"])){?>
+                                                <div class="simple_buttons btn" onclick="del(<?php echo $bank[1]['id']?>)">
+                                                    <div>删除</div>
+                                                </div>
+                                            <?php }?>
+
+                                            <div class="simple_buttons btn" onclick="pay()">
+                                                <div>确认</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+
+    {include file="public/footer" /}
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+<script>
+    function wepay() {
+        var form = new FormData($( "#wepayform")[0] );
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('user/edit',['id'=>$user['uid']])}",
+            data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                if(data.status=='ok'){
+                    layer.msg(data.msg);
+                    window.location.reload()
+                }else{
+                    layer.msg(data.errormsg);
+                }
+            },
+            error:function(error){}
+        });
+    }
+    function alipay() {
+        var form = new FormData($( "#alipayform")[0] );
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('user/edit',['id'=>$user['uid']])}",
+            data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                if(data.status=='ok'){
+                    layer.msg(data.msg);
+                    window.location.reload()
+                }else{
+                    layer.msg(data.errormsg);
+                }
+            },
+            error:function(error){}
+        });
+    }
+    function pay() {
+        var form = new FormData($( "#payform")[0] );
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('user/edit',['id'=>$user['uid']])}",
+            data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                if(data.status=='ok'){
+                    layer.msg(data.msg);
+                    window.location.reload()
+                }else{
+                    layer.msg(data.errormsg);
+                }
+            },
+            error:function(error){}
+        });
+    }
+    function del(id)
+    {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('user/del')}",
+            data:{ id: id},
+            success: function(data) {
+                if(data.status=='ok'){
+                    layer.msg(data.msg);
+                    window.location.reload()
+                }else{
+                    layer.msg(data.errormsg);
+                }
+            }
+        });
+        return false;
+    }
+</script>
+
+</html>

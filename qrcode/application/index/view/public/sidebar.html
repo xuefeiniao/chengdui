@@ -1,0 +1,19 @@
+<?php
+    $act = strtolower(request()->module() . '/' . request()->controller() . '/');
+?>
+<aside class="sidebar">
+    <ul class="tab_nav">
+        <li class="<?php if ($act=='index/index/'){ echo 'active_tab'; }?> i_32_dashboard">
+            <a href="{:url('index/index')}" title="General Info">
+                <span class="tab_label">首页</span>
+                <span class="tab_info">Home</span>
+            </a>
+        </li>
+        <li class="<?php if ($act=='index/user/'){ echo 'active_tab'; }?> i_32_ui">
+            <a href="{:url('user/lst')}" title="">
+                <span class="tab_label">用户</span>
+                <span class="tab_info">User</span>
+            </a>
+        </li>
+    </ul>
+</aside>

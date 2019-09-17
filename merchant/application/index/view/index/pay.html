@@ -1,0 +1,233 @@
+
+<style>
+    .noEdit{
+        font-size: 12px;
+        color: red;
+        margin-top: 5px;
+        margin-bottom: -5px;
+    }
+    .delc{
+        cursor: pointer;
+    }
+</style>
+
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>微信支付设置</h4>
+				</div>
+				<div class="card-body">
+					<form class="form-horizontal" id="wechatform">
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">收款姓名</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" value="<?php if (!empty($info[3]['user_name'])) echo $info[3]['user_name'];?>" name="user_name">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 col-form-label">微信二维码</label>
+							<div class="col-md-3">
+								<input type="file" class="form-control" id="qrcode" name="qrcode">
+							</div>
+							<div class="col-md-3" style="padding-top:10px;color:red;">
+								{if empty($info[3]["qrcode"])==true}
+								未上传
+								{else /}
+								已上传
+                                <a href="{$info.3.qrcode}" target="_blank">查看</a>
+                                <a onclick="delqrcode({$info[3]['id']},3)" class="text-muted delc">删除</a>
+								{/if}
+							</div>
+						</div>
+                        <input type="hidden" name="type" value="3">
+                        <input type="hidden" name="bank_name" value="微信">
+						<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+                          	<button type="button" class="btn btn-outline-primary  mt-1 mb-0" id="cancelBtn">取消</button>
+                    		<button type="button" class="btn btn-primary mt-1 mb-0" id="wechatsub">确定</button>
+                    	</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>支付宝支付设置</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="alipayfrom">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">收款姓名</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="<?php if (!empty($info[2]['user_name'])) echo $info[2]['user_name'];?>" name="user_name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">支付宝二维码</label>
+                            <div class="col-md-3">
+                                <input type="file" class="form-control" name="qrcode">
+                            </div>
+                            <div class="col-md-3" style="padding-top:10px;color:red;">
+                                {if empty($info[2]["qrcode"])==true}
+                                未上传
+                                {else /}
+                                已上传
+                                <a href="{$info.2.qrcode}" target="_blank">查看</a>---
+                                <a onclick="delqrcode({$info[2]['id']},2)" class="text-muted delc">删除</a>
+                                {/if}
+                            </div>
+                        </div>
+                        <input type="hidden" name="type" value="2">
+                        <input type="hidden" name="bank_name" value="支付宝">
+                        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+                            <button type="button" class="btn btn-outline-primary  mt-1 mb-0" id="cancelBtn">取消</button>
+                            <button type="button" class="btn btn-primary mt-1 mb-0" id="alipaysub">确定</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>银联支付设置</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="payform">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">开户姓名</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="<?php if (!empty($info[1]['user_name'])) echo $info[1]['user_name'];?>" name="user_name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">银行账号</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="<?php if (!empty($info[1]['bank_number'])) echo $info[1]['bank_number'];?>" name="bank_number">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">开户银行</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="<?php if (!empty($info[1]['bank_name'])) echo $info[1]['bank_name'];?>" name="bank_name">
+                            </div>
+                        </div>
+                        <input type="hidden" name="type" value="1">
+                        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+                            <button type="button" class="btn btn-outline-primary  mt-1 mb-0" id="cancelBtn">取消</button>
+                            <button type="button" class="btn btn-primary mt-1 mb-0" id="paysub">确定</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+	//提交表单数据
+	$("#wechatsub").click(function(){
+        var form =new FormData($( "#wechatform")[0] );
+        $.ajax({
+			type:"POST",
+			dataType:"json",
+			url:"{:url('index/pay')}",
+			data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+			success:function(data){
+				if(data.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('Index/pay')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg);
+				}else{
+					layer.msg(data.msg);
+				}
+			},
+			error:function(error){}
+		});
+	})
+
+    $("#alipaysub").click(function(){
+        var form =new FormData($( "#alipayfrom")[0] );
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('index/pay')}",
+            data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                if(data.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('Index/pay')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg);
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(error){}
+        });
+    })
+
+    $("#paysub").click(function(){
+        var form =new FormData($( "#payform")[0] );
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"{:url('index/pay')}",
+            data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                if(data.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('Index/pay')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg);
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(error){}
+        });
+    })
+</script>
+<script>
+function delqrcode(id,val)
+{
+    $.ajax({
+        type:"POST",
+        dataType:"json",
+        url:"{:url('index/delqrcode')}",
+        data:{ id: id, type: val},
+        success: function(data) {
+            if(data.status==1){
+                $(".app-content").empty();
+                $.get("{:url('index/pay')}",function(data){
+                    $(".app-content").append(data);
+                });
+                layer.msg(data.msg);
+            }else{
+                layer.msg(data.msg);
+            }
+        }
+    });
+    return false;
+}
+</script>

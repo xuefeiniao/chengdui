@@ -1,0 +1,70 @@
+<style>
+	.mb-3{
+		text-indent:28px;
+      line-height: 1.5rem;
+	}
+  .breadcrumb{
+    margin-bottom:10px;
+    margin-top:-20px;
+  }
+
+</style>
+<section class="section">
+    <ol class="breadcrumb" >
+		<li class="breadcrumb-item"><a href="#"> <<返回 </a></li>	
+	</ol>
+	<div class="section-body terms">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header" style="text-align: center;">
+						<h4>{$info.title}</h4>
+					</div>
+					<div class="card-body">
+						<p class="mb-3">
+                            <?php echo $info['content'];?>
+						</p>
+					</div>
+				</div>
+			</div>				
+		</div>
+	</div>
+</section>
+<script>
+	$(".breadcrumb-item").click(function(){
+		$('.app-content').empty();
+		var type=$('.app-content').attr("data-type");
+		if(type==1){			
+			$.ajax({
+				type: "GET",
+				cache:false,
+				async:false,
+				url: httpHead+"{:url('article/news')}",
+				success: function(data) {
+					$('.app-content').append(data).removeAttr("data-type");
+				}
+			});
+		}else if(type==2){			
+			$.ajax({
+				type: "GET",
+				cache:false,
+				async:false,
+				url: httpHead+"{:url('article/notice')}",
+				success: function(data) {
+					$('.app-content').append(data).removeAttr("data-type");
+				}
+			});
+		}else if(type==3){
+            $.ajax({
+                type: "GET",
+                cache:false,
+                async:false,
+                url: httpHead+"{:url('index/index2')}",
+                success: function(data) {
+                    $('.app-content').append(data).removeAttr("data-type");
+                }
+            });
+        }
+	})
+</script>
+				

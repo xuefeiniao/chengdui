@@ -1,0 +1,276 @@
+<style>
+    .search .form-control{
+        display:inline-block;
+        width:171px;
+    }
+    .search select.form-control{
+        height:31px!important;
+        line-height: 31px!important;
+        padding:0 15px!important;
+    }
+    .search>div{
+        padding:0;
+    }
+    .search label{
+        margin-right:8px;
+    }
+     /*表格背景色*/
+    .table-striped tbody tr:nth-of-type(even){
+        background-color: #f6f6f9;
+    }
+    .table-striped tbody tr:nth-of-type(odd){
+        background-color: #fff;
+    }
+    
+    
+</style>
+<section class="section">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4>代理提币记录</h4>
+				</div>
+				<div class="card-body">
+				     <!--搜索条件-->
+    			    <div class="row search" style="margin-bottom:20px;padding:0 10px 0 15px;">
+                       <div class="col-sm-12 col-md-3">
+                            <label>订单号码：
+                                <input type="text" class="form-control form-control-sm"/>
+                            </label>
+                            <label>代&nbsp;理 &nbsp;ID：
+                                 <input type="text" class="form-control form-control-sm"/>
+							</label>
+                       </div>
+                        
+                        <div class="col-sm-12 col-md-3">
+                           <label>流水号码：
+                               <input type="text" class="form-control form-control-sm"/>
+                           </label>
+                           <label>选择状态：
+                                <select class="form-control">
+    								<option>待处理</option>
+    								<option>已处理</option>
+    								<option>已完成</option>
+    							</select>
+    						</label>
+                        </div>
+                        
+                       <div class="col-sm-12 col-md-3">
+                           <label>开始日期：
+                               <input type="text" class="form-control form-control-sm" id="startDate"/>
+                           </label>
+                           <label>结束日期：
+                               <input type="text" class="form-control form-control-sm" id="endDate"/>
+                            </label>
+                       </div>
+                        <div class="col-sm-12 col-md-3 text-right">
+                          <button class="btn btn-primary">搜索</button>
+                           <button class="btn btn-info">导出</button>
+                       </div>
+                    </div>
+					<div class="table-responsive">
+    					<table id="example" class="table table-striped table-bordered border-t0 text-nowrap w-100" >
+    						<thead>
+    							<tr>
+                                    <th class="wd-15p">序号</th>
+    								<th class="wd-15p">订单号</th>
+    								<th class="wd-15p">流水号</th>
+    								<th class="wd-20p">时间</th>
+    								<th class="wd-15p">代理ID</th>
+    								<!-- <th class="wd-10p">代理名称</th>    								 -->
+    								<th class="wd-25p">金额</th>   								
+    								<th class="wd-25p">状态</th>
+<!--    								<th class="wd-25p">操作</th>-->
+    							</tr>
+    						</thead>
+    						<tbody>
+                                {foreach $list as $val}
+        							<tr>
+                                        <td>{++$num}</td>
+        								<td>{$val.order_number}</td>
+        								<td>{$val.serial_number}</td>
+        								<td>创建时间：{$val.createtime}<br>完成时间：{$val.endtime}</td>
+        								<td>{$val.user_id}</td>
+        								<!-- <td>游戏平台</td>    								 -->
+        								<td>{$val.coin_money}</td>
+                                        {switch $val.status}
+                                            {case 提现失败}<td><div class="badge badge-danger">{$val.status}</div></td>{/case}
+                                            {case 已处理}<td><div class="badge badge-info">{$val.status}</div></td>{/case}
+                                            {case 提现成功}<td><div class="badge badge-success">{$val.status}</div></td>{/case}
+                                            {case 订单异常}<td><div class="badge badge-warning">{$val.status}</div></td>{/case}
+                                            {default /}<td>未知</td>
+                                        {/switch}
+<!--        								<td><a class="btn btn-action btn-primary" onclick="delLog({$val.id})">删除</a> </td>-->
+                                    </tr>
+                                {/foreach}
+    							<!-- <tr>
+    								<td>123456</td>
+    								<td>633737738383</td>
+    								<td>2019-03-21 11:01:22</td>
+    								<td>18003</td>
+									<td>游戏平台</td>   	
+    								<td>100</td>
+    								<td><div class="badge badge-info">已处理</div></td>
+    								<td><a class="btn btn-action btn-primary">删除</a></td>
+    							</tr>
+    							<tr>
+    								<td>123456</td>
+    								<td>633737738383</td>
+    								<td>2019-03-21 11:01:22</td>
+    								<td>18003</td>
+    								<td>游戏平台</td>   								
+    								<td>112</td>
+    								<td><div class="badge badge-success">已完成</div></td>
+    								<td><a class="btn btn-action btn-primary">删除</a></td>
+    							</tr> -->
+    				        </tbody>
+    					</table>
+    				</div>
+    				<!-- 分页 -->
+                	<!-- <div class="row">
+                		<div class="col-sm-12 col-md-5">
+                			<div class="dataTables_info" id="example_info" role="status" aria-live="polite">共<span>100</span>条</div>
+                		</div>
+                		<div class="col-sm-12 col-md-7">
+                			<div class="dataTables_paginate paging_simple_numbers text-right" >
+                				<ul class="pagination" style="justify-content: flex-end;">
+                					<li class="paginate_button page-item previous disabled" >
+                						<a aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">上一页</a>
+                					</li>
+                					<li class="paginate_button page-item active">
+                						<a aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                					</li>
+                					<li class="page-item ">
+                						<a  aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                					</li>
+                					<li class="paginate_button page-item ">
+                						<a aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                					</li>
+                					<li class="paginate_button page-item ">
+                						<a aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                					</li>
+                					<li class="paginate_button page-item ">
+                						<a aria-controls="example" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+                					</li>
+                					<li class="paginate_button page-item next" id="example_next">
+                						<a aria-controls="example" data-dt-idx="6" tabindex="0" class="page-link">下一页</a>
+                					</li>
+                				</ul>
+                			</div>
+                		</div>
+                	</div> -->
+    				{$list|raw}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Grid Modal -->
+<!-- <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="example-Modal2">订单详情</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+						    <span>订单号：</span>
+						    <span>12233343333</span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>流水号：</span>
+						    <span>12233343333</span>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<p>
+						    <span>时间：</span>
+						    <span>2019-03-21 21:12:32</span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>用户ID：</span>
+						    <span>081002</span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>用户名：</span>
+						    <span>游戏平台</span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>币种：</span>
+						    <span>BTC</span>
+						</p>
+					</div>
+					<div class="col-md-6">
+						<p>
+						    <span>金额：</span>
+						    <span>123BTC=112USDT</span>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div> -->
+<script type="text/javascript">
+    // 分页
+    $('.pagination li a').click(function()
+    {
+        var href = this.href;
+        $('.app-content').empty();
+        $.ajax({
+            type: "GET",
+            url: href,
+            success: function(data) {
+                $('.app-content').append(data);
+            }
+        });
+        return false;
+    });
+
+    // 删除
+    function delLog(id)
+    {
+        $.ajax({
+            type: "GET",
+            url: '/admincoin/Agency_manage/delWL/id/'+id,
+            success: function(e) {
+                if (e.code == 200) {
+                        layer.msg(e.msg);
+                        $('.app-content').empty();
+                        $.ajax({
+                            type: "GET",
+                            url: '/admincoin/Agency_manage/withdraw',
+                            success: function(data) {
+                                $('.app-content').append(data);
+                            }
+                        });
+                        return false;   
+                    }else{
+                        layer.msg(e.msg)
+                    }
+            }
+        });
+        return false;
+    }
+</script>
+
+

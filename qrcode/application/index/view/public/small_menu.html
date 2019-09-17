@@ -1,0 +1,9 @@
+<?php
+    $act = strtolower(request()->module() . '/' . request()->controller() . '/');
+?>
+<div class="wrapper small_menu">
+    <ul class="menu_small_buttons">
+        <li><a title="General Info" class="i_22_dashboard <?php if ($act=='index/index/'){ echo 'smActive'; }?>" href="{:url('index/index')}"></a></li>
+        <li><a title="Kit elements" class="i_22_ui <?php if ($act=='index/user/'){ echo 'smActive'; }?>" href="{:url('user/lst')}"></a></li>
+    </ul>
+</div>

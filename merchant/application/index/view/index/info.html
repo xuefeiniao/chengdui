@@ -1,0 +1,96 @@
+
+<style>
+    .noEdit{
+        font-size: 12px;
+        color: red;
+        margin-top: 5px;
+        margin-bottom: -5px;
+    }
+</style>
+                    
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>个人信息设置</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="form">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="username" id="typeName">用户名</label>
+                            <div class="col-md-9">
+                                <input type="email"  name="username" class="form-control" id="username" value="{$info.username}" readonly>
+                                <p class="noEdit">用户名为登录凭证不可更改</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">真实姓名</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="{$info.nickname}" id="nickname" name="nickname">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">身份证号:</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="{$info.idnumber}" id="idnumber" name="idnumber">
+                            </div>
+                        </div>
+                        <?php if ($info['type']=='agency'){?>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">推广码:</label>
+                            <div class="col-md-9">
+                                <?php $url = "http://www.taida333.com/index/login/sign.html?invit=".$info['inviter'];?>
+                                <input type="text" class="form-control" value="{$url}" readonly>
+                            </div>
+                        </div>
+                        <?php }?>
+                        <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12 text-right">
+                            <button type="button" class="btn btn-outline-primary  mt-1 mb-0" id="cancelBtn">取消</button>
+                            <button type="button" class="btn btn-primary mt-1 mb-0" id="infosubmit">确定</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    /*判断当前登录方式*/
+    var type=$("#username").val();
+    if(type.indexOf("@")>0){
+        $("#typeName").html("邮箱");
+        $(".noEdit").html("邮箱为登录凭证不可更改");
+    }else{
+         $("#typeName").html("手机号");
+         $(".noEdit").html("手机号为登录凭证不可更改");
+    }
+</script>
+<script>
+	//提交表单数据
+	$("#infosubmit").click(function(){
+        var form =new FormData($( "#form")[0] );
+        $.ajax({
+			type:"POST",
+			dataType:"json",
+			url:"{:url('index/info')}",
+			data:form,
+            cache:false,
+            contentType: false,
+            processData: false,
+			success:function(data){
+				if(data.status==1){
+                    $(".app-content").empty();
+                    $.get("{:url('Index/info')}",function(data){
+                        $(".app-content").append(data);
+                    });
+                    layer.msg(data.msg);
+				}else{
+					layer.msg(data.msg);
+				}
+			},
+			error:function(error){}
+		});
+	})
+</script>
+

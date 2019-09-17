@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{block name="title"}标题{/block}</title>
+
+    <!--Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+    <!--Bootstrap.min css-->
+    <link rel="stylesheet" href="__PLU__/bootstrap/css/bootstrap.min.css">
+
+    <!--Icons css-->
+    <link rel="stylesheet" href="__CSS__/icons.css">
+
+    <!--Style css-->
+    <link rel="stylesheet" href="__CSS__/style.css">
+
+    <!--mCustomScrollbar css-->
+    <link rel="stylesheet" href="__PLU__/scroll-bar/jquery.mCustomScrollbar.css">
+
+    <!--Sidemenu css-->
+    <link rel="stylesheet" href="__PLU__/toggle-menu/sidemenu.css">
+
+    <!--Chartist css-->
+    <link rel="stylesheet" href="__PLU__/chartist/chartist.css">
+    <link rel="stylesheet" href="__PLU__/chartist/chartist-plugin-tooltip.css">
+
+    <!--Full calendar css-->
+    <link rel="stylesheet" href="__PLU__/fullcalendar/stylesheet1.css">
+
+    <!--morris css-->
+    <link rel="stylesheet" href="__PLU__/morris/morris.css">
+    <style>
+        /*版本卡样式*/
+        .navbar .form-inline .btn{
+            border-radius:0.25rem;
+            padding-top:2px;
+            padding-bottom:2px;
+            color:#fff;
+            cursor: default;
+            border:0;
+            padding-left:10px;
+            padding-right:10px;
+        }
+    </style>
+
+</head>
+
+<body class="app ">
+
+<div id="spinner"></div>
+
+<div id="app">
+    <div class="main-wrapper" >
+        <nav class="navbar navbar-expand-lg main-navbar">
+            <a class="header-brand" href="index.html">
+                <img src="__IMG__/brand/logo.png" class="header-brand-img" alt="Kharna-Admin  logo">
+            </a>
+            <form class="form-inline mr-auto">
+                <ul class="navbar-nav mr-3">
+                    <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="ion ion-navicon-round"></i></a></li>
+                </ul>
+                <button class="btn btn-primary version">商户版v4.2</button>
+            </form>
+            <ul class="navbar-nav navbar-right">
+                <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg">
+                    <img src="__IMG__/avatar/avatar-1.jpeg.jpg" alt="profile-user" class="rounded-circle w-32">
+                    <div class="d-sm-none d-lg-inline-block">苗苗</div></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="/userSet/canshu.html" class="dropdown-item has-icon dropClick">
+                            <i class="ion ion-android-person"></i> 商户信息
+                        </a>
+                        <a href="/message/notice.html" class="dropdown-item has-icon dropClick">
+                            <i class="ion-speakerphone"></i> 系统公告
+                        </a>
+                        <a href="/register/login.html" class="dropdown-item has-icon">
+                            <i class=" fa fa-power-off"></i> 退出
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <aside class="app-sidebar">
+            <div class="app-sidebar__user">
+                <div class="dropdown">
+                    <a class="nav-link pl-2 pr-2 leading-none d-flex" data-toggle="dropdown" href="#">
+                        <img alt="image" src="__IMG__/avatar/avatar-1.jpeg.jpg" class=" avatar-md rounded-circle">
+                        <span class="ml-2 d-lg-block">
+									<span class="text-white app-sidebar__user-name mt-5">游戏平台</span><br>
+									<span class="text-muted app-sidebar__user-name text-sm">15824726488</span>
+								</span>
+                    </a>
+                </div>
+            </div>
+            <ul class="side-menu">
+                <li class="slide">
+                    <a class="side-menu__item noChild"  href="{:url('index/index')}"><i class="side-menu__icon fa fa-desktop"></i><span class="side-menu__label">管理首页</span></a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-gear"></i><span class="side-menu__label">商户设置</span><i class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
+                        <li><a href="{:url('index/info')}" class="slide-item"> 信息设置</a></li>
+                        <!--<li><a href="/userSet/userMessage.html" class="slide-item"> 商户信息</a></li>-->
+                        <li><a href="{:url('index/password')}" class="slide-item"> 修改密码</a></li>
+                    </ul>
+                </li>
+
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-file-text-o"></i><span class="side-menu__label">订单管理</span><i class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
+                        <li><a href="/order/rechargeOrder.html" class="slide-item"> 充值订单</a></li>
+                        <li><a href="/order/withdrawOrder.html" class="slide-item"> 提现订单</a></li>
+                    </ul>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-credit-card"></i><span class="side-menu__label">资产管理</span><i class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
+                        <li><a href="/wallet/recharge.html" class="slide-item">在线充币</a></li>
+                        <li><a href="/wallet/withdraw.html" class="slide-item">在线提币</a></li>
+                        <li><a href="/wallet/change.html" class="slide-item">币种兑换</a></li>
+                    </ul>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-cny"></i><span class="side-menu__label">财务管理</span><i class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
+
+                        <li><a href="/finance/financeDetail.html" class="slide-item">财务明细</a></li>
+                        <li><a href="/finance/integralDetail.html" class="slide-item">积分明细</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-table"></i><span class="side-menu__label">信息管理</span><i class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
+                        <li><a href="/message/notice.html" class="slide-item">系统公告</a></li>
+                        <li><a href="/message/article.html" class="slide-item">新闻资讯</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon fa fa-cloud"></i><span class="side-menu__label">API管理</span><i class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
+                        <li><a href="/API/APIKey.html" class="slide-item">API密钥</a></li>
+                        <li><a href="/API/APIRecord.html" class="slide-item">API记录</a></li>
+                        <li><a href="/API/APIBlack.html" class="slide-item">IP黑名单</a></li>
+
+                    </ul>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item" href="/register/login.html"><i class="side-menu__icon fa fa-power-off"></i><span class="side-menu__label">退出登录</span></a>
+                </li>
+            </ul>
+        </aside>
+        <!-- 右侧内容 -->
+        <div class="app-content">
+            {block name="main"}主内容{/block}
+        </div>
+        <!-- 右侧内容   end-->
+        <footer class="main-footer">
+            <div class="text-center">
+                Copyright &copy;Kharna-Admin 2018. Design By：123456
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+
+<!--Jquery.min js-->
+<script src="__JS__/jquery.min.js"></script>
+
+<!--popper js-->
+<script src="__JS__/popper.js"></script>
+
+<!--Tooltip js-->
+<script src="__JS__/tooltip.js"></script>
+
+<!--Bootstrap.min js-->
+<script src="__PLU__/bootstrap/js/bootstrap.min.js"></script>
+
+<!--Jquery.nicescroll.min js-->
+<script src="__PLU__/nicescroll/jquery.nicescroll.min.js"></script>
+
+<!--Scroll-up-bar.min js-->
+<script src="__PLU__/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+
+<!--mCustomScrollbar js-->
+<script src="__PLU__/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<!--Sidemenu js-->
+<script src="__PLU__/toggle-menu/sidemenu.js"></script>
+
+<!--Jquery.knob js-->
+<script src="__PLU__/othercharts/jquery.knob.js"></script>
+
+<!--Jquery.sparkline js-->
+<script src="__PLU__/othercharts/jquery.sparkline.min.js"></script>
+
+<!--othercharts js-->
+<script src="__JS__/othercharts.js"></script>
+
+<!--Morris js-->
+<script src="__PLU__/morris/morris.min.js"></script>
+<script src="__PLU__/morris/raphael.min.js"></script>
+
+<!--Scripts js-->
+<script src="__JS__/scripts.js"></script>
+<script src="__JS__/apexcharts.js"></script>
+<script src="__JS__/dashboard3.js"></script>
+</body>
+</html>

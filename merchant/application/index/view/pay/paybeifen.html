@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head> 
+        <title>Soole Payment Gateway</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <meta content="Soole Payment Gateway" name="keywords"/>
+        <meta content="Soole Payment Gateway" name="description"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="/common.css" />
+        <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css"/>
+        <style type="text/css">
+        	.head{padding: 0 0 15px;width: 100%;background: #1C91E4;}
+        	.head_inner a ,.head_inner span{float: left;font-size: 18px;color:#EEF7FD ;}
+        	.head_inner span{margin-top: 20px;}
+        	.container1{ width: 80%; margin:  0 auto; margin-top: 30px;}
+        	.staff{background: #EEF7FD;width: 2px;margin: 20px 5px 0 5px;height: 21px;} 
+        	.container{border: none;margin-top: 30px;}
+        	.pay-acount{font-size: 16px;display: flex; align-items: center;height: 80px;border: solid #ccc 1px;font-weight: 600;padding: 0 10px;}
+        	.pay-acount .countdown{text-align: right; flex-grow: 1;line-height: 26px;}
+        	.pay-acount .countdown .tips{ font-size: 14px;}
+        	.pay-style{border: solid #ccc 1px; margin-top: 20px;}
+        	.staff{ background: #c4c6c7;width: 2px;height: 21px;margin-right: 10px;} 
+        	.pay-style .staff{ background: #1C91E4;width: 8px;height: 21px; margin-right: 10px;} 
+        	.demo .title{ display: flex;  align-items: center;font-size: 16px;color: #1C91E4;margin-bottom: 10px;}
+            .pay-style .container .row>div{  text-align: center; position: relative;}
+            .pay-style .container .item>div p{ width: 90%; height: 32px;line-height: 32px;border: solid #1C91E4 1px;}
+        	.pay-style .container .item>div p:hover{ text-decoration: none;}
+        	.ewm{width: 80%; width: 80%; height: 120px; }
+        	.ewm img{ width: 110px;height: 110px;} 
+        	.pay-internal:hover ,.pay-international:hover ,.pay-paypal:hover ,.pay-btc:hover,.pay-eth:hover,.pay-usdt:hover{background: #1C91E4;}
+        	.pay-internal:hover a,.pay-international:hover a,.pay-paypal:hover a,.pay-btc:hover a,.pay-eth:hover a,.pay-usdt:hover a{color: #fff;}
+        	.pay-internal-ewm,.pay-international-ewm,.pay-paypal-ewm{ display: none;position: absolute;}  
+        	.info{height: 120px; text-align: left; padding-left: 10px;}    	
+        	.pay-international-info,.pay-paypal-info{display: none;}
+        	.active{ background: #1C91E4;color: #fff;}
+        	.active a{ color: #fff;}
+        	a,a:hover{text-decoration: none;}
+        	.bottom img{ width: 24%;}
+       		.bottom .row>div{display: flex; align-items: center;justify-content: center;}
+       		.bottom .row>div span{    font-size: 22px; font-weight: 600;}
+       		.container{min-height: 500px;}
+       		.bottom .container{ min-height: auto;}
+        	@media screen and (min-width:1100px){ /*三栏布局*/
+	           
+	        }
+	        @media screen and (min-width:800px) and (max-width:1100px){ /*二栏布局*/
+	           
+	        }
+	        @media screen and (max-width:800px) { /*一栏布局*/
+	            .demo{width: 100%;}	                      
+	           .container{padding-left: 8px;padding-right: 8px; }
+	           .pay-acount{border: none;}
+	           .pay-style{ border: none;}
+	           .pay-acount{display: block;}
+	           .pay-acount .countdown{text-align: left;font-size: 14px;margin-top: 5px;}
+	           .pay-acount .countdown p{margin: 0;}
+	           .pay-acount .countdown .tips{ font-size: 12px;}
+	           .pay-style{ margin-top: 0;}
+	           .pay-style .container .item>div p{ margin:0 auto 10px auto;}
+	           .pay-style .container .row>div{ position: static;}
+	           .pay-internal-ewm,.pay-international-ewm,.pay-paypal-ewm{ position: static;}  
+	        }
+        </style>
+    </head>
+    <body>
+        <div class="head">
+          <div class="head_inner clearfix">               
+                <a class="logo" href=""><img src="/static/soole.png" alt="SOOLE" STYLE="WIDTH:150PX;margin-top:15px" /></a>
+                <span class="staff"></span>
+                <span>收银台</span>
+            </div>
+        </div>
+        <div class="container1 demo">
+            <div class="pay-acount">
+            	<div>兑入金额：<span style="color: red;">5000.00</span></div>
+            	<div class="countdown">
+            		<p>支付倒计时：<span style="color: red;">13:05</span></p>
+            		<p class="tips">温馨提示：您购买的USDT已在中链支付保护中，请放心支付</p>
+            	</div>
+            </div>
+            <div class="pay-style">
+            	<div class="title"><span class="staff"></span><span style="margin-top: 20px;">支付方式</span></div>
+	            <div class="container">
+	            	<div class="row">
+	            		<div class="col-md-8 col-sm-8 col-xs-12">
+	            			<div class="row item">
+	            				<div class="col-md-4 col-sm-4 col-xs-12">
+	            					<p class="pay-internal active"><a href="__APP__/Alipaypc/dopay/order_no/{$row.order_no}">支付宝大陆版</a></p>
+	            					<div class="ewm pay-internal-ewm"><img src="/static/ewm.png"/></div>
+	            				</div>
+	            				<div class="col-md-4 col-sm-4 col-xs-12">
+	            					<p class="pay-international"><a href="__APP__/Alipay/dopay/{$row.order_no}">支付宝国际版</a></p>
+	            					<div class="ewm pay-international-ewm"><img src="/static/ewm.png"/></div>
+	            				</div>
+	            				<div class="col-md-4 col-sm-4 col-xs-12">
+	            					<p class="pay-paypal"><a href="__APP__/Pay/getorder/orderid/{$row.order_no}/money/{$row.money}">paypal国际版</a></p>
+	            					<div class="ewm pay-paypal-ewm"><img src="/static/ewm.png"/></div>
+	            				</div>
+	            			</div>
+	            			<div class="info">
+	            				<div class="pay-internal-info">
+	            					<p>人民币:15.2</p>
+	            					
+	            				</div>
+	            				<div class="pay-international-info">
+	            					<p>美元:22.2</p>
+	            					
+	            				</div>
+	            				<div class="pay-paypal-info">
+	            					<p>paypal:24</p>
+	            					
+	            				</div>
+	            			</div>
+	            			<div class="row item">
+	            				<div class="col-md-4 col-sm-4 col-xs-12">
+	            					<p class="pay-btc"><a href="#">BTC</a></p>	            					
+	            				</div>
+	            				<div class="col-md-4 col-sm-4 col-xs-12">
+	            					<p class="pay-eth"><a href="#">ETH</a></p>	            					
+	            				</div>
+	            				<div class="col-md-4 col-sm-4 col-xs-12">
+	            					<p class="pay-usdt"><a href="#">USDT</a></p>	            					
+	            				</div>
+	            			</div>
+	            			  
+	            		</div>
+	            		<div class="col-md-3 col-sm-3 col-xs-12" style="background: #f5f5f5;padding: 10px ;height: 200px;">
+	            			<p>温馨提示:</p>
+	            			<p style="text-indent: 2rem;text-align: left;">中链支付具有匿名性，是一个独立的数字钱包，所有参与的投资者的信息都是采用匿名方式，极大程度上保护了个人的信息，避免了泄露风险。 </p>
+	            		</div>          		
+					  	
+	            	</div>
+	            	 	
+	            </div>
+	             <div class="bottom" style="text-align: center;">
+	            	<div class="container">
+	            		<div class="row">
+						  <div class="col-md-4">
+						  	<img src="/static/danbao.png"/>
+						  	<span>联合担保</span>
+						  </div>
+						  <div class="col-md-4">
+						  	<img src="/static/baozhengjin.png"/>
+						  	<span>保证金</span>
+						  </div>
+						  <div class="col-md-4">
+						  	<img src="/static/tuoguansuoding.png"/>
+						  	<span>托管锁定</span>
+						  </div>
+						  
+						</div>
+	            	</div>
+	            </div>
+            </div>
+           
+        </div>
+      
+    </body>
+</html>
+<script src="/static/jquery-3.3.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	/*大陆版*/
+	$('.pay-internal').mouseover(function(){
+		/*$('.pay-internal-info').show();*/
+		$('.pay-internal-ewm').show();		
+		/*$('.pay-international-info').hide();
+		$('.pay-paypal-info').hide();*/
+	})
+	$('.pay-internal').mouseout(function(){
+		$('.pay-internal-ewm').hide()
+		/*$('.pay-internal-info').hide()*/
+	})
+	$('.pay-internal').click(function(){
+		$(this).addClass('active');
+		$('.pay-international').removeClass('active');
+		$('.pay-paypal').removeClass('active');
+		$('.pay-internal-ewm').toggle()
+		$('.pay-internal-info').show();
+		$('.pay-international-info').hide();
+		$('.pay-paypal-info').hide();
+	})
+	/*国际版*/
+	$('.pay-international').mouseover(function(){
+		$('.pay-international-ewm').show();
+		/*$('.pay-international-info').show()
+		$('.pay-internal-info').hide();		
+		$('.pay-paypal-info').hide();*/
+	})
+	$('.pay-international').mouseout(function(){
+		$('.pay-international-ewm').hide()
+		/*$('.pay-international-info').hide()*/
+	})
+	$('.pay-international').click(function(){
+		$(this).addClass('active');
+		$('.pay-internal').removeClass('active');
+		$('.pay-paypal').removeClass('active');
+		$('.pay-international-ewm').toggle()
+		$('.pay-internal-info').hide();
+		$('.pay-international-info').show();
+		$('.pay-paypal-info').hide();
+	})
+	/*papal*/
+	$('.pay-paypal').mouseover(function(){
+		$('.pay-paypal-ewm').show()
+		/*$('.pay-paypal-info').show()
+		$('.pay-internal-info').hide();
+		$('.pay-international-info').hide();*/
+		
+	})
+	$('.pay-paypal').mouseout(function(){
+		$('.pay-paypal-ewm').hide()
+		/*$('.pay-paypal-info').hide()*/
+	})
+	$('.pay-paypal').click(function(){
+		$(this).addClass('active');
+		$('.pay-internal').removeClass('active');
+		$('.pay-international').removeClass('active');
+		$('.pay-paypal-ewm').toggle()
+		$('.pay-internal-info').hide();
+		$('.pay-international-info').hide();
+		$('.pay-paypal-info').show();
+	})
+</script>
+<br /><br /><br />

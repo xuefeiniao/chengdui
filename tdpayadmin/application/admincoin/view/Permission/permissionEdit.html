@@ -1,0 +1,151 @@
+<style>
+	.form-group .form-control{
+		display: inline-block;
+	}
+</style>
+<section class="section">
+	<div class="section-body">
+		<div class="row">			
+			<div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h4>编辑权限节点</h4>
+					</div>
+					<div class="card-body">
+						<form class="form-horizontal container" style="text-align: center;">
+							<div class="form-group row">
+								<label class="col-md-1 col-form-label offset-md-1">权限节点</label>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="name" id="name" value="{$info.name}">
+									<input type="hidden" class="form-control" name="permissions_id" id="id" value="{$info.permissions_id}">
+								</div>
+								<p><i style="color:red;line-height: 40px;">*</i> 必须为 xxx.xxx 格式</p>
+							</div>		
+							<div class="form-group row">
+								<label class="col-md-1 col-form-label offset-md-1">权限名称</label>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="display" id="display" value="{$info.display}">
+								</div>
+							</div>	
+							<div class="form-group row">
+								<label class="col-md-1 col-form-label offset-md-1">权限介绍</label>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="discription" id="discription" value="{$info.discription}">
+								</div>
+							</div>	
+							<div class="form-group row">
+								<label class="col-md-1 col-form-label offset-md-1">排序</label>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="sort" id="sort" value="{$info.sort}">
+								</div>
+							</div>	
+							<div class="form-group row">
+								<label class="col-md-1 col-form-label offset-md-1">是否菜单</label>
+								<div class="col-md-1">
+									<label class="custom-switch">
+										<input type="checkbox" name="is_menu" id="is_menu" class="custom-switch-input" value="{$info.is_menu}">
+										<span class="custom-switch-indicator" id="isMenu"></span>
+									</label>
+								</div>
+							</div>	
+							<div class="form-group row" id="icon">
+								<label class="col-md-1 col-form-label offset-md-1">菜单图标</label>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="style" id="style"  value="{$info.style}"><br>
+								</div>
+							</div>			
+							<div class="form-group row">
+								<div class="col-md-3 offset-md-5">
+									<button type="button" class="btn btn-info" id="addPermission">确定</button>									
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+<script type="text/javascript">
+	var val = $('#is_menu').val();
+	if (val-1) 
+	{
+		$('#icon').hide();
+	}
+	else
+	{
+		$('#is_menu').attr('checked',true);;
+		$('#icon').show();
+	}
+
+	// 是否菜单1--显示，2--隐藏
+	$('#isMenu').click(function()
+	{
+		var val = $('#is_menu').val();
+		if (val-1) 
+		{
+			$('#is_menu').val(1);
+			$('#icon').show();
+		}
+		else
+		{
+			$('#is_menu').val(2);
+			$('#icon').hide();
+		}
+	});
+
+	$('#addPermission').click(function()
+		{
+
+			var id 				= $('#id').val();
+			var name 			= $('#name').val();
+			var display 		= $('#display').val();
+			var discription 	= $('#discription').val();
+			var sort 			= $('#sort').val();
+			var is_menu 		= $('#is_menu').val();
+			var style 			= $('#style').val();
+			if(name == ""){layer.msg('请输入权限节点');return}
+			if(display == ""){layer.msg('请输入权限名称');return}
+			if(discription == ""){layer.msg('请输入权限介绍');return}
+			if(sort == ""){layer.msg('请输入排序');return}
+			if(is_menu == ""){layer.msg('请选择是否菜单');return}
+			// if(style == ""){layer.msg('请输入');return}
+			$('.app-content').empty();
+			$.ajax({
+				type: "POST",
+				url: '/admincoin/Permission/permissionEdit',
+				data:{
+						id:id,
+		    			name:name,
+		    			display:display,
+		    			discription:discription,
+		    			sort:sort,
+		    			is_menu:is_menu,
+		    			// parent:parent,
+		    			style:style
+		    		},
+				success: function(e) {
+					if (e.code == 200) {
+						layer.msg(e.msg);
+						$('.app-content').empty();
+						$.ajax({
+							type: "GET",
+							url: '/admincoin/Permission/permissionList',
+							success: function(data) {
+								$('.app-content').append(data);
+							}
+						});
+						return false;	
+					}else{
+						layer.msg(e.msg)
+					}
+				}
+			});
+			return false;
+
+		});
+	
+	
+	
+</script>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>登录</title>
+		
+		<!--Favicon -->
+		<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+
+		<!--Bootstrap.min css-->
+		<link rel="stylesheet" href="__PLU__/bootstrap/css/bootstrap.min.css">
+
+		<!--Icons css-->
+		<link rel="stylesheet" href="__CSS__/icons.css">
+
+		<!--Style css-->
+		<link rel="stylesheet" href="__CSS__/style.css">
+
+		<!--mCustomScrollbar css-->
+		<link rel="stylesheet" href="__PLU__/scroll-bar/jquery.mCustomScrollbar.css">
+
+		<!--Sidemenu css-->
+		<link rel="stylesheet" href="__PLU__/toggle-menu/sidemenu.css">
+		<style>
+			.send{
+				color:#fff!important;
+				padding:2px 5px;
+				font-size:12px;
+				position: absolute;
+				right:5px;
+				top:5px;
+			}
+			/*input[type='number']去掉箭头*/
+			input[type='number']::-webkit-outer-spin-button,
+			input[type='number']::-webkit-inner-spin-button{
+				-webkit-appearance: none !important;
+				margin: 0;
+			}
+			input[type="number"]{-moz-appearance:textfield;}
+			
+			/*滑块验证样式*/	
+			#drag{ 
+				position: relative;
+				background-color: #e8e8e8;
+				width: 294px;
+				height: 34px;
+				line-height: 34px;
+				text-align: center;
+			}
+			#drag .handler{
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				width: 40px;
+				height: 34px;
+				border: 1px solid #ccc;
+				cursor: move;
+			}
+			.handler_bg{
+				background: #fff url("__IMG__/right.png") no-repeat center;
+			}
+			.handler_ok_bg{
+				background: #fff url("__IMG__/dui.png") no-repeat center;
+			}
+			#drag .drag_bg{
+				background-color: #7ac23c;
+				height: 34px;
+				width: 0px;
+			}
+			#drag .drag_text{
+				position: absolute;
+				top: 0px;
+				width: 294px;
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				user-select: none;
+				-o-user-select:none;
+				-ms-user-select:none; 
+			}
+          	/*输入框字体大小*/
+			.single-page .wrapper input{
+    		    font-size:12px!important;
+    		}
+	
+		</style>
+	</head>
+
+	<body class="bg-primary">
+		<div id="app">
+			<section class="section section-2">
+                <div class="container">
+					<div class="row">
+						<div class="single-page single-pageimage construction-bg cover-image " data-image-src="__IMG__/news/img14.jpg">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="wrapper wrapper2">
+										<div class="card-body form">
+											<h3>登录</h3>
+											<div class="mobile">
+												<input type="text" name="username" id="username">
+												<label>用户名</label>
+											</div>								
+											<div class="code">
+												<input type="number" name="verify" id="verify">
+												<a class="btn btn-primary send">发送验证码</a>
+												<label>验证码</label>
+											</div>	
+											<div class="password">
+												<input type="password" name="password" id="password">
+												<label>密码</label>
+											</div>
+											<!-- 滑块验证 -->
+											<div class="verify-wrap" id="verify-wrap"></div>
+                                          
+											<div class="submit">
+												<button class="btn btn-primary btn-block btn-submit">登录</button>
+											</div>
+											<p class="mb-2">
+												<a href=""  class="float-left">官方首页</a>
+												<a href="{:url('login/sign')}" class="float-right">注册</a>
+											</p>
+											<p class="text-dark mb-0">
+												<a href="{:url('login/forgot')}" class="text-primary ml-1">忘记密码？</a>
+											</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="log-wrapper text-center">
+										<img src="__IMG__/brand/logo-white.png" class="mb-2 mt-4 mt-lg-0 " alt="logo">
+										<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure</p>
+										<a class="btn btn-primary mt-3" href="#">Read More</a>
+									</div>
+								</div>
+							</div>
+						</div>	
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<!--Jquery.min js-->
+		<script src="__JS__/jquery.min.js"></script>
+
+		<!--popper js-->
+		<script src="__JS__/popper.js"></script>
+
+		<!--Tooltip js-->
+		<script src="__JS__/tooltip.js"></script>
+
+		<!--Bootstrap.min js-->
+		<script src="__PLU__/bootstrap/js/bootstrap.min.js"></script>
+
+		<!--Jquery.nicescroll.min js-->
+		<script src="__PLU__/nicescroll/jquery.nicescroll.min.js"></script>
+
+		<!--Scroll-up-bar.min js-->
+		<script src="__PLU__/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+
+		<script src="__JS__/moment.min.js"></script>
+
+		<!--mCustomScrollbar js-->
+		<script src="__PLU__/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+		<!--Sidemenu js-->
+		<script src="__PLU__/toggle-menu/sidemenu.js"></script>
+
+		<!--Scripts js-->
+		<script src="__JS__/scripts.js"></script>
+		<!--drag js-->
+		<script src="__JS__/jq-slideVerify.js"></script>
+
+		<script src="__JS__/layer.js"></script>
+
+		<script>
+			  //获取验证码
+			$('.send').on('click', function(){
+                var username = $('#username').val();
+                if(username==""|| username==null){
+                    layer.msg('请输入用户名');
+                    return false;
+				}
+                var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                if(reg.test(username)){
+                    $.ajax({
+                        url:"{:url('logincommon/sendemail')}",
+                        data:{username:username},
+                        dataType:'json',
+                        type:'post',
+                        success:function(data){
+                            if(data.status==1){
+                                timeClock(".send");
+                                layer.msg(data.msg);
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error:function(data){
+                            console.log(data);
+                        }
+                    });
+                }else{
+                    if(!(/^1[34578]\d{9}$/.test(username))){
+                        layer.msg('手机号码格式不正确');
+                        return false;
+                    }
+                    $.ajax({
+                        url:"{:url('logincommon/sendsms')}",
+                        data:{username:username},
+                        dataType:'json',
+                        type:'post',
+                        success:function(data){
+                            if(data.status==1){
+                                timeClock(".send");
+                                layer.msg(data.msg);
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error:function(data){
+                            console.log(data);
+                        }
+                    });
+                }
+			});
+			//手机验证码倒计时函数
+			function timeClock(cls) {					
+				var _this = $(cls);
+				if(_this.hasClass('disabled')) {						
+					return false;
+				} else {
+					_this.addClass('disabled');
+					var i = 59;
+					var int = setInterval(clock, 1000);
+		
+					function clock() {
+						_this.text("重新发送"+"(" + i + ")");						
+						i--;
+						if(i < 0) {
+							_this.removeClass('disabled');
+							i = 59;
+							_this.text("获取验证码");
+							clearInterval(int);
+						}
+					}
+					return false;
+				}
+			}
+			//滑块验证
+			var SlideVerifyPlug = window.slideVerifyPlug;
+			var slideVerify = new SlideVerifyPlug('#verify-wrap',{
+				wrapWidth:'100%',//设置 容器的宽度 ,不设置的话，会设置成100%，需要自己在外层包层div,设置宽度，这是为了适应方便点；
+	            initText:'拖动滑块验证',  //设置  初始的 显示文字
+	            sucessText:'验证通过',//设置 验证通过 显示的文字
+			});
+			
+		</script>
+		<script>
+			$(document).ready(function(){
+			    $(".btn-submit").click(function(){
+					var username=$("#username").val();
+					var verify=$("#verify").val();
+					var password=$("#password").val();
+					if(username=="" || username==null){
+                        layer.msg('请输入用户名');
+                        return false;
+					}
+                    if(verify=="" || verify==null){
+                        layer.msg('请输入验证码');
+                        return false;
+                    }
+                    if(password=="" || password==null){
+                        layer.msg('请输入密码');
+                        return false;
+                    }
+                    if(!slideVerify.slideFinishState){
+                        layer.msg('请拖动滑块验证再登录');
+                        return false;
+                    }
+                    var sendData={
+						username:username,
+						verify:verify,
+						password:password
+					};
+                    $.ajax({
+                        url:"{:url('login/index')}",
+                        data:sendData,
+                        dataType:'json',
+                        type:'post',
+                        success:function(data){
+                            if(data.status==1){
+                                layer.msg(data.msg);
+                                window.location.replace("{:url('index/index')}");
+
+                            }else{
+                             	 slideVerify.resetVerify()
+                                layer.msg(data.msg);
+                              	
+                            }
+
+                        }
+                    });
+
+                });
+			})
+		</script>
+	</body>
+</html>
